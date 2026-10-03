@@ -41,10 +41,19 @@ Best open backbone route from every other settlement to the hub.
 - Ceres: rare but very long blockages, and Relay B to Ceres maintenance (hours 240–264) falls inside
   the 240-hour obligation window.
 
+## Figure
+
+![Earth vs Mars vs Ceres](hub-comparison.png)
+
+Regenerate with `python3 network/python/hub_plots.py`. The deciding panel is C: over 200 years,
+**0 of Earth's 316** single-relay blockages pass 30 days, against **88 of Mars's 128** and
+**4 of Ceres's 4**. A blockage longer than the 30-day packet lifetime means packets queued on the
+blocked relay expire, so sessions must be re-routed (one quota packet per new handshake).
+
 ## Line for the paper
 
 Hub location barely changes delay (under 2%). We chose Earth for its shorter blockages
-(max 21 days, under the 30-day packet lifetime) and local access to our accounts.
+(max 21 days; none of 316 pass the 30-day packet lifetime, vs 88 of 128 for Mars) and local access to our accounts.
 
 ## To firm up for E4
 
