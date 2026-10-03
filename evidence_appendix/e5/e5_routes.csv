@@ -1,0 +1,55 @@
+epoch,settlement,transaction,authority,route,one_way_h,first_try_success,availability_24h,any_route_availability_24h,status_now,hop_loss,p_hop_abandoned_max
+1 year,Mercury,"to hub: orders, margin, transfers to clearing",Ceres,Mercury -> Relay B -> Ceres,0.635331,0.912518,1.000000,1.000000,open,0.0525 -> 0.0369,0.000008
+1 year,Venus,"to hub: orders, margin, transfers to clearing",Ceres,Venus -> Relay B -> Ceres,0.553904,0.923302,1.000000,1.000000,open,0.0413 -> 0.0369,0.000003
+1 year,Earth,"to hub: orders, margin, transfers to clearing",Ceres,Earth -> Relay B -> Ceres,0.776812,0.894080,1.000000,1.000000,open,0.0717 -> 0.0369,0.000026
+1 year,Mars,"to hub: orders, margin, transfers to clearing",Ceres,Mars -> Relay B -> Ceres,0.531167,0.926336,1.000000,1.000000,open,0.0382 -> 0.0369,0.000002
+1 year,Ceres,"to hub: orders, margin, transfers to clearing",Ceres,local access,0.000278,1.000000,1.000000,1.000000,open,,
+1 year,Jupiter,"to hub: orders, margin, transfers to clearing",Ceres,Jupiter -> Relay A -> Ceres,0.830972,0.887120,1.000000,1.000000,open,0.0701 -> 0.046,0.000024
+1 year,Saturn,"to hub: orders, margin, transfers to clearing",Ceres,Saturn -> Relay A -> Ceres,1.726712,0.779569,1.000000,1.000000,open,0.1829 -> 0.046,0.001118
+1 year,Uranus,"to hub: orders, margin, transfers to clearing",Ceres,Uranus -> Relay A -> Ceres,2.802550,0.667484,1.000000,1.000000,open,0.3004 -> 0.046,0.008139
+1 year,Neptune,"to hub: orders, margin, transfers to clearing",Ceres,Neptune -> Relay A -> Ceres,4.653084,0.511075,1.000000,1.000000,open,0.4643 -> 0.046,0.046473
+10 years,Mercury,"to hub: orders, margin, transfers to clearing",Ceres,Mercury -> Relay B -> Ceres,0.558498,0.922690,1.000000,1.000000,open,0.0579 -> 0.0206,0.000011
+10 years,Venus,"to hub: orders, margin, transfers to clearing",Ceres,Venus -> Relay B -> Ceres,0.568083,0.921415,1.000000,1.000000,open,0.0592 -> 0.0206,0.000012
+10 years,Earth,"to hub: orders, margin, transfers to clearing",Ceres,Earth -> Relay B -> Ceres,0.674864,0.907328,1.000000,1.000000,open,0.0736 -> 0.0206,0.000029
+10 years,Mars,"to hub: orders, margin, transfers to clearing",Ceres,Mars -> Relay B -> Ceres,0.313709,0.955861,1.000000,1.000000,open,0.024 -> 0.0206,0.000000
+10 years,Ceres,"to hub: orders, margin, transfers to clearing",Ceres,local access,0.000278,1.000000,1.000000,1.000000,open,,
+10 years,Jupiter,"to hub: orders, margin, transfers to clearing",Ceres,Jupiter -> Relay A -> Ceres,0.755111,0.896884,1.000000,1.000000,open,0.045 -> 0.0608,0.000014
+10 years,Saturn,"to hub: orders, margin, transfers to clearing",Ceres,Saturn -> Relay B -> Ceres,1.092150,0.854313,1.000000,1.000000,open,0.1277 -> 0.0206,0.000266
+10 years,Uranus,"to hub: orders, margin, transfers to clearing",Ceres,Uranus -> Relay B -> Ceres,2.615649,0.685729,1.000000,1.000000,open,0.2998 -> 0.0206,0.008083
+10 years,Neptune,"to hub: orders, margin, transfers to clearing",Ceres,Neptune -> Relay A -> Ceres,4.368092,0.532528,1.000000,1.000000,open,0.433 -> 0.0608,0.035148
+100 years,Mercury,"to hub: orders, margin, transfers to clearing",Ceres,Mercury -> Relay A -> Ceres,0.831741,0.887022,1.000000,1.000000,open,0.0596 -> 0.0568,0.000013
+100 years,Venus,"to hub: orders, margin, transfers to clearing",Ceres,Venus -> Relay A -> Ceres,0.861732,0.883192,1.000000,1.000000,open,0.0637 -> 0.0568,0.000016
+100 years,Earth,"to hub: orders, margin, transfers to clearing",Ceres,Earth -> Relay A -> Ceres,0.683961,0.906138,1.000000,1.000000,open,0.0393 -> 0.0568,0.000010
+100 years,Mars,"to hub: orders, margin, transfers to clearing",Ceres,Mars -> Relay A -> Ceres,0.833240,0.886830,1.000000,1.000000,open,0.0598 -> 0.0568,0.000013
+100 years,Ceres,"to hub: orders, margin, transfers to clearing",Ceres,local access,0.000278,1.000000,1.000000,1.000000,open,,
+100 years,Jupiter,"to hub: orders, margin, transfers to clearing",Ceres,Jupiter -> Relay A -> Ceres,1.457009,0.810502,1.000000,1.000000,open,0.1407 -> 0.0568,0.000392
+100 years,Saturn,"to hub: orders, margin, transfers to clearing",Ceres,Saturn -> Relay B -> Ceres,1.717195,0.780640,1.000000,1.000000,open,0.1272 -> 0.1056,0.000262
+100 years,Uranus,"to hub: orders, margin, transfers to clearing",Ceres,Uranus -> Relay A -> Ceres,2.916690,0.656582,1.000000,1.000000,open,0.3039 -> 0.0568,0.008530
+100 years,Neptune,"to hub: orders, margin, transfers to clearing",Ceres,Neptune -> Relay B -> Ceres,4.925429,0.491381,1.000000,1.000000,open,0.4506 -> 0.1056,0.041231
+hub loses a relay,Mercury,"to hub: orders, margin, transfers to clearing",Ceres,Mercury -> Relay B -> Ceres,0.924081,0.875282,1.000000,1.000000,open,0.0538 -> 0.0749,0.000032
+hub loses a relay,Venus,"to hub: orders, margin, transfers to clearing",Ceres,Venus -> Relay B -> Ceres,0.973196,0.869102,1.000000,1.000000,open,0.0605 -> 0.0749,0.000032
+hub loses a relay,Earth,"to hub: orders, margin, transfers to clearing",Ceres,Earth -> Relay B -> Ceres,0.799622,0.891142,1.000000,1.000000,open,0.0367 -> 0.0749,0.000032
+hub loses a relay,Mars,"to hub: orders, margin, transfers to clearing",Ceres,Mars -> Relay B -> Ceres,1.162306,0.845708,1.000000,1.000000,open,0.0858 -> 0.0749,0.000054
+hub loses a relay,Ceres,"to hub: orders, margin, transfers to clearing",Ceres,local access,0.000278,1.000000,1.000000,1.000000,open,,
+hub loses a relay,Jupiter,"to hub: orders, margin, transfers to clearing",Ceres,Jupiter -> Relay B -> Ceres,0.881095,0.880728,1.000000,1.000000,open,0.0479 -> 0.0749,0.000032
+hub loses a relay,Saturn,"to hub: orders, margin, transfers to clearing",Ceres,Saturn -> Relay B -> Ceres,1.521677,0.802975,1.000000,1.000000,open,0.132 -> 0.0749,0.000303
+hub loses a relay,Uranus,"to hub: orders, margin, transfers to clearing",Ceres,Uranus -> Relay B -> Ceres,2.958330,0.652649,1.000000,1.000000,open,0.2945 -> 0.0749,0.007521
+hub loses a relay,Neptune,"to hub: orders, margin, transfers to clearing",Ceres,Neptune -> Relay B -> Ceres,5.046503,0.482872,1.000000,1.000000,open,0.478 -> 0.0749,0.052213
+slowest client,Mercury,"to hub: orders, margin, transfers to clearing",Ceres,Mercury -> Relay A -> Ceres,1.016377,0.863704,1.000000,1.000000,open,0.0469 -> 0.0938,0.000077
+slowest client,Venus,"to hub: orders, margin, transfers to clearing",Ceres,Venus -> Relay A -> Ceres,1.110394,0.852067,1.000000,1.000000,open,0.0597 -> 0.0938,0.000077
+slowest client,Earth,"to hub: orders, margin, transfers to clearing",Ceres,Earth -> Relay A -> Ceres,0.980815,0.868147,1.000000,1.000000,open,0.042 -> 0.0938,0.000077
+slowest client,Mars,"to hub: orders, margin, transfers to clearing",Ceres,Mars -> Relay B -> Ceres,1.198710,0.841278,1.000000,1.000000,open,0.0707 -> 0.0947,0.000080
+slowest client,Ceres,"to hub: orders, margin, transfers to clearing",Ceres,local access,0.000278,1.000000,1.000000,1.000000,open,,
+slowest client,Jupiter,"to hub: orders, margin, transfers to clearing",Ceres,Jupiter -> Relay B -> Ceres,1.362738,0.821602,1.000000,1.000000,open,0.0925 -> 0.0947,0.000080
+slowest client,Saturn,"to hub: orders, margin, transfers to clearing",Ceres,Saturn -> Relay B -> Ceres,2.270354,0.720757,1.000000,1.000000,open,0.2038 -> 0.0947,0.001727
+slowest client,Uranus,"to hub: orders, margin, transfers to clearing",Ceres,Uranus -> Relay B -> Ceres,3.115017,0.638060,1.000000,1.000000,open,0.2952 -> 0.0947,0.007593
+slowest client,Neptune,"to hub: orders, margin, transfers to clearing",Ceres,Neptune -> Relay B -> Ceres,5.148069,0.475848,1.000000,1.000000,open,0.4744 -> 0.0947,0.050639
+most links closed,Mercury,"to hub: orders, margin, transfers to clearing",Ceres,Mercury -> Relay A -> Ceres,0.796047,0.891602,1.000000,1.000000,open,0.0569 -> 0.0546,0.000010
+most links closed,Venus,"to hub: orders, margin, transfers to clearing",Ceres,Venus -> Relay A -> Ceres,0.796545,0.891538,1.000000,1.000000,open,0.057 -> 0.0546,0.000011
+most links closed,Earth,"to hub: orders, margin, transfers to clearing",Ceres,Earth -> Relay B -> Ceres,0.627406,0.913562,1.000000,1.000000,open,0.059 -> 0.0291,0.000012
+most links closed,Mars,"to hub: orders, margin, transfers to clearing",Ceres,Mars -> Relay A -> Ceres,0.833897,0.886746,1.000000,1.000000,open,0.062 -> 0.0546,0.000015
+most links closed,Ceres,"to hub: orders, margin, transfers to clearing",Ceres,local access,0.000278,1.000000,1.000000,1.000000,open,,
+most links closed,Jupiter,"to hub: orders, margin, transfers to clearing",Ceres,Jupiter -> Relay A -> Ceres,0.773921,0.894453,1.000000,1.000000,open,0.0539 -> 0.0546,0.000009
+most links closed,Saturn,"to hub: orders, margin, transfers to clearing",Ceres,Saturn -> Relay B -> Ceres,1.638282,0.789579,1.000000,1.000000,open,0.1867 -> 0.0291,0.001216
+most links closed,Uranus,"to hub: orders, margin, transfers to clearing",Ceres,Uranus -> Relay B -> Ceres,3.190988,0.631104,1.000000,1.000000,open,0.35 -> 0.0291,0.014999
+most links closed,Neptune,"to hub: orders, margin, transfers to clearing",Ceres,Neptune -> Relay B -> Ceres,4.264609,0.540538,1.000000,1.000000,open,0.4432 -> 0.0291,0.038597

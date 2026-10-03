@@ -26,7 +26,7 @@ from mpex import (CommunicationRiskMarginPolicy, Equity, Exchange, ExchangeError
 from mpex.batch import BatchOrderStatus
 from mpex.positions import Party, Position
 
-from .world import SEC_H, World, ng
+from .world import EPOCH_OFFSET_H, SEC_H, World, ng
 
 D = Decimal
 
@@ -59,8 +59,9 @@ def balance_sheet():
                                      for n, s, c, q in ACCOUNTS))
 
 
-def risk_windows(t_h=0.0):
+def risk_windows(t_h=None):
     """Margin risk window per account: call out + funded reply back + one hop retry."""
+    t_h = EPOCH_OFFSET_H if t_h is None else t_h
     net, out = ng.System(), []
     for name, home, *_ in ACCOUNTS:
         if home == HUB:
@@ -76,6 +77,29 @@ def risk_windows(t_h=0.0):
 
 MARGIN_POLICY = CommunicationRiskMarginPolicy(move_per_observation=D("0.05"),
                                               risk_window_h=risk_windows())
+
+
+def relocate(account, settlement):
+    """Move one opening account, with its holdings, to another settlement (brief S3 re-runs).
+
+    Every later Run uses the new location until ``restore`` is called with the returned token.
+    Adds an operator at the new settlement if there is none. No rule changes.
+    """
+    global ACCOUNTS, MARGIN_POLICY
+    token = (ACCOUNTS, dict(HOME), dict(OPERATORS), MARGIN_POLICY)
+    ACCOUNTS = tuple((n, settlement if n == account else s, c, q) for n, s, c, q in ACCOUNTS)
+    HOME[account] = settlement
+    OPERATORS.setdefault(settlement, f"{settlement} Exchange")
+    MARGIN_POLICY = CommunicationRiskMarginPolicy(move_per_observation=D("0.05"),
+                                                  risk_window_h=risk_windows())
+    return token
+
+
+def restore(token):
+    global ACCOUNTS, MARGIN_POLICY
+    ACCOUNTS, home, ops, MARGIN_POLICY = token
+    HOME.clear(); HOME.update(home)
+    OPERATORS.clear(); OPERATORS.update(ops)
 
 
 class Run:
@@ -134,7 +158,7 @@ class Run:
         rows = []
         for home in sorted({h for h in HOME.values() if h != MARKET}):
             route = self.w.route_from(OPERATORS[home], MARKET_OP)
-            ev = self.w.net.evaluate_route(route, t / 24)
+            ev = self.w.net.evaluate_route(route, (t + EPOCH_OFFSET_H) / 24)
             longest = max(h["ta"] - h["te"] for h in ev["hops"]) * 24
             rows.append({"from": home, "route": route, "one_way_h": ev["light_min"] / 60,
                          "retry_allowance_h": 2 * longest + 1})

@@ -21,6 +21,7 @@ forces them or an incident covers the launch, and each one is labelled.
 
 import heapq
 import math
+import os
 import sys
 from pathlib import Path
 
@@ -33,6 +34,9 @@ from mpex import MessageStatus, PacketKind, SessionState  # noqa: E402
 from mpex.constants import MAX_ENDPOINT_ATTEMPTS, MAX_HOP_LAUNCHES, PACKET_LIFETIME_H  # noqa: E402
 
 SEC_H = 1 / 3600
+# Shifted epochs (brief E5): scenario hour 0 sits this many hours after the epoch. Only
+# geometry moves; scenario times, balances and the exchange journal stay 0-based.
+EPOCH_OFFSET_H = float(os.environ.get("MPEX_EPOCH_OFFSET_H", "0"))
 
 
 class World:
@@ -67,8 +71,8 @@ class World:
 
     # -------------------------------------------------------------- network
     def launch(self, a, b, t_h, loss_coeff=ng.BACKBONE_LOSS):
-        r = self.net.launch(a, b, t_h / 24, loss_coeff)
-        r["te_h"], r["ta_h"] = r["te"] * 24, r["ta"] * 24
+        r = self.net.launch(a, b, (t_h + EPOCH_OFFSET_H) / 24, loss_coeff)
+        r["te_h"], r["ta_h"] = r["te"] * 24 - EPOCH_OFFSET_H, r["ta"] * 24 - EPOCH_OFFSET_H
         return r
 
     def next_valid(self, a, b, t_h):
@@ -91,10 +95,10 @@ class World:
 
     def route_timing_h(self, route, t_h):
         """T0: flight + serialization + relay processing along a route, empty queues."""
-        return self.net.evaluate_route(route, t_h / 24)["light_min"] / 60
+        return self.net.evaluate_route(route, (t_h + EPOCH_OFFSET_H) / 24)["light_min"] / 60
 
     def best_route(self, a, b, t_h):
-        return self.net.routes(a, b, t_h / 24)[0]["path"]
+        return self.net.routes(a, b, (t_h + EPOCH_OFFSET_H) / 24)[0]["path"]
 
     def _loss_reason(self, info):
         for inc in self.incidents:

@@ -1,0 +1,25 @@
+{
+ "step_h": 6.0,
+ "propagation_check_au": 2.482534153247273e-16,
+ "boundaries": 5748,
+ "flip_ok": 5748,
+ "both_relays_blocked": {
+  "Mercury": 0,
+  "Venus": 0,
+  "Earth": 0,
+  "Mars": 0,
+  "Ceres": 0,
+  "Jupiter": 0,
+  "Saturn": 0,
+  "Uranus": 0,
+  "Neptune": 0
+ },
+ "shortest_closure_d": 6.680793762207031,
+ "hub_longest_closure": {
+  "settlement": "Ceres",
+  "relay": "Relay A",
+  "start_d": 20061.29512500763,
+  "end_d": 20251.483850479126,
+  "days": 190.18872547149658
+ }
+}

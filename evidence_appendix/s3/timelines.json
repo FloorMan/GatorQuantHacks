@@ -1,0 +1,77 @@
+{
+ "ranking": [
+  [
+   0.0,
+   "Ceres"
+  ],
+  [
+   0.4952076345242247,
+   "Mars"
+  ],
+  [
+   0.6062316653207811,
+   "Venus"
+  ],
+  [
+   0.6882872685311888,
+   "Jupiter"
+  ],
+  [
+   0.6971804438403565,
+   "Mercury"
+  ],
+  [
+   1.2537971306890985,
+   "Saturn"
+  ],
+  [
+   2.567825431485673,
+   "Uranus"
+  ],
+  [
+   4.105022733937983,
+   "Neptune"
+  ]
+ ],
+ "runs": {
+  "best": {
+   "settlement": "Ceres",
+   "delay_rank_h": 0.0,
+   "price": "47.50",
+   "batch_closes_h": 5.987725865213773,
+   "executed_h": 5.987725865213773,
+   "shares_usable_h": 7.0993047769058,
+   "cash_usable_h": 6.543494380215833,
+   "complete_h": 7.0993047769058,
+   "events": 104,
+   "invariant_violations": 0,
+   "file": "timeline_best_Ceres.csv"
+  },
+  "median": {
+   "settlement": "Jupiter",
+   "delay_rank_h": 0.6882872685311888,
+   "price": "47.50",
+   "batch_closes_h": 6.332529907386104,
+   "executed_h": 6.332529907386104,
+   "shares_usable_h": 7.736798780838085,
+   "cash_usable_h": 7.869339556587246,
+   "complete_h": 7.869339556587246,
+   "events": 134,
+   "invariant_violations": 0,
+   "file": "timeline_median_Jupiter.csv"
+  },
+  "worst": {
+   "settlement": "Neptune",
+   "delay_rank_h": 4.105022733937983,
+   "price": "47.50",
+   "batch_closes_h": 31.184360401396304,
+   "executed_h": 31.184360401396304,
+   "shares_usable_h": 35.91236825034099,
+   "cash_usable_h": 39.46424750779151,
+   "complete_h": 39.46424750779151,
+   "events": 134,
+   "invariant_violations": 0,
+   "file": "timeline_worst_Neptune.csv"
+  }
+ }
+}
