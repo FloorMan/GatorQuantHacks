@@ -26,6 +26,7 @@ from decimal import Decimal
 from statistics import mean
 
 from .assets import to_quantity, validate_asset
+from .batch import Batch, BatchOrder, BatchOrderStatus, BatchStatus, run_auction
 from .balance_sheet import OpeningBalanceSheet
 from .comms import (Launch, Message, MessageStatus, Packet, PacketKind, Service,
                     Session, SessionState, TrafficClass, packets_needed, validate_route)
@@ -347,6 +348,219 @@ class Exchange:
         return self._record(EventType.TRANSFER_RETURNED, at_h, t.owner,
                             {"transfer_id": transfer_id, "reason": reason}, note)
 
+    def deliver_transfer(self, at_h: float, transfer_id: str, note: str | None = None) -> str:
+        """Destination validates a transfer instruction, at most once per transaction id.
+
+        The first delivery completes the transfer (destination finality: the
+        value is usable at once). A repeat of the same transaction id, from a
+        resubmission or a duplicate copy, changes nothing and is recorded.
+        Returns "completed" or "duplicate".
+        """
+        self._require_financial(at_h)
+        t = self._transfer(transfer_id)
+        if t.status is TransferStatus.IN_TRANSIT:
+            self._record(EventType.TRANSFER_COMPLETED, at_h, t.to_owner,
+                         {"transfer_id": transfer_id}, note)
+            return "completed"
+        if t.status is TransferStatus.COMPLETED:
+            self._record(EventType.TRANSFER_DUPLICATE_IGNORED, at_h, t.to_owner,
+                         {"transfer_id": transfer_id, "stage": "delivery",
+                          "first_completed_h": t.completed_h}, note)
+            return "duplicate"
+        raise InvalidState(f"{transfer_id} is {t.status.value}")
+
+    def confirm_transfer(self, at_h: float, transfer_id: str, note: str | None = None) -> str:
+        """The source learns that the destination validated the transfer (reconciliation).
+
+        Until then the source record stays pending; the value is never usable
+        at the source in the meantime. Returns "confirmed" or "duplicate".
+        """
+        self._require_financial(at_h)
+        t = self._transfer(transfer_id)
+        if t.status is not TransferStatus.COMPLETED:
+            raise InvalidState(f"{transfer_id} is {t.status.value}; the destination has not validated it")
+        if t.source_confirmed_h is not None:
+            self._record(EventType.TRANSFER_DUPLICATE_IGNORED, at_h, t.owner,
+                         {"transfer_id": transfer_id, "stage": "confirmation",
+                          "first_completed_h": t.source_confirmed_h}, note)
+            return "duplicate"
+        self._record(EventType.TRANSFER_CONFIRMED, at_h, t.owner,
+                     {"transfer_id": transfer_id}, note)
+        return "confirmed"
+
+    # =====================================================================
+    # Global batch market (cross-settlement equity trading, batch.py)
+    # =====================================================================
+    def open_batch(self, at_h: float, symbol: str, market: str, closes_h: float,
+                   timing: dict | None = None, note: str | None = None) -> str:
+        self._require_financial(at_h)
+        inst = self._instrument(symbol)
+        if not isinstance(inst, Equity):
+            raise ValidationError(f"{symbol}: only equities trade in the batch market")
+        validate_settlement(market)
+        if not any(isinstance(p, Institution) and p.settlement == market
+                   and InstitutionRole.OPERATOR.value in p.roles
+                   for p in self.state.principals.values()):
+            raise ValidationError(f"no operator at {market} to hold the batch")
+        if closes_h <= at_h:
+            raise ValidationError("a batch must close after it opens")
+        if any(b.symbol == symbol and b.status is BatchStatus.OPEN
+               for b in self.state.batches.values()):
+            raise InvalidState(f"a {symbol} batch is already open")
+        batch_id = self._new_id("BAT")
+        self._record(EventType.BATCH_OPENED, at_h, market, {
+            "batch_id": batch_id, "symbol": symbol, "market": market,
+            "closes_h": float(closes_h), "timing": timing or {}}, note)
+        return batch_id
+
+    def reserve_batch_order(self, at_h: float, account: str, symbol: str, side, quantity,
+                            limit_price, note: str | None = None) -> str:
+        """Home operator stamps a client order and locks its collateral at home.
+
+        ``at_h`` is the operator's receipt time, which becomes the order's
+        priority timestamp in the batch.
+        """
+        self._require_financial(at_h)
+        side = Side(side)
+        inst = self._instrument(symbol)
+        if not isinstance(inst, Equity):
+            raise ValidationError(f"{symbol}: only equities trade in the batch market")
+        home = self._holder(account).settlement
+        qty = to_quantity(inst.base_asset, quantity)
+        price = to_quantity(inst.quote_asset, limit_price)
+        if qty <= 0 or price <= 0:
+            raise ValidationError("quantity and limit price must be positive")
+        asset, amount = self._order_collateral(inst, side, qty, price)
+        available = self.state.ledger.available(account, asset, home)
+        if available < amount:
+            raise ValidationError(f"{account} needs {amount} {asset} free at {home}, has {available}")
+        order_id = self._new_id("BOR")
+        self._record(EventType.BATCH_ORDER_RESERVED, at_h, account, {
+            "order_id": order_id, "encumbrance_id": self._new_id("ENC"), "account": account,
+            "symbol": symbol, "side": side.value, "quantity": str(qty),
+            "limit_price": str(price), "home": home}, note)
+        return order_id
+
+    def accept_batch_order(self, at_h: float, order_id: str, batch_id: str,
+                           note: str | None = None) -> str:
+        """The order reaches the market. Returns "accepted", or "rolled" if the batch closed."""
+        self._require_financial(at_h)
+        o = self._batch_order(order_id)
+        if o.status not in (BatchOrderStatus.RESERVED, BatchOrderStatus.ROLLED):
+            raise InvalidState(f"{order_id} is {o.status.value}")
+        b = self._batch(batch_id)
+        if b.symbol != o.symbol:
+            raise ValidationError(f"{order_id} is for {o.symbol}, not {b.symbol}")
+        if b.status is BatchStatus.OPEN and at_h <= b.closes_h:
+            self._record(EventType.BATCH_ORDER_ACCEPTED, at_h, b.market,
+                         {"order_id": order_id, "batch_id": batch_id}, note)
+            return "accepted"
+        self._record(EventType.BATCH_ORDER_ROLLED, at_h, b.market,
+                     {"order_id": order_id, "batch_id": batch_id}, note)
+        return "rolled"
+
+    def cancel_batch_order(self, at_h: float, order_id: str, note: str | None = None) -> str:
+        """A cancel request reaches the market. Effective only before execution.
+
+        Returns "cancelled", or "rejected" when the batch already executed
+        (the trade is binding).
+        """
+        self._require_financial(at_h)
+        o = self._batch_order(order_id)
+        if o.status in (BatchOrderStatus.RESERVED, BatchOrderStatus.ACCEPTED,
+                        BatchOrderStatus.ROLLED):
+            self._record(EventType.BATCH_ORDER_CANCELLED, at_h, o.account,
+                         {"order_id": order_id}, note)
+            return "cancelled"
+        if o.status in (BatchOrderStatus.EXECUTED, BatchOrderStatus.SETTLED):
+            self._record(EventType.BATCH_CANCEL_REJECTED, at_h, o.account, {
+                "order_id": order_id,
+                "reason": f"batch {o.batch_id} executed at hour {o.executed_h}; the trade is binding"},
+                note)
+            return "rejected"
+        raise InvalidState(f"{order_id} is {o.status.value}")
+
+    def execute_batch(self, at_h: float, batch_id: str, note: str | None = None) -> dict:
+        """Clear a closed batch at one uniform price. Collateral stays locked at home."""
+        self._require_financial(at_h)
+        b = self._batch(batch_id)
+        if b.status is not BatchStatus.OPEN:
+            raise InvalidState(f"{batch_id} is {b.status.value}")
+        if at_h < b.closes_h:
+            raise ValidationError(f"{batch_id} closes at hour {b.closes_h}")
+        orders = [self.state.batch_orders[i] for i in b.order_ids]
+        result = run_auction(b.id, orders)
+        data = {
+            "batch_id": batch_id,
+            "price": None if result["price"] is None else str(result["price"]),
+            "allocations": [{"order_id": oid, "quantity": str(a["qty"]), "rank": a["rank"],
+                             "reason": a["reason"]} for oid, a in result["allocations"].items()],
+            "trades": [{"trade_id": self._new_id("TRD"), "buy_order": t["buy_order"],
+                        "sell_order": t["sell_order"], "quantity": str(t["quantity"])}
+                       for t in result["trades"]],
+            "table": [{k: str(v) for k, v in row.items()} for row in result["table"]],
+        }
+        self._record(EventType.BATCH_EXECUTED, at_h, b.market, data, note)
+        return data
+
+    def settle_batch_leg(self, at_h: float, order_id: str, note: str | None = None) -> dict:
+        """The order's home operator applies the batch result to its ledger.
+
+        Filled quantity leaves the lock: to the counterparty directly when it
+        lives at the same settlement, otherwise into an in-transit transfer to
+        the counterparty's home. Everything else (unfilled quantity, price
+        improvement, a cancelled order) is released.
+        """
+        self._require_financial(at_h)
+        o = self._batch_order(order_id)
+        if o.status not in (BatchOrderStatus.EXECUTED, BatchOrderStatus.CANCELLED):
+            raise InvalidState(f"{order_id} is {o.status.value}; there is no result to apply")
+        inst = self.state.instruments[o.symbol]
+        legs, used = [], ZERO
+        if o.status is BatchOrderStatus.EXECUTED:
+            for tid in self.state.batches[o.batch_id].trade_ids:
+                tr = self.state.trades[tid]
+                if o.side is Side.SELL and tr.sell_order == o.id:
+                    leg, asset, amount, to_owner = "shares", inst.base_asset, tr.quantity, tr.buyer
+                    to_home = self.state.batch_orders[tr.buy_order].home
+                elif o.side is Side.BUY and tr.buy_order == o.id:
+                    leg, asset, amount, to_owner = "cash", inst.quote_asset, tr.value, tr.seller
+                    to_home = self.state.batch_orders[tr.sell_order].home
+                else:
+                    continue
+                used += amount
+                legs.append({"trade_id": tid, "leg": leg, "asset": asset, "amount": str(amount),
+                             "to_owner": to_owner, "to_settlement": to_home,
+                             "transfer_id": None if to_home == o.home else self._new_id("XFR")})
+        release = self.state.ledger.encumbrances[o.encumbrance_id].amount - used
+        data = {"order_id": order_id, "legs": legs, "released": str(release)}
+        self._record(EventType.BATCH_LEG_SETTLED, at_h, o.home, data, note)
+        return data
+
+    def contribute_guarantee(self, at_h: float, account: str, clearing: str, amount,
+                             note: str | None = None) -> str:
+        """Fund a clearing house's guarantee fund from an account (after hour 0).
+
+        Institutions start with nothing, so the fund exists only through these
+        contributions. The cash moves to the clearing house at its settlement
+        and stays encumbered for default losses.
+        """
+        self._require_financial(at_h)
+        self._holder(account)
+        inst = self._principal(clearing)
+        if not (isinstance(inst, Institution) and InstitutionRole.CLEARING.value in inst.roles):
+            raise ValidationError(f"{clearing} is not a clearing service")
+        q = to_quantity(NEODOLLAR, amount)
+        if q <= 0:
+            raise ValidationError("contribution must be positive")
+        if self.state.ledger.available(account, NEODOLLAR, inst.settlement) < q:
+            raise ValidationError(f"{account} lacks {q} {NEODOLLAR} free at {inst.settlement}")
+        enc_id = self._new_id("ENC")
+        self._record(EventType.GUARANTEE_CONTRIBUTED, at_h, account, {
+            "account": account, "clearing": clearing, "settlement": inst.settlement,
+            "amount": str(q), "encumbrance_id": enc_id}, note)
+        return enc_id
+
     # =====================================================================
     # Price observations
     # =====================================================================
@@ -444,18 +658,23 @@ class Exchange:
         return message_id
 
     def create_transport_packet(self, at_h: float, session_id: str, kind, from_node: str,
-                                note: str | None = None) -> str:
-        """Record a quota-exempt transport packet (SYN-ACK, ACK, hop receipt, data ack)."""
+                                retry_of: str | None = None, note: str | None = None) -> str:
+        """Record a quota-exempt transport packet (SYN-ACK, ACK, hop receipt, data ack).
+
+        An automatic endpoint retry of a data packet (``retry_of``) is also
+        quota-exempt: it gets a new packet id but carries the same bytes.
+        """
         self._require_open()
         kind = PacketKind(kind)
-        if kind.counts_against_backbone_quota:
+        if kind.counts_against_backbone_quota and not (
+                kind is PacketKind.DATA and retry_of in self.state.packets):
             raise ValidationError(f"{kind.value} packets are originated through send_message")
         self._session(session_id)
         validate_node(from_node)
         packet_id = self._new_id("PKT")
         self._record(EventType.TRANSPORT_PACKET_CREATED, at_h, from_node, {
             "packet_id": packet_id, "session_id": session_id, "kind": kind.value,
-            "from_node": from_node}, note)
+            "from_node": from_node, "retry_of": retry_of}, note)
         return packet_id
 
     def record_launch(self, at_h: float, packet_id: str, from_node: str, to_node: str,
@@ -523,7 +742,18 @@ class Exchange:
                 if enc.amount != expect:
                     problems.append(f"{order.id}: collateral {enc.amount} != {expect}")
         live_refs = ({o.id for o in st.orders.values() if o.status.resting}
-                     | {p.id for p in st.positions.values() if p.state is PositionState.OPEN})
+                     | {p.id for p in st.positions.values() if p.state is PositionState.OPEN}
+                     | {o.id for o in st.batch_orders.values() if o.status.live}
+                     | {f"FUND:{c}" for c in st.guarantee_funds})
+        for o in st.batch_orders.values():
+            if o.status.live:
+                enc = ledger.encumbrances[o.encumbrance_id]
+                if enc.amount != o.lock:
+                    problems.append(f"{o.id}: lock {enc.amount} != {o.lock}")
+        for tid, legs in st.trade_legs.items():
+            if st.trades[tid].status is TradeStatus.SETTLED and any(
+                    leg is None or leg["completed_h"] is None for leg in legs.values()):
+                problems.append(f"{tid}: settled with an incomplete leg")
         for enc in ledger.active_encumbrances():
             if enc.reference not in live_refs:
                 problems.append(f"{enc.id} backs closed or unknown {enc.reference}")
@@ -548,6 +778,9 @@ class Exchange:
             "trades": [t.to_dict() for t in st.trades.values()],
             "positions": [p.to_dict() for p in st.positions.values()],
             "transfers": [t.to_dict() for t in st.transfers.values()],
+            "batches": [b.to_dict() for b in st.batches.values()],
+            "batch_orders": [o.to_dict() for o in st.batch_orders.values()],
+            "trade_legs": st.trade_legs,
             "observations": [o.to_dict() for o in st.observations.values()],
             "sessions": [s.to_dict() for s in st.sessions.values()],
             "messages": [m.to_dict() for m in st.messages.values()],
@@ -740,13 +973,24 @@ class Exchange:
                 take = min(enc.amount, remaining)
                 ledger.pay_from(enc_id, winner, at_h, take)
                 remaining -= take
+        margin_short = remaining > 0
+        for clearing, enc_ids in st.guarantee_funds.items():
+            if st.principals[clearing].settlement != pos.venue:
+                continue
+            for enc_id in enc_ids:
+                enc = ledger.encumbrances[enc_id]
+                if remaining > 0 and enc.active:
+                    take = min(enc.amount, remaining)
+                    ledger.pay_from(enc_id, winner, at_h, take)
+                    remaining -= take
+                    pos.guarantee_used += take
         for ids in pos.margin.values():
             for enc_id in ids:
                 if ledger.encumbrances[enc_id].active:
                     ledger.release(enc_id, at_h)
         pos.paid, pos.shortfall = owed - remaining, remaining
         pos.winner = winner if owed else None
-        if remaining > 0 and defaulter is None:
+        if margin_short and defaulter is None:
             defaulter = pos.account_of(payer)
         pos.defaulter = defaulter
         pos.state = PositionState.FUNDED_DEFAULT if defaulter else PositionState.SETTLED
@@ -764,9 +1008,10 @@ class Exchange:
         calls = {}
         for party in Party:
             need = self.margin_policy.required(inst, pos, party, pos.last_mark_price)
+            floor = self.margin_policy.maintenance(inst, pos, party, pos.last_mark_price)
             posted = sum((self.state.ledger.encumbrances[i].amount
                           for i in pos.margin[party.value]), ZERO)
-            if posted < need:
+            if posted < floor:
                 calls[party.value] = str(need - posted)
         pos.margin_calls = calls
 
@@ -785,6 +1030,12 @@ class Exchange:
         t = st.transfers[e.data["transfer_id"]]
         st.ledger.credit(t.to_owner, t.asset, t.to_settlement, t.amount)
         t.status, t.completed_h = TransferStatus.COMPLETED, e.time_h
+        if t.leg_of is not None:
+            for leg in st.trade_legs[t.leg_of].values():
+                if leg["transfer_id"] == t.id:
+                    leg["completed_h"] = e.time_h
+            self._maybe_trade_settled(t.leg_of, e.time_h)
+            return
         pos = st.positions.get(t.reference or "")
         if (pos is not None and pos.spendable_h is None and t.to_owner == pos.winner
                 and t.to_settlement == st.principals[pos.winner].settlement):
@@ -794,6 +1045,110 @@ class Exchange:
             value = t.amount
         st.metrics.value_settled += value or ZERO
         st.metrics.completed_transactions += 1
+
+    def _on_transfer_duplicate_ignored(self, e: Event) -> None:
+        self.state.transfers[e.data["transfer_id"]].duplicates_ignored += 1
+
+    def _on_transfer_confirmed(self, e: Event) -> None:
+        self.state.transfers[e.data["transfer_id"]].source_confirmed_h = e.time_h
+
+    # --- batch market -----------------------------------------------------
+    def _on_batch_opened(self, e: Event) -> None:
+        d = e.data
+        self.state.batches[d["batch_id"]] = Batch(d["batch_id"], d["symbol"], d["market"],
+                                                  e.time_h, d["closes_h"], d["timing"])
+
+    def _on_batch_order_reserved(self, e: Event) -> None:
+        st, d = self.state, e.data
+        inst = st.instruments[d["symbol"]]
+        o = BatchOrder(d["order_id"], d["account"], d["symbol"], Side(d["side"]),
+                       Decimal(d["quantity"]), Decimal(d["limit_price"]), d["home"], e.time_h,
+                       d["encumbrance_id"])
+        asset, amount = self._order_collateral(inst, o.side, o.quantity, o.limit_price)
+        st.ledger.encumber(o.encumbrance_id, o.account, asset, o.home, amount,
+                           EncumbrancePurpose.ORDER, o.id, e.time_h)
+        st.batch_orders[o.id] = o
+
+    def _on_batch_order_accepted(self, e: Event) -> None:
+        o = self.state.batch_orders[e.data["order_id"]]
+        b = self.state.batches[e.data["batch_id"]]
+        o.batch_id, o.status = b.id, BatchOrderStatus.ACCEPTED
+        o.arrived_h = e.time_h if o.arrived_h is None else o.arrived_h
+        b.order_ids.append(o.id)
+
+    def _on_batch_order_rolled(self, e: Event) -> None:
+        o = self.state.batch_orders[e.data["order_id"]]
+        o.status = BatchOrderStatus.ROLLED
+        o.missed_batches.append(e.data["batch_id"])
+        o.arrived_h = e.time_h if o.arrived_h is None else o.arrived_h
+
+    def _on_batch_order_cancelled(self, e: Event) -> None:
+        o = self.state.batch_orders[e.data["order_id"]]
+        b = self.state.batches.get(o.batch_id or "")
+        if b is not None and b.status is BatchStatus.OPEN and o.id in b.order_ids:
+            b.order_ids.remove(o.id)
+        o.status = BatchOrderStatus.CANCELLED
+
+    def _on_batch_cancel_rejected(self, e: Event) -> None:
+        pass
+
+    def _on_batch_executed(self, e: Event) -> None:
+        st, d = self.state, e.data
+        b = st.batches[d["batch_id"]]
+        b.status, b.executed_h = BatchStatus.EXECUTED, e.time_h
+        b.price = None if d["price"] is None else Decimal(d["price"])
+        for a in d["allocations"]:
+            o = st.batch_orders[a["order_id"]]
+            o.filled, o.status, o.executed_h = Decimal(a["quantity"]), BatchOrderStatus.EXECUTED, e.time_h
+        for t in d["trades"]:
+            buy, sell = st.batch_orders[t["buy_order"]], st.batch_orders[t["sell_order"]]
+            st.trades[t["trade_id"]] = Trade(t["trade_id"], b.symbol, buy.id, sell.id, buy.account,
+                                             sell.account, b.price, Decimal(t["quantity"]),
+                                             e.time_h, b.market, TradeStatus.EXECUTED)
+            st.trade_legs[t["trade_id"]] = {"shares": None, "cash": None}
+            b.trade_ids.append(t["trade_id"])
+
+    def _on_batch_leg_settled(self, e: Event) -> None:
+        st, d = self.state, e.data
+        o = st.batch_orders[d["order_id"]]
+        for leg in d["legs"]:
+            amount = Decimal(leg["amount"])
+            if leg["transfer_id"] is None:
+                st.ledger.pay_from(o.encumbrance_id, leg["to_owner"], e.time_h, amount)
+                st.trade_legs[leg["trade_id"]][leg["leg"]] = {"transfer_id": None,
+                                                             "completed_h": e.time_h}
+            else:
+                st.ledger.consume(o.encumbrance_id, e.time_h, amount)
+                st.transfers[leg["transfer_id"]] = Transfer(
+                    leg["transfer_id"], o.account, leg["to_owner"], leg["asset"], amount,
+                    o.home, leg["to_settlement"], e.time_h, stated_value=ZERO,
+                    reference=leg["trade_id"], leg_of=leg["trade_id"])
+                st.trade_legs[leg["trade_id"]][leg["leg"]] = {"transfer_id": leg["transfer_id"],
+                                                             "completed_h": None}
+        if Decimal(d["released"]) > 0:
+            st.ledger.release(o.encumbrance_id, e.time_h, Decimal(d["released"]))
+        o.status, o.settled_h = BatchOrderStatus.SETTLED, e.time_h
+        for leg in d["legs"]:
+            self._maybe_trade_settled(leg["trade_id"], e.time_h)
+
+    def _maybe_trade_settled(self, trade_id: str, at_h: float) -> None:
+        st = self.state
+        legs, trade = st.trade_legs[trade_id], st.trades[trade_id]
+        if trade.status is TradeStatus.SETTLED:
+            return
+        if all(leg is not None and leg["completed_h"] is not None for leg in legs.values()):
+            trade.status = TradeStatus.SETTLED
+            trade.settled_h = max(leg["completed_h"] for leg in legs.values())
+            st.metrics.value_settled += trade.value
+            st.metrics.completed_transactions += 1
+
+    def _on_guarantee_contributed(self, e: Event) -> None:
+        st, d = self.state, e.data
+        q = Decimal(d["amount"])
+        st.ledger.move(d["account"], d["clearing"], NEODOLLAR, d["settlement"], q)
+        st.ledger.encumber(d["encumbrance_id"], d["clearing"], NEODOLLAR, d["settlement"], q,
+                           EncumbrancePurpose.GUARANTEE, f"FUND:{d['clearing']}", e.time_h)
+        st.guarantee_funds.setdefault(d["clearing"], []).append(d["encumbrance_id"])
 
     def _on_transfer_returned(self, e: Event) -> None:
         st = self.state
@@ -852,8 +1207,10 @@ class Exchange:
 
     def _on_transport_packet_created(self, e: Event) -> None:
         d = e.data
-        self._add_packet(d["packet_id"], None, d["session_id"], PacketKind(d["kind"]),
-                         d["from_node"], 0, e.time_h, False)
+        original = self.state.packets.get(d.get("retry_of") or "")
+        self._add_packet(d["packet_id"], original.message_id if original else None,
+                         d["session_id"], PacketKind(d["kind"]), d["from_node"],
+                         original.size_bytes if original else 0, e.time_h, False)
 
     def _on_packet_launched(self, e: Event) -> None:
         st, d = self.state, e.data
@@ -956,6 +1313,24 @@ class Exchange:
         if t.status is not TransferStatus.IN_TRANSIT:
             raise InvalidState(f"{transfer_id} is {t.status.value}")
         return t
+
+    def _transfer(self, transfer_id: str) -> Transfer:
+        t = self.state.transfers.get(transfer_id)
+        if t is None:
+            raise ValidationError(f"unknown transfer {transfer_id!r}")
+        return t
+
+    def _batch(self, batch_id: str) -> Batch:
+        b = self.state.batches.get(batch_id)
+        if b is None:
+            raise ValidationError(f"unknown batch {batch_id!r}")
+        return b
+
+    def _batch_order(self, order_id: str) -> BatchOrder:
+        o = self.state.batch_orders.get(order_id)
+        if o is None:
+            raise ValidationError(f"unknown batch order {order_id!r}")
+        return o
 
     def _session(self, session_id: str | None) -> Session:
         s = self.state.sessions.get(session_id or "")

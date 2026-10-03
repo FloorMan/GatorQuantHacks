@@ -7,6 +7,7 @@ journal events, so any past state can be rebuilt by replay.
 from dataclasses import dataclass, field
 from decimal import Decimal
 
+from .batch import Batch, BatchOrder
 from .comms import Message, Packet, QuotaTracker, Session
 from .ids import IdAllocator
 from .instruments import Instrument
@@ -98,6 +99,10 @@ class ExchangeState:
     packet_seq: dict[str, int] = field(default_factory=dict)  # per sending node
     quotas: QuotaTracker = field(default_factory=QuotaTracker)
     metrics: Metrics = field(default_factory=Metrics)
+    batches: dict[str, Batch] = field(default_factory=dict)
+    batch_orders: dict[str, BatchOrder] = field(default_factory=dict)
+    trade_legs: dict[str, dict] = field(default_factory=dict)  # trade id -> leg -> transfer/time
+    guarantee_funds: dict[str, list[str]] = field(default_factory=dict)  # clearing -> enc ids
 
     def in_transit(self, asset: str) -> Decimal:
         return sum((t.amount for t in self.transfers.values()

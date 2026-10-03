@@ -10,6 +10,7 @@ final settlement or default, so interim and final payments can never be
 double counted.
 """
 
+import math
 from dataclasses import dataclass, field
 from decimal import Decimal
 from enum import Enum
@@ -65,6 +66,65 @@ class MarginPolicy:
             return worst
         raise TypeError(f"no margin rule for {instrument.kind.value}")
 
+    def maintenance(self, instrument: Instrument, position: "Position",
+                    party: Party, reference_price: Decimal) -> Decimal:
+        """Posted margin below this triggers a call back up to ``required``."""
+        return self.required(instrument, position, party, reference_price)
+
+
+@dataclass(frozen=True)
+class CommunicationRiskMarginPolicy(MarginPolicy):
+    """Delay-aware futures margin (design paper, Section 11).
+
+    Initial margin covers the worst adverse move that can be observed while a
+    margin call travels to the participant and a funded response travels back.
+    The declared risk assumption is that the index moves at most
+    ``move_per_observation`` of its price between consecutive observations,
+    released every ``observation_interval_h`` hours. A participant whose
+    round trip to the clearing house (plus one hop-retry allowance) is
+    ``window_h`` hours can see ``1 + ceil(window_h / interval)`` observations
+    before its top-up lands, so
+
+        initial     = current loss + notional x move x (1 + ceil(window / interval))
+        maintenance = current loss + 75% of that allowance
+
+    ``risk_window_h`` is fixed per account from the network geometry when the
+    rule is declared, before any price path is seen. Options use the base rule.
+    """
+    move_per_observation: Decimal = Decimal("0.05")
+    observation_interval_h: float = 12.0
+    maintenance_fraction: Decimal = Decimal("0.75")
+    risk_window_h: tuple = ()  # ((account, hours), ...)
+
+    def window(self, account: str) -> float:
+        return dict(self.risk_window_h).get(account, 0.0)
+
+    def observations_in_window(self, account: str) -> int:
+        return 1 + math.ceil(self.window(account) / self.observation_interval_h)
+
+    def allowance(self, instrument: Instrument, position: "Position", party: Party,
+                  reference_price: Decimal) -> Decimal:
+        n = self.observations_in_window(position.account_of(party))
+        return (position.quantity * instrument.multiplier * reference_price
+                * self.move_per_observation * n)
+
+    def _loss(self, instrument, position, party, reference_price) -> Decimal:
+        pnl_long = instrument.long_payoff(position.quantity, position.entry_price, reference_price)
+        return max(-pnl_long if party is Party.LONG else pnl_long, ZERO)
+
+    def required(self, instrument, position, party, reference_price) -> Decimal:
+        if not isinstance(instrument, Future):
+            return super().required(instrument, position, party, reference_price)
+        return (self._loss(instrument, position, party, reference_price)
+                + self.allowance(instrument, position, party, reference_price))
+
+    def maintenance(self, instrument, position, party, reference_price) -> Decimal:
+        if not isinstance(instrument, Future):
+            return super().maintenance(instrument, position, party, reference_price)
+        return (self._loss(instrument, position, party, reference_price)
+                + self.allowance(instrument, position, party, reference_price)
+                * self.maintenance_fraction)
+
 
 @dataclass
 class Position:
@@ -87,6 +147,7 @@ class Position:
     observation_ids: list[str] = field(default_factory=list)
     long_payoff: Decimal | None = None   # total owed to long (negative: long pays)
     paid: Decimal = ZERO
+    guarantee_used: Decimal = ZERO       # part of ``paid`` drawn from the guarantee fund
     shortfall: Decimal = ZERO            # unpaid and unbacked (must stay zero)
     winner: str | None = None
     defaulter: str | None = None
@@ -116,6 +177,7 @@ class Position:
                 "margin_calls": dict(self.margin_calls),
                 "final_price": s(self.final_price), "observation_ids": list(self.observation_ids),
                 "long_payoff": s(self.long_payoff), "paid": str(self.paid),
+                "guarantee_used": str(self.guarantee_used),
                 "shortfall": str(self.shortfall), "winner": self.winner,
                 "defaulter": self.defaulter, "discharged_h": self.discharged_h,
                 "backed_claim_h": self.backed_claim_h, "spendable_h": self.spendable_h}
