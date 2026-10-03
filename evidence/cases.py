@@ -7,7 +7,7 @@ from mpex import PositionState
 from mpex.batch import BatchOrderStatus
 from mpex.journal import EventType
 
-from .scenarios import (CASH, CLEARING, FUTURE, HOME, LOCAL_BOOK, MARGIN_POLICY, MARKET_OP,
+from .scenarios import (CASH, CLEARING, FUTURE, HOME, HUB, LOCAL_BOOK, MARGIN_POLICY, MARKET_OP,
                         OPERATORS, SHARES, Run, avail, held, tiebreak_order)
 from .world import SEC_H
 
@@ -53,13 +53,13 @@ def local_trade():
     out = {}
 
     def sell(t):
-        ex.send_message(t, "E-Alice", MARKET_OP, "local", "client", "order", {"sell": 100, "limit": 40})
+        ex.send_message(t, "E-Alice", OPERATORS["Earth"], "local", "client", "order", {"sell": 100, "limit": 40})
         r.w.at(t + SEC_H, "Alice order at Earth Exchange", lambda tt: out.update(
             sell=ex.submit_order(tt, "E-Alice", book, "sell", 100, 40,
                                  note="Earth Exchange locks 100 shares; rests on the Earth book")))
 
     def buy(t):
-        ex.send_message(t, "E-Bob", MARKET_OP, "local", "client", "order", {"buy": 100, "limit": 42})
+        ex.send_message(t, "E-Bob", OPERATORS["Earth"], "local", "client", "order", {"buy": 100, "limit": 42})
         r.w.at(t + SEC_H, "Bob order at Earth Exchange", lambda tt: out.update(
             buy=ex.submit_order(tt, "E-Bob", book, "buy", 100, 42,
                                 note="crosses the resting sell; delivery versus payment on the Earth ledger"),
@@ -417,13 +417,19 @@ def _futures_run(test_id, title, path=None, respond=True, until=40):
                   lambda: r.ex.open_position(t, FUTURE, "N-Eve", "E-Alice", 10, 100,
                                              long_margin=im_eve, short_margin=im_alice))
 
-    def open_now(ta):
-        r.extra["position"] = r.ex.open_position(
-            ta, FUTURE, "N-Eve", "E-Alice", 10, 100, long_margin=im_eve, short_margin=im_alice,
-            note="both initial margins encumbered at Earth Clearing")
-        r.extra["opened_h"] = ta
+    waiting = {"N-Eve", "E-Alice"}
+
+    def landed(ta, who):
+        waiting.discard(who)
+        r.extra.setdefault("margin_landed", {})[who] = ta
+        if not waiting:
+            r.extra["position"] = r.ex.open_position(
+                ta, FUTURE, "N-Eve", "E-Alice", 10, 100, long_margin=im_eve, short_margin=im_alice,
+                note=f"both initial margins encumbered at {CLEARING}")
+            r.extra["opened_h"] = ta
     r.w.at(1.0, "early open attempt", early)
-    r.move_margin_to_clearing(0.5, "N-Eve", im_eve, on_arrive=open_now)
+    r.move_margin_to_clearing(0.5, "N-Eve", im_eve, on_arrive=lambda ta: landed(ta, "N-Eve"))
+    r.move_margin_to_clearing(0.5, "E-Alice", im_alice, on_arrive=lambda ta: landed(ta, "E-Alice"))
     if path:
         r.price_feed(path)
     r.w.run(until=until)
@@ -437,16 +443,17 @@ def futures_opening():
     n_alice = 1 + math.ceil(MARGIN_POLICY.window("E-Alice") / 12)
     r.check("N-Eve initial margin = 100,000 notional x 5% x observations in her window",
             D(100000) * D("0.05") * n_eve, im_eve)
-    r.check("E-Alice initial margin (local to clearing)", D(100000) * D("0.05") * n_alice, im_alice)
-    r.check("opening before the margin arrived was rejected", True, r.blocked[0]["rejected"])
-    r.check("position opened when N-Eve's margin landed at Earth",
-            r.ex.state.transfers[r.extra["margin_transfers"][0]].completed_h, pos.opened_h)
-    r.check("both margins encumbered at Earth", (im_eve, im_alice),
-            (r.ex.state.ledger.encumbered("N-Eve", CASH, "Earth"),
-             r.ex.state.ledger.encumbered("E-Alice", CASH, "Earth")))
+    r.check(f"E-Alice initial margin (window {MARGIN_POLICY.window('E-Alice'):.2f} h to {HUB})",
+            D(100000) * D("0.05") * n_alice, im_alice)
+    r.check("opening before the margins arrived was rejected", True, r.blocked[0]["rejected"])
+    r.check(f"position opened when the last margin landed at {HUB}",
+            max(r.extra["margin_landed"].values()), pos.opened_h)
+    r.check(f"both margins encumbered at {HUB}", (im_eve, im_alice),
+            (r.ex.state.ledger.encumbered("N-Eve", CASH, HUB),
+             r.ex.state.ledger.encumbered("E-Alice", CASH, HUB)))
     r.check("guarantee fund = $50,000 contributed after hour 0", D(50000),
-            r.ex.state.ledger.encumbered(CLEARING, CASH, "Earth"))
-    r.check("Earth Clearing started with nothing", False,
+            r.ex.state.ledger.encumbered(CLEARING, CASH, HUB))
+    r.check(f"{CLEARING} started with nothing", False,
             any(p["principal"] == CLEARING for p in r.before["principals"]))
     _set_primary(r, transfer=r.extra["margin_transfers"][0], accounts=["N-Eve", "E-Alice", CLEARING])
     return r
@@ -472,7 +479,12 @@ def margin_call():
     r.check("no default", "settled", pos.state.value)
     r.check("final payment = 10 x 100 x (80 - 100) from N-Eve's margin", D(20000), pos.paid)
     r.check("guarantee fund untouched", D(0), pos.guarantee_used)
-    r.check("winner E-Alice can spend at Earth at settlement", pos.discharged_h, pos.spendable_h)
+    w = pos.winner
+    if HOME[w] == HUB:
+        r.check(f"winner {w} can spend at {HUB} when the position closed", pos.discharged_h, pos.spendable_h)
+    else:
+        r.check(f"winner {w} can spend only after the payout reaches {HOME[w]}", True,
+                pos.spendable_h is not None and pos.spendable_h > pos.discharged_h)
     _set_primary(r, transfer=r.extra["margin_transfers"][0], accounts=["N-Eve", "E-Alice", CLEARING])
     return r
 
@@ -488,10 +500,15 @@ def funded_default():
     r.check("winner paid in full", owed, pos.paid)
     r.check("paid from margin first, then the guarantee fund", owed - im_eve, pos.guarantee_used)
     r.check("nothing unbacked", D(0), pos.shortfall)
-    r.check("E-Alice spendable at Earth when the default closed", pos.discharged_h, pos.spendable_h)
+    w = pos.winner
+    if HOME[w] == HUB:
+        r.check(f"winner {w} can spend at {HUB} when the position closed", pos.discharged_h, pos.spendable_h)
+    else:
+        r.check(f"winner {w} can spend only after the payout reaches {HOME[w]}", True,
+                pos.spendable_h is not None and pos.spendable_h > pos.discharged_h)
     r.check("guarantee fund reduced by the draw", D(50000) - pos.guarantee_used,
-            r.ex.state.ledger.encumbered(CLEARING, CASH, "Earth"))
-    r.notes.append(f"N-Eve owes Earth Clearing ${pos.guarantee_used} for the fund draw (recorded claim).")
+            r.ex.state.ledger.encumbered(CLEARING, CASH, HUB))
+    r.notes.append(f"N-Eve owes {CLEARING} ${pos.guarantee_used} for the fund draw (recorded claim).")
     _set_primary(r, accounts=["N-Eve", "E-Alice", CLEARING])
     return r
 
@@ -534,16 +551,21 @@ def disconnection():
 
 def clearing_outage():
     r = Run("clearing-outage", "Clearing-house outage/recovery", futures=True)
-    r.w.incidents.append({"kind": "gateway_isolation", "node": "Earth", "start_h": 1.0, "end_h": 73.0})
+    r.w.incidents.append({"kind": "gateway_isolation", "node": HUB, "start_h": 1.0, "end_h": 73.0})
+    local_at = HUB if sum(1 for h in HOME.values() if h == HUB) >= 2 else "Earth"
+    pair = [a for a, h in HOME.items() if h == local_at][:2]
+    if local_at != HUB:
+        r.notes.append(f"{HUB} has only one account, so the same-settlement trading demo runs at {local_at} "
+                       "(its local market is not isolated).")
     ex = r.ex
     r.fund_guarantee(0.1, [("E-Alice", 25000), ("E-Bob", 25000)])
     im_eve, im_alice = r.initial_margin("N-Eve", 10, 100), r.initial_margin("E-Alice", 10, 100)
     recovery = {}
 
     def local(t):
-        ex.submit_order(t, "E-Alice", LOCAL_BOOK["Earth"], "sell", 50, 40, note="Earth local market keeps running")
-        ex.submit_order(t + SEC_H, "E-Bob", LOCAL_BOOK["Earth"], "buy", 50, 41)
-    r.w.at(10.0, "local Earth trade", local)
+        ex.submit_order(t, pair[0], LOCAL_BOOK[local_at], "sell", 50, 40, note=f"{local_at} local market keeps running")
+        ex.submit_order(t + SEC_H, pair[1], LOCAL_BOOK[local_at], "buy", 50, 41)
+    r.w.at(10.0, f"local {local_at} trade", local)
     r.w.at(20.0, "open attempt during outage", lambda t: r.attempt(
         t, "open a new future while Earth Clearing is isolated",
         lambda: ex.open_position(t, FUTURE, "N-Eve", "E-Alice", 10, 100,
@@ -561,10 +583,11 @@ def clearing_outage():
         ex.annotate(tc, CLEARING, "RECOVERY 6-7: cross-settlement services and new futures reopen")
         r.extra["position"] = ex.open_position(tc, FUTURE, "N-Eve", "E-Alice", 10, 100,
                                                long_margin=im_eve, short_margin=im_alice)
+    r.move_margin_to_clearing(0.2, "E-Alice", im_alice)  # no-op when E-Alice is at the hub
     r.move_margin_to_clearing(0.5, "N-Eve", im_eve, on_arrive=margin_landed)
     r.w.run(until=200)
-    local_trade = [t for t in ex.state.trades.values() if t.symbol == LOCAL_BOOK["Earth"]]
-    r.check("Earth local trade executed during the outage", True,
+    local_trade = [t for t in ex.state.trades.values() if t.symbol == LOCAL_BOOK[local_at]]
+    r.check(f"{local_at} local trade executed during the outage", True,
             bool(local_trade) and 1.0 <= local_trade[0].executed_h < 73.0)
     r.check("new future rejected during the outage", True, r.blocked[0]["rejected"])
     r.check("margin reached Earth only after the outage ended", True, recovery.get("margin_h", 0) >= 73.0)
@@ -573,7 +596,7 @@ def clearing_outage():
     lost = [l for l in r.w.launch_log if l["lost"]]
     r.check("all losses fall inside the isolation window", True,
             bool(lost) and all(1.0 <= l["te"] < 73.0 for l in lost))
-    r.extra["outage"] = {"node": "Earth", "start_h": 1.0, "end_h": 73.0,
+    r.extra["outage"] = {"node": HUB, "start_h": 1.0, "end_h": 73.0,
                          "service_restored_h": recovery.get("reopen_h"),
                          "lost_service_h": (recovery.get("reopen_h") or 0) - 1.0}
     _set_primary(r, transfer=r.extra["margin_transfers"][0], accounts=["N-Eve", "E-Alice", CLEARING])

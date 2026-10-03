@@ -82,7 +82,7 @@
     status(fresh ? `Running ${TESTS.length} scenarios on the market engine and network model…` : 'Loading latest results…');
     try {
       DATA = fresh ? await api('/api/run', { method: 'POST' }) : await api(latest);
-      status(`${fresh ? 'Ran' : 'Latest run:'} ${DATA.tests.length} scenarios in ${DATA.ran_at_s} s` +
+      status(`Hub: ${DATA.hub || 'Earth'} · ${fresh ? 'Ran' : 'Latest run:'} ${DATA.tests.length} scenarios in ${DATA.ran_at_s} s` +
         (fresh ? ` · ${new Date().toLocaleTimeString()}` : ' · press Run All Tests to re-run'));
       renderSummary();
       renderList();
@@ -447,7 +447,7 @@
       tile('Long', f.long, `window ${dur(f.risk_window_h[f.long])}`),
       tile('Short', f.short, `window ${dur(f.risk_window_h[f.short])}`),
       tile('Initial margin', f.initial_margin ? `${money(f.initial_margin[f.long])} / ${money(f.initial_margin[f.short])}` : '—', 'long / short at opening'),
-      tile('Collateral (long)', lastRow ? money(lastRow.long.posted) : '—', 'posted at Earth Clearing'),
+      tile('Collateral (long)', lastRow ? money(lastRow.long.posted) : '—', 'posted at the clearing house'),
       tile('Maintenance (long)', lastRow ? money(lastRow.long.maintenance) : '—', `${Number(f.rule.maintenance_fraction) * 100}% of the allowance + loss`),
       tile('Unrealized P/L (long)', lastRow ? money(lastRow.long.pnl) : '—', lastRow && lastRow.event !== 'marked' ? 'realized at close' : 'at last mark'),
       tile('Margin call', f.calls.length ? (openCall ? '✗ OPEN · unmet' : `✓ ${f.calls.length} met`) : 'none', openCall ? `deadline ${hfmt(openCall.deadline_h)}` : ''),

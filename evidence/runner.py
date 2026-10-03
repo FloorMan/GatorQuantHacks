@@ -18,7 +18,7 @@ from decimal import Decimal
 from mpex.journal import EventType
 
 from .cases import CASES
-from .scenarios import CASH, FUTURE, HOME, SHARES, balances, MARGIN_POLICY
+from .scenarios import CASH, CLEARING, FUTURE, HOME, HUB, SHARES, balances, MARGIN_POLICY
 
 BY_ID = {cid: (title, fn) for cid, title, fn in CASES}
 
@@ -273,7 +273,7 @@ def futures_view(r):
         "paid": str(pos.paid), "guarantee_used": str(pos.guarantee_used), "shortfall": str(pos.shortfall),
         "winner": pos.winner, "defaulter": pos.defaulter,
         "discharged_h": pos.discharged_h, "backed_claim_h": pos.backed_claim_h, "spendable_h": pos.spendable_h,
-        "guarantee_fund_now": str(ex.state.ledger.encumbered("Earth Clearing", CASH, "Earth")),
+        "guarantee_fund_now": str(ex.state.ledger.encumbered(CLEARING, CASH, HUB)),
     }
 
 
@@ -363,7 +363,7 @@ def summarize(results):
 def run_all():
     t0 = time.time()
     results = [run_case(cid) for cid, _, _ in CASES]
-    return {"summary": summarize(results), "tests": results, "ran_at_s": round(time.time() - t0, 2)}
+    return {"summary": summarize(results), "tests": results, "ran_at_s": round(time.time() - t0, 2), "hub": HUB}
 
 
 def _default(o):

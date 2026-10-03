@@ -18,6 +18,7 @@ Design rules used here (design paper, with the review fixes):
 """
 
 import hashlib
+import os
 from decimal import Decimal
 
 from mpex import (CommunicationRiskMarginPolicy, Equity, Exchange, ExchangeError, Future,
@@ -40,7 +41,11 @@ ACCOUNTS = (
 HOME = {a[0]: a[1] for a in ACCOUNTS}
 OPERATORS = {"Earth": "Earth Exchange", "Mars": "Mars Exchange",
              "Neptune": "Neptune Exchange", "Ceres": "Ceres Exchange"}
-MARKET, MARKET_OP, CLEARING = "Earth", "Earth Exchange", "Earth Clearing"
+# Hub settlement for the global batch market and the clearing house (MPEX_HUB, default Earth).
+HUB = os.environ.get("MPEX_HUB", "Earth")
+if HUB not in OPERATORS:
+    raise ValueError(f"MPEX_HUB must be one of {sorted(OPERATORS)}, got {HUB!r}")
+MARKET, MARKET_OP, CLEARING = HUB, OPERATORS[HUB], f"{HUB} Clearing"
 SYMBOL, LOCAL_BOOK = "ARES", {"Earth": "ARES.EARTH", "Mars": "ARES.MARS",
                               "Neptune": "ARES.NEPTUNE"}
 FUTURE, SOURCE = "MOI-F300", "MOI Publisher"
@@ -57,11 +62,11 @@ def risk_windows(t_h=0.0):
     """Margin risk window per account: call out + funded reply back + one hop retry."""
     net, out = ng.System(), []
     for name, home, *_ in ACCOUNTS:
-        if home == "Earth":
+        if home == HUB:
             out.append((name, 2 * SEC_H))  # local access each way
             continue
-        there = net.routes("Earth", home, t_h / 24)[0]
-        back = net.routes(home, "Earth", t_h / 24)[0]
+        there = net.routes(HUB, home, t_h / 24)[0]
+        back = net.routes(home, HUB, t_h / 24)[0]
         longest = max(h["ta"] - h["te"] for h in there["hops"] + back["hops"]) * 24
         window = there["light_min"] / 60 + back["light_min"] / 60 + 2 * longest + 1 + 2 * SEC_H
         out.append((name, round(window, 4)))
@@ -86,12 +91,12 @@ class Run:
         ex.open(balance_sheet(), at_h=-48)
         for s, op in OPERATORS.items():
             ex.charter_institution(-48, op, s, ["operator"])
-        ex.charter_institution(-48, CLEARING, "Earth", ["clearing"], operator=MARKET_OP)
+        ex.charter_institution(-48, CLEARING, HUB, ["clearing"], operator=MARKET_OP)
         ex.register_price_source(-48, SOURCE, "Mars")
         ex.list_instrument(-48, Equity(symbol=SYMBOL, venue=MARKET, base_asset=SHARES))
         for s, sym in LOCAL_BOOK.items():
             ex.list_instrument(-48, Equity(symbol=sym, venue=s, base_asset=SHARES))
-        ex.list_instrument(-48, Future(symbol=FUTURE, venue="Earth", underlying="MOI",
+        ex.list_instrument(-48, Future(symbol=FUTURE, venue=HUB, underlying="MOI",
                                        multiplier=D(100), maturity_h=300, price_source=SOURCE))
         # Pre-hour-0 sessions (allowed from hour -168): every operator pair, so a
         # settlement leg goes straight from the seller's home to the buyer's, plus
@@ -99,7 +104,7 @@ class Run:
         ops = list(OPERATORS.values())
         pairs = [(a, b) for i, a in enumerate(ops) for b in ops[i + 1:]]
         if futures:
-            pairs += [(op, CLEARING) for s, op in OPERATORS.items() if s != "Earth"]
+            pairs += [(op, CLEARING) for s, op in OPERATORS.items() if s != HUB]
         for a, b in pairs:
             self.w.at(-48, f"session {a}-{b}", lambda t, a=a, b=b: self.w.open_session(t, a, b))
         self.w.run(until=-0.001)
@@ -262,22 +267,33 @@ class Run:
 
     # -------------------------------------------------------------- futures
     def fund_guarantee(self, t, amounts):
-        def go(tt):
-            for acct, amt in amounts:
-                self.ex.contribute_guarantee(tt, acct, CLEARING, amt,
-                                             note="pre-funded guarantee: real cash, encumbered in advance")
-        self.w.at(t, "fund guarantee", go)
+        """Contributions after hour 0. Cash held away from the hub travels there first."""
+        def contribute(tt, acct, amt):
+            self.ex.contribute_guarantee(tt, acct, CLEARING, amt,
+                                         note="pre-funded guarantee: real cash, encumbered in advance")
+            self.extra["fund_ready_h"] = max(self.extra.get("fund_ready_h", 0.0), tt)
+        for acct, amt in amounts:
+            if HOME[acct] == HUB:
+                self.w.at(t, f"fund guarantee {acct}", contribute, acct, amt)
+            else:
+                self.move_margin_to_clearing(t, acct, amt,
+                                             on_arrive=lambda ta, a=acct, m=amt: contribute(ta, a, m),
+                                             kind="guarantee_transfer")
 
-    def move_margin_to_clearing(self, t, account, amount, on_arrive=None):
+    def move_margin_to_clearing(self, t, account, amount, on_arrive=None, kind="margin_transfer"):
         home = HOME[account]
+        if home == HUB:  # already at the clearing house: nothing to move
+            if on_arrive:
+                self.w.at(t, f"{account} cash already at {HUB}", on_arrive)
+            return
 
         def go(tt):
-            xfr = self.ex.initiate_transfer(tt, account, CASH, amount, home, "Earth",
-                                            note=f"{OPERATORS[home]} debits {home}; margin travels to Earth Clearing")
-            self.extra.setdefault("margin_transfers", []).append(xfr)
+            xfr = self.ex.initiate_transfer(tt, account, CASH, amount, home, HUB,
+                                            note=f"{OPERATORS[home]} debits {home}; cash travels to {CLEARING}")
+            self.extra.setdefault("margin_transfers" if kind == "margin_transfer" else "fund_transfers", []).append(xfr)
 
             def arrived(ta):
-                self.ex.deliver_transfer(ta, xfr, note="margin cash validated at Earth")
+                self.ex.deliver_transfer(ta, xfr, note=f"cash validated at {HUB}")
                 if on_arrive:
                     on_arrive(ta)
                 self.w.send(ta, CLEARING, OPERATORS[home], "transfer_status",
@@ -288,18 +304,18 @@ class Run:
         self.w.at(t, f"{account} ships margin", go)
 
     def initial_margin(self, account, qty, price):
-        probe = Position("probe", FUTURE, "Earth", account, "x", D(qty), D(price), 0.0)
+        probe = Position("probe", FUTURE, HUB, account, "x", D(qty), D(price), 0.0)
         return MARGIN_POLICY.required(self.ex.state.instruments[FUTURE], probe, Party.LONG, D(price))
 
     def price_feed(self, path, start_h=12.0, interval=12.0):
-        """MOI observations released at Mars; Mars Exchange forwards each mark to Earth Clearing."""
+        """MOI observations released at Mars; Mars Exchange forwards each mark to the clearing house."""
         for k, price in enumerate(path):
             t = start_h + k * interval
 
             def release(tt, price=price):
                 obs = self.ex.release_observation(tt, SOURCE, "MOI", price)
                 self.w.at(tt + SEC_H, "MOI to Mars Exchange",
-                          lambda t2: self.w.send(t2, OPERATORS["Mars"], CLEARING, "mark",
+                          lambda t2: self.w.send(t2, OPERATORS["Mars"], CLEARING if HUB != "Mars" else OPERATORS["Mars"], "mark",
                                                  {"observation": obs, "price": str(price)},
                                                  lambda ta: self._on_mark(ta, obs),
                                                  references=[obs]))
@@ -350,13 +366,13 @@ class Run:
             return
         pid = self.extra["position"]
         acct, amount = call["account"], D(call["amount"])
-        if HOME[acct] == "Earth":
+        if HOME[acct] == HUB:
             self.ex.post_margin(tc + 2 * SEC_H, pid, acct, amount)
             call["open"], call["met_h"] = False, tc + 2 * SEC_H
             return
 
         def landed(ta):
-            self.ex.post_margin(ta, pid, acct, amount, note="top-up validated at Earth Clearing")
+            self.ex.post_margin(ta, pid, acct, amount, note=f"top-up validated at {CLEARING}")
             call["met_h"], call["open"] = ta, False
         self.move_margin_to_clearing(tc + SEC_H, acct, amount, on_arrive=landed)
 
@@ -387,10 +403,10 @@ class Run:
 
     def _pay_winner_home(self, ta, pid):
         pos = self.ex.state.positions[pid]
-        if not pos.winner or HOME[pos.winner] == "Earth" or not pos.paid:
+        if not pos.winner or HOME[pos.winner] == HUB or not pos.paid:
             return
         home = HOME[pos.winner]
-        xfr = self.ex.initiate_transfer(ta, pos.winner, CASH, pos.paid, "Earth", home, reference=pid,
+        xfr = self.ex.initiate_transfer(ta, pos.winner, CASH, pos.paid, HUB, home, reference=pid,
                                         note="payout travels to the winner's home to become spendable")
         self.ship(ta, xfr, CLEARING, OPERATORS[home])
 
