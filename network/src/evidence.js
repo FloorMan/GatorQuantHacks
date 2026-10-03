@@ -457,7 +457,7 @@
     if (f.state !== 'open' && f.discharged_h) markers.push({ x: f.discharged_h, label: f.state === 'funded_default' ? 'default' : 'settled' });
     const breach = s.find(r => +r.long.posted < +r.long.maintenance);
     kids.push(lineChart({
-      title: 'MOI index as marked at Earth Clearing',
+      title: 'MOI index as marked at the clearing house',
       series: [{ name: 'MOI index', color: 'var(--series-1)', points: s.map(r => [r.t, +r.price]) }],
       markers, yFmt: v => num(v, 0), refLine: { y: +f.contract_price, label: `contract ${f.contract_price}` },
     }));
