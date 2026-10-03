@@ -76,8 +76,20 @@ python3 -m unittest discover -s tests -v    # run the tests
 
 ### Not built yet
 
-* The orbital propagator, light time, visibility, loss, and transport simulation. These belong in a separate module that writes its results through `record_launch`, `set_message_status` and `set_session_state`.
+* The transport simulation (hop and endpoint retries, queues, sessions over time), and wiring the network model into `mpex`. The orbital propagator, light time, visibility, maintenance, loss and route timing now live in `network/` (see below); the simulation should write its results through `record_launch`, `set_message_status` and `set_session_state`.
 * Order-book trading for derivatives (positions are currently opened bilaterally).
 * Lifecycles for bonds, loans and currencies.
 * Per-actor knowledge (who has received which observation).
 * Rollback deep-copies the state on each command. That is fine at scenario scale; it would need replacing for very long runs.
+
+## `network/`: orbits, light time, and routing
+
+The physical network model, separate from `mpex`. See `network/README.md`.
+
+```
+open network/index.html                                              # interactive 2D network map
+python3 network/python/network_graph.py --from Earth --to Neptune    # routes, hop timings, loss and abandonment probabilities
+node network/scripts/check_epoch.js                                  # epoch check against the brief's Section 3 table
+```
+
+It implements the brief's launch rules: moving-receiver light time to 1 ms, the 0.10 AU solar exclusion tested on the emission-to-arrival segment, maintenance on the flight interval, 1 s serialization per launch and 1 s relay processing, and the four simple backbone routes of at most 3 links.
