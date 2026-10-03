@@ -74,6 +74,27 @@ python3 -m unittest discover -s tests -v    # run the tests
   * Direct: 12 per principal per rolling 24 h, with launches 60 s apart.
   * Transport ACKs and receipts are exempt but still counted in totals.
 
+### Batch market, settlement legs, and delay-aware margin
+
+Added for the design paper's rules (see `mpex/batch.py`):
+
+* **Global batch auction** for cross-settlement equity orders, held at Earth. Collateral is locked at the trader's home ledger before the order leaves home. Priority goes to the home operator's receipt stamp, not arrival time. One uniform price (maximum volume, then minimum imbalance, then the midpoint of the tied range). Exact ties split pro rata in whole shares, with the remainder ordered by sha256(batch:order). The batch stays open for 1.1 × the slowest eligible one-way delay plus a grace window covering all 3 hop retries (4 launches per hop), so an order that needs every retry still arrives in time. Late orders roll to the next batch with their limit unchanged. Cancels take effect only before execution.
+* **Two-leg settlement.** Each home operator applies the batch result to its own ledger: filled quantity leaves the lock as an in-transit transfer to the counterparty's home, and the rest is released. A trade completes when both legs are usable.
+* **At-most-once delivery** (`deliver_transfer`) and **source reconciliation** (`confirm_transfer`). A repeated transaction id is recorded and ignored.
+* **Guarantee fund** (`contribute_guarantee`), funded from accounts after hour 0. It is the third step of the default waterfall, after the defaulter's margin.
+* **`CommunicationRiskMarginPolicy`.** Initial margin covers the worst move in the observations a margin call's round trip (plus one hop retry) can span; maintenance is 75% of that allowance plus the current loss. The base `MarginPolicy` behaves exactly as before.
+
+## Tests & Evidence dashboard
+
+```
+python3 serve.py                 # http://localhost:8000/evidence.html (map at /)
+python3 -m evidence.runner       # same 17 scenarios in the terminal
+```
+
+`evidence/` runs 17 scenarios on `mpex` and the network model in time order (`evidence/world.py`). The run includes hop and endpoint retries, receipts, Sun and maintenance waits, and labelled incidents, and invariants are checked after every step. The dashboard shows each scenario's real output: checks with expected and actual values, the transaction flow and route, a replay of the packets on the solar-system map, the auction allocation and reasons, futures margin charts, balances before and after with conservation, and the full timeline. A scenario passes only if all of its checks pass, no invariant breaks, cash and shares are conserved, and nothing settles twice. The scenarios also run under `python3 -m unittest`.
+
+Traces are conditional (no random loss): a packet is lost only where a scenario forces a loss or an incident covers the launch, and each loss is labelled. Simplifications: sessions are not expired for idleness (scenarios keep traffic flowing or run under 7 days of idle time), and link capacity and queues are not simulated.
+
 ### Not built yet
 
 * The transport simulation (hop and endpoint retries, queues, sessions over time), and wiring the network model into `mpex`. The orbital propagator, light time, visibility, maintenance, loss and route timing now live in `network/` (see below); the simulation should write its results through `record_launch`, `set_message_status` and `set_session_state`.
