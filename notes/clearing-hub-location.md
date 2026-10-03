@@ -5,7 +5,7 @@ Analysis from 2026-10-03. Reproduce with `python3 network/python/hub_compare.py`
 
 ## Decision
 
-**Earth** (Mars is a near-tie). Choose by where most accounts and the price source sit,
+**Earth.** Mars ties it on delay and delivery but has 88 blockages past the 30-day packet lifetime; Ceres delivers best only in some decades (first ~30 years) and has the longest blockages. Choose by where most accounts and the price source sit,
 because local access is free (1 s, no loss, no quota). Brief's story, "Earth investors fund
 Mars construction", fits an Earth hub and a Mars price source. If accounts end up mostly
 at Mars, pick Mars and add a re-pin rule (below).
@@ -49,6 +49,27 @@ Regenerate with `python3 network/python/hub_plots.py`. The deciding panel is C: 
 **0 of Earth's 316** single-relay blockages pass 30 days, against **88 of Mars's 128** and
 **4 of Ceres's 4**. A blockage longer than the 30-day packet lifetime means packets queued on the
 blocked relay expire, so sessions must be re-routed (one quota packet per new handshake).
+
+## Delivery probability vs Sun blockage (teammate's Ceres result)
+
+![Delivery and blockage together](hub-tradeoff.png)
+
+Regenerate with `python3 network/python/hub_tradeoff.py`.
+
+| Hub | Delivery, first 4.8 yr | Delivery, 200 yr | Expected one-way incl. retries (worst decade) | Blockages > 30 d | Longest |
+|---|---|---|---|---|---|
+| Earth | 80.82% | 80.56% | 185.9 min (192.8) | 0 of 316 | 21 d |
+| Mars | 80.77% | 80.57% | 186.5 min (193.5) | 88 of 128 | 45 d |
+| Ceres | **81.84%** | 80.33% | 189.7 min (**215.5**) | 4 of 4 | **190 d** |
+
+- Ceres really does deliver best over one relay period (the teammate's window), and for its first ~30 years.
+  Its orbit almost matches the relays', so it drifts round them on a ~140-year cycle: it trails Earth by up
+  to 3.0 points in years 30-105 and 170-200. Over 200 years it ranks 5th of 9 on delivery.
+- Turning losses into retry delay, the three hubs are within 4 min on average, but Ceres's worst decade is
+  22 min slower than Earth's.
+- Retries are quota-exempt, so a lower delivery probability costs time. A blockage that outlasts the 30-day
+  packet lifetime costs quota (new sessions, resubmissions) and keeps collateral locked in an unknown state.
+  Earth is the only hub with none.
 
 ## Line for the paper
 
