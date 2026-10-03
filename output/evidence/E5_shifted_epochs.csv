@@ -1,0 +1,28 @@
+offset_years,settlement,exchange,core,available,conditional_one_way_delay_minutes,availability_next_24h,route
+1,Mercury,Mercury,Ceres,True,38.136507854693505,1.0,Mercury -> Relay B -> Ceres
+1,Venus,Venus,Ceres,True,33.250886250667705,1.0,Venus -> Relay B -> Ceres
+1,Earth,Earth,Ceres,True,46.62538811756919,1.0,Earth -> Relay B -> Ceres
+1,Mars,Mars,Ceres,True,31.88669604471785,1.0,Mars -> Relay B -> Ceres
+1,Ceres,Ceres,Ceres,True,0.016666666666666666,1.0,Ceres
+1,Jupiter,Ceres,Ceres,True,25.17763044743333,1.0,Ceres
+1,Saturn,Earth,Ceres,True,116.72059103444553,1.0,Earth -> Relay B -> Ceres
+1,Uranus,Ceres,Ceres,True,167.7736697275941,1.0,Ceres
+1,Neptune,Earth,Ceres,True,286.7825881472072,1.0,Earth -> Relay B -> Ceres
+10,Mercury,Mercury,Ceres,True,33.52656426464479,1.0,Mercury -> Relay B -> Ceres
+10,Venus,Venus,Ceres,True,34.101669962580004,1.0,Venus -> Relay B -> Ceres
+10,Earth,Earth,Ceres,True,40.50851220486608,1.0,Earth -> Relay B -> Ceres
+10,Mars,Mars,Ceres,True,18.839227167515006,1.0,Mars -> Relay B -> Ceres
+10,Ceres,Ceres,Ceres,True,0.016666666666666666,1.0,Ceres
+10,Jupiter,Ceres,Ceres,True,43.60894917612313,1.0,Ceres
+10,Saturn,Earth,Ceres,True,123.77954297182441,1.0,Earth -> Relay B -> Ceres
+10,Uranus,Ceres,Ceres,True,142.8738360229181,1.0,Ceres
+10,Neptune,Earth,Ceres,True,280.8104627017019,1.0,Earth -> Relay B -> Ceres
+100,Mercury,Mercury,Ceres,True,49.92115438293355,1.0,Mercury -> Relay A -> Ceres
+100,Venus,Venus,Ceres,True,51.72060522326889,1.0,Venus -> Relay A -> Ceres
+100,Earth,Earth,Ceres,True,41.05432561209115,1.0,Earth -> Relay A -> Ceres
+100,Mars,Mars,Ceres,True,50.011090810472766,1.0,Mars -> Relay A -> Ceres
+100,Ceres,Ceres,Ceres,True,0.016666666666666666,1.0,Ceres
+100,Jupiter,Ceres,Ceres,True,45.69533408386633,1.0,Ceres
+100,Saturn,Earth,Ceres,True,125.35843627760187,1.0,Earth -> Relay A -> Ceres
+100,Uranus,Ceres,Ceres,True,172.77901932480745,1.0,Ceres
+100,Neptune,Earth,Ceres,True,301.4452324958984,1.0,Earth -> Relay A -> Ceres

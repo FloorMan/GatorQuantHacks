@@ -1,0 +1,2 @@
+obligation_id,product_type,long_account,short_account,authority,status,notional,open_time_days,maturity_time_days,discharge_time_days,backed_claim_time_days,spendable_time_days
+FUT-000010,FUTURE,MARS_A,NEPTUNE_A,Ceres,SPENDABLE,230000.0,0.31891916599404124,10.0,10.000011574074074,10.000011574074074,10.151979616989378

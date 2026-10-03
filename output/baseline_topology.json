@@ -1,0 +1,51 @@
+{
+  "exchanges": [
+    "Mercury",
+    "Venus",
+    "Earth",
+    "Mars",
+    "Ceres"
+  ],
+  "core": "Ceres",
+  "assignment": {
+    "Mercury": "Mercury",
+    "Venus": "Venus",
+    "Earth": "Earth",
+    "Mars": "Mars",
+    "Ceres": "Ceres",
+    "Jupiter": "Ceres",
+    "Saturn": "Earth",
+    "Uranus": "Ceres",
+    "Neptune": "Earth"
+  },
+  "application_encoding": {
+    "network_header_bytes": 64,
+    "application_payload_bytes": 960,
+    "application_envelope_bytes": 32,
+    "financial_record_bytes": 96,
+    "records_per_application_packet": 9,
+    "padding_bytes_at_full_record_capacity": 64
+  },
+  "workload": {
+    "equal_daily_client_instructions_per_principal": 4,
+    "batch_interval_hours": 6.0,
+    "three_day_schedule_feasible": true,
+    "max_backbone_rolling_24h": 36,
+    "max_direct_rolling_24h": {
+      "CLIENT@Jupiter": 4,
+      "CLIENT@Neptune": 4,
+      "CLIENT@Saturn": 4,
+      "CLIENT@Uranus": 4,
+      "EXCHANGE@Ceres": 9,
+      "EXCHANGE@Earth": 9
+    }
+  },
+  "assumptions": {
+    "reliability_target": 0.99,
+    "products": [
+      "equity",
+      "cash-settled futures"
+    ],
+    "financial_guarantees_are_hard_constraints": true
+  }
+}

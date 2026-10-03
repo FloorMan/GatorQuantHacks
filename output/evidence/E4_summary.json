@@ -1,0 +1,32 @@
+{
+  "tier_claimed": 3,
+  "years": 200.0,
+  "link_step_days": 20.0,
+  "route_step_days": 45.0,
+  "shortest_closure_that_could_be_missed_days": 20.0,
+  "difficult_epoch": {
+    "time_days": 16830.0,
+    "unavailable_count": 2,
+    "worst_delay_min": 286.0564239334781,
+    "settlement": "Neptune"
+  },
+  "poorest_service": {
+    "settlement": "Saturn",
+    "assigned_exchange": "Earth",
+    "core": "Ceres",
+    "years": 200.0,
+    "route_step_days": 45.0,
+    "sampled_availability": 0.9667692307692307,
+    "min_one_way_service_delay_minutes": 84.53625444788486,
+    "max_one_way_service_delay_minutes": 175.44911187433172
+  },
+  "refined_boundary": {
+    "sender": "Mercury",
+    "receiver": "Relay A",
+    "closed_bracket_days": 188.6382293701172,
+    "open_bracket_days": 188.63823890686035,
+    "boundary_days": 188.63823890686035,
+    "tolerance_seconds": 1.0,
+    "effect_on_packets_in_flight": "A packet already emitted on a path that passed the emission-to-arrival solar test continues to its computed arrival; the natural closure prevents subsequent launches."
+  }
+}

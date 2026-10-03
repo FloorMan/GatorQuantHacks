@@ -1,0 +1,10 @@
+account_id,settlement,cash_available,shares_available,cash_encumbered,shares_encumbered,cash_total,shares_total
+MERCURY_A,Mercury,20000.0,0.0,0.0,0.0,20000.0,0.0
+VENUS_A,Venus,25000.0,200.0,0.0,0.0,25000.0,200.0
+EARTH_A,Earth,75000.0,100.0,0.0,0.0,75000.0,100.0
+MARS_A,Mars,34000.0,200.0,0.0,0.0,34000.0,200.0
+CERES_A,Ceres,40000.0,800.0,0.0,0.0,40000.0,800.0
+JUPITER_A,Jupiter,60000.0,700.0,0.0,0.0,60000.0,700.0
+SATURN_A,Saturn,55000.0,800.0,0.0,0.0,55000.0,800.0
+URANUS_A,Uranus,65000.0,1000.0,0.0,0.0,65000.0,1000.0
+NEPTUNE_A,Neptune,126000.0,1200.0,0.0,0.0,126000.0,1200.0

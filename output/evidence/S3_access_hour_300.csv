@@ -1,0 +1,19 @@
+settlement,transaction_type,assigned_exchange,authoritative_clearing,price_source,route_at_start,one_way_delay_minutes_at_start,availability_next_24h,availability_step_minutes,available_at_start
+Mercury,EQUITY,Mercury,Ceres,,Mercury => Mercury | Mercury -> Relay A -> Ceres,40.85223222838921,1.0,30.0,True
+Mercury,FUTURE,Mercury,Ceres,Ceres,Mercury => Mercury | Mercury -> Relay A -> Ceres,40.85223222838921,1.0,30.0,True
+Venus,EQUITY,Venus,Ceres,,Venus => Venus | Venus -> Relay A -> Ceres,34.74428986863758,1.0,30.0,True
+Venus,FUTURE,Venus,Ceres,Ceres,Venus => Venus | Venus -> Relay A -> Ceres,34.74428986863758,1.0,30.0,True
+Earth,EQUITY,Earth,Ceres,,Earth => Earth | Earth -> Relay A -> Ceres,32.26456841351025,1.0,30.0,True
+Earth,FUTURE,Earth,Ceres,Ceres,Earth => Earth | Earth -> Relay A -> Ceres,32.26456841351025,1.0,30.0,True
+Mars,EQUITY,Mars,Ceres,,Mars => Mars | Mars -> Relay A -> Ceres,30.516381447421296,1.0,30.0,True
+Mars,FUTURE,Mars,Ceres,Ceres,Mars => Mars | Mars -> Relay A -> Ceres,30.516381447421296,1.0,30.0,True
+Ceres,EQUITY,Ceres,Ceres,,Ceres => Ceres | Ceres,0.016666666666666666,1.0,30.0,True
+Ceres,FUTURE,Ceres,Ceres,Ceres,Ceres => Ceres | Ceres,0.016666666666666666,1.0,30.0,True
+Jupiter,EQUITY,Ceres,Ceres,,Jupiter => Ceres | Ceres,33.158344049330424,1.0,30.0,True
+Jupiter,FUTURE,Ceres,Ceres,Ceres,Jupiter => Ceres | Ceres,33.158344049330424,1.0,30.0,True
+Saturn,EQUITY,Earth,Ceres,,Saturn => Earth | Earth -> Relay A -> Ceres,102.44645019443965,1.0,30.0,True
+Saturn,FUTURE,Earth,Ceres,Ceres,Saturn => Earth | Earth -> Relay A -> Ceres,102.44645019443965,1.0,30.0,True
+Uranus,EQUITY,Ceres,Ceres,,Uranus => Ceres | Ceres,141.4044378013901,1.0,30.0,True
+Uranus,FUTURE,Ceres,Ceres,Ceres,Uranus => Ceres | Ceres,141.4044378013901,1.0,30.0,True
+Neptune,EQUITY,Earth,Ceres,,Neptune => Earth | Earth -> Relay A -> Ceres,272.5692154716205,1.0,30.0,True
+Neptune,FUTURE,Earth,Ceres,Ceres,Neptune => Earth | Earth -> Relay A -> Ceres,272.5692154716205,1.0,30.0,True

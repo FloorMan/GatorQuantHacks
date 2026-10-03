@@ -1,0 +1,260 @@
+{
+  "offset_1y": {
+    "value_move": {
+      "status": "SPENDABLE",
+      "obligation_id": "EQ-000001",
+      "discharge_time_days": 365.5463094547483,
+      "spendable_time_days": 365.57869641469387
+    }
+  },
+  "offset_10y": {
+    "value_move": {
+      "status": "SPENDABLE",
+      "obligation_id": "EQ-000001",
+      "discharge_time_days": 3652.7793832515135,
+      "spendable_time_days": 3652.807508816838
+    }
+  },
+  "offset_100y": {
+    "value_move": {
+      "status": "SPENDABLE",
+      "obligation_id": "EQ-000001",
+      "discharge_time_days": 36525.29482427333,
+      "spendable_time_days": 36525.32332010823
+    }
+  },
+  "difficult_epoch": {
+    "t0_days": 16830.0,
+    "t0_years": 46.078028747433265,
+    "value_move": {
+      "status": "SPENDABLE",
+      "obligation_id": "EQ-000001",
+      "discharge_time_days": 16830.28363721495,
+      "spendable_time_days": 16830.311965853492
+    },
+    "future_rising": {
+      "status": "SPENDABLE",
+      "contract_id": "FUT-000010",
+      "open": {
+        "status": "OPEN",
+        "contract_id": "FUT-000010",
+        "notional": 230000.0,
+        "base_margin_each": 46000.0,
+        "open_time_days": 16830.420514317862
+      },
+      "marks": [
+        {
+          "requirements": {
+            "long": 46000.0,
+            "short": 69000.0
+          },
+          "margin_calls": [
+            {
+              "account": "NEPTUNE_A",
+              "top_up": 23000.0,
+              "status": "MET"
+            }
+          ],
+          "status": "OPEN",
+          "observation_received_time_days": 16835.000011574073,
+          "price_message": {
+            "service": "local",
+            "can_launch": true,
+            "status": "DELIVERED",
+            "distance_au": 0.0,
+            "loss_probability": 0.0,
+            "success_probability": 1.0,
+            "emission_time_days": 16835.0,
+            "arrival_time_days": 16835.000011574073,
+            "delay_minutes": 0.016666666666666666,
+            "message_id": "MSG-000021",
+            "packet_id": "PKT-000047",
+            "application_attempts": 1
+          },
+          "declared_release_time_days": 16835.0
+        },
+        {
+          "requirements": {
+            "long": 46000.0,
+            "short": 87400.0
+          },
+          "margin_calls": [
+            {
+              "account": "NEPTUNE_A",
+              "top_up": 18400.0,
+              "status": "UNMET"
+            }
+          ],
+          "status": "MARGIN_CALL_UNMET",
+          "observation_received_time_days": 16839.000011574073,
+          "price_message": {
+            "service": "local",
+            "can_launch": true,
+            "status": "DELIVERED",
+            "distance_au": 0.0,
+            "loss_probability": 0.0,
+            "success_probability": 1.0,
+            "emission_time_days": 16839.0,
+            "arrival_time_days": 16839.000011574073,
+            "delay_minutes": 0.016666666666666666,
+            "message_id": "MSG-000022",
+            "packet_id": "PKT-000048",
+            "application_attempts": 1
+          },
+          "declared_release_time_days": 16839.0
+        },
+        {
+          "requirements": {
+            "long": 46000.0,
+            "short": 92000.0
+          },
+          "margin_calls": [
+            {
+              "account": "NEPTUNE_A",
+              "top_up": 23000.0,
+              "status": "UNMET"
+            }
+          ],
+          "status": "MARGIN_CALL_UNMET",
+          "observation_received_time_days": 16840.000011574073,
+          "price_message": {
+            "service": "local",
+            "can_launch": true,
+            "status": "DELIVERED",
+            "distance_au": 0.0,
+            "loss_probability": 0.0,
+            "success_probability": 1.0,
+            "emission_time_days": 16840.0,
+            "arrival_time_days": 16840.000011574073,
+            "delay_minutes": 0.016666666666666666,
+            "message_id": "MSG-000023",
+            "packet_id": "PKT-000049",
+            "application_attempts": 1
+          },
+          "declared_release_time_days": 16840.0
+        }
+      ],
+      "settlement": {
+        "status": "SPENDABLE",
+        "amount_owed": 46000.0,
+        "amount_funded": 46000.0,
+        "payer": "NEPTUNE_A",
+        "payee": "MARS_A",
+        "spendable": true,
+        "spendable_time_days": 16840.238260265647
+      }
+    },
+    "future_falling": {
+      "status": "SPENDABLE",
+      "contract_id": "FUT-000032",
+      "open": {
+        "status": "OPEN",
+        "contract_id": "FUT-000032",
+        "notional": 230000.0,
+        "base_margin_each": 46000.0,
+        "open_time_days": 16830.420514317862
+      },
+      "marks": [
+        {
+          "requirements": {
+            "long": 69000.0,
+            "short": 46000.0
+          },
+          "margin_calls": [
+            {
+              "account": "MARS_A",
+              "top_up": 23000.0,
+              "status": "MET"
+            }
+          ],
+          "status": "OPEN",
+          "observation_received_time_days": 16835.000011574073,
+          "price_message": {
+            "service": "local",
+            "can_launch": true,
+            "status": "DELIVERED",
+            "distance_au": 0.0,
+            "loss_probability": 0.0,
+            "success_probability": 1.0,
+            "emission_time_days": 16835.0,
+            "arrival_time_days": 16835.000011574073,
+            "delay_minutes": 0.016666666666666666,
+            "message_id": "MSG-000043",
+            "packet_id": "PKT-000100",
+            "application_attempts": 1
+          },
+          "declared_release_time_days": 16835.0
+        },
+        {
+          "requirements": {
+            "long": 87400.0,
+            "short": 46000.0
+          },
+          "margin_calls": [
+            {
+              "account": "MARS_A",
+              "top_up": 18400.0,
+              "status": "UNMET"
+            }
+          ],
+          "status": "MARGIN_CALL_UNMET",
+          "observation_received_time_days": 16839.000011574073,
+          "price_message": {
+            "service": "local",
+            "can_launch": true,
+            "status": "DELIVERED",
+            "distance_au": 0.0,
+            "loss_probability": 0.0,
+            "success_probability": 1.0,
+            "emission_time_days": 16839.0,
+            "arrival_time_days": 16839.000011574073,
+            "delay_minutes": 0.016666666666666666,
+            "message_id": "MSG-000044",
+            "packet_id": "PKT-000101",
+            "application_attempts": 1
+          },
+          "declared_release_time_days": 16839.0
+        },
+        {
+          "requirements": {
+            "long": 92000.0,
+            "short": 46000.0
+          },
+          "margin_calls": [
+            {
+              "account": "MARS_A",
+              "top_up": 23000.0,
+              "status": "UNMET"
+            }
+          ],
+          "status": "MARGIN_CALL_UNMET",
+          "observation_received_time_days": 16840.000011574073,
+          "price_message": {
+            "service": "local",
+            "can_launch": true,
+            "status": "DELIVERED",
+            "distance_au": 0.0,
+            "loss_probability": 0.0,
+            "success_probability": 1.0,
+            "emission_time_days": 16840.0,
+            "arrival_time_days": 16840.000011574073,
+            "delay_minutes": 0.016666666666666666,
+            "message_id": "MSG-000045",
+            "packet_id": "PKT-000102",
+            "application_attempts": 1
+          },
+          "declared_release_time_days": 16840.0
+        }
+      ],
+      "settlement": {
+        "status": "SPENDABLE",
+        "amount_owed": 46000.0,
+        "amount_funded": 46000.0,
+        "payer": "MARS_A",
+        "payee": "NEPTUNE_A",
+        "spendable": true,
+        "spendable_time_days": 16840.238260265647
+      }
+    }
+  }
+}

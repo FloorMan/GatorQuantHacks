@@ -1,0 +1,2 @@
+obligation_id,product_type,long_account,short_account,authority,status,notional,open_time_days,maturity_time_days,discharge_time_days,backed_claim_time_days,spendable_time_days
+EQ-000001,EQUITY,EARTH_A,NEPTUNE_A,Ceres,SPENDABLE,5000.0,0.1668195446372292,,0.25950498715264964,0.25950498715264964,0.2826729147739453

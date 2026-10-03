@@ -1,0 +1,2 @@
+service,principal,time_days,packet_id,purpose,quota_exempt,application_packet,time_hours,time_seconds,rolling_window_start_days,rolling_window_start_hours,seconds_since_previous_direct_origination,rolling_24h_count_after,rolling_24h_limit,rolling_24h_remaining_after
+direct,NEPTUNE_A,0.0,PKT-000128,FUTURE_SHORT_ORDER,False,True,0.0,0.0,-1.0,-24.0,,1,12,11

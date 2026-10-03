@@ -1,83 +1,217 @@
-# MultiPlanetary Exchange System
+# Federated MultiPlanetary Exchange Model
 
-GatorQuantHacks entry. The design brief is `MultiPlanetary_Exchange_System_Participant_Brief.pdf`, and the orbital and network data are in `Data/`.
+Runnable Python model for the MultiPlanetary Exchange System brief using the supplied frozen `Alpha_Orbital_Data.zip`.
 
-## `mpex`: exchange state model
+The model uses a **federated execution / single authoritative clearing-and-settlement core** architecture. Financial guarantees are hard constraints; network placement is optimized only among designs whose modeled application workload respects the direct and shared-backbone origination quotas.
 
-`mpex` is a dependency-free Python (3.10+) package. It holds the complete state of the exchange at any moment: accounts, located balances, encumbrances, orders, trades, open obligations, transfers in flight, price observations, sessions, messages, packets, and quota use.
+## Current optimized baseline
 
+The current 3–5-exchange placement screen selects:
+
+- Exchanges: **Mercury, Venus, Earth, Mars, Ceres**
+- Authoritative clearing/settlement core: **Ceres**
+- Client assignment:
+  - Mercury -> Mercury
+  - Venus -> Venus
+  - Earth -> Earth
+  - Mars -> Mars
+  - Ceres -> Ceres
+  - Jupiter -> Ceres
+  - Saturn -> Earth
+  - Uranus -> Ceres
+  - Neptune -> Earth
+
+The placement screen is a topology-selection heuristic, not the E4 long-horizon evidence. The selected topology is subsequently evaluated by the separate 200-Julian-year E4 scan.
+
+## Chosen workload/economic assumptions
+
+- Equal baseline demand: **4 client application instructions per funded principal per day**.
+- Optimizer may choose **3 to 5 exchange locations**.
+- One authoritative clearing/settlement core; regional exchanges provide local/federated execution.
+- Financial guarantees are hard constraints.
+- Direct reliability target used in placement ranking: **99% when feasible under the direct quota**. If communication does not complete, financial finality is not invented; the operation remains incomplete or follows the modeled recovery path.
+- Regional batching/netting is enabled on a **6-hour batch interval**.
+- Products: **equities** and **cash-settled futures**.
+- Stress balance sheet: 9 accounts, one per settlement, exactly **500,000 NeoDollars and 5,000 shares**.
+
+## Fixed-width application encoding
+
+The old screening assumption about records per packet has been removed. The implemented application wire format is exact and fixed-width:
+
+- Network packet: **1,024 bytes**
+- Network header: **64 bytes** (brief-fixed)
+- Application payload: **960 bytes**
+- Application envelope: **32 bytes**
+- Financial record: **96 bytes**
+- Capacity: **9 financial records per application packet**
+- Remaining padding at full record capacity: **64 bytes**
+
+`interplanetary_exchange/encoding.py` builds the actual 960-byte payload with `struct.Struct`; placement and workload packet counts call the same encoder's `packet_count()` method. See `WIRE_FORMAT.md` for the field layout.
+
+## Exact rolling quota tooling
+
+`RollingQuotaTracker` stores an exact timestamp for every application/control origination.
+
+- Backbone: shared **600 originated packets per rolling 24 h**.
+- Direct: **12 packets per principal per rolling 24 h**, with at least **60 s** between that principal's direct launches.
+- Quota-exempt automatic transport messages remain in packet traces but are marked exempt from origination quota accounting.
+
+The final selected topology is regenerated with moving-geometry arrival times and written to:
+
+- `output/final_workload_packet_schedule.csv`
+- `output/final_workload_quota_ledger.csv`
+
+The current 3-day workload reaches a maximum modeled shared-backbone rolling-24h count of **36**, so it is well below the 600-packet ceiling.
+
+## Transport/session model
+
+`interplanetary_exchange/transport.py` implements the incident-trace transport behavior used by the scenarios:
+
+- pinned simple backbone routes with at most 3 links;
+- 3-message SYN / SYN-ACK / final-ACK session setup;
+- reusable sessions and 7-day inactivity expiry;
+- endpoint-reset invalidation and re-handshake;
+- directed FIFO link queues at 1 packet/s, with 10,000-packet capacity;
+- 1-second serialization and relay processing;
+- next-open-link waiting for known solar closures and scheduled maintenance;
+- hop timer `R_h = 2 * one-way flight time + 60 min`, up to 4 launches;
+- hop receipts and duplicate-safe forwarding behavior;
+- endpoint timer `R_e = 2 * T0 + 24 h`, up to 4 endpoint attempts;
+- packet lifetime enforcement;
+- application resubmission across sessions as new quota-consuming traffic;
+- trace fields for endpoint attempts, hop attempts, queue depth, queue wait, known-link wait, and nominal/actual arrival.
+
+The simulator intentionally separates **transport delivery** from **financial acceptance/finality**.
+
+## Orbital/network model
+
+Implemented from the supplied frozen data:
+
+- fixed-Kepler propagation for all nine settlements;
+- Relay A/B circular heliocentric orbits at radius `sqrt(8)` AU with 45°/135° epoch phases;
+- epoch-vector validation;
+- moving-receiver light-time solution to 1 ms tolerance;
+- 0.10-AU solar-exclusion segment test;
+- distance-dependent backbone/direct loss probabilities;
+- scheduled B-Neptune and B-Ceres maintenance;
+- fixed 19-candidate-link backbone and max-3-link route search.
+
+## S1 / scenarios
+
+`main.py` writes scenario traces for:
+
+- cross-settlement equity value movement;
+- 240-hour rising-price futures;
+- 240-hour falling-price futures;
+- a binding margin-size constraint.
+
+The futures use the same predeclared symmetric margin rule in both price directions. The default quantity is chosen so the ±20% test path makes a real margin constraint bind while settlement remains fully funded from already encumbered resources.
+
+## S2 worst-case incident search
+
+`S2StressSearcher` evaluates all three permitted incident families on the price-dependent futures scenario:
+
+- 72-hour **gateway isolation** at each settlement;
+- 6-hour **forced loss** at each settlement and both relays;
+- **endpoint reset** at modeled exchange/core endpoints.
+
+The standard evidence run first searches start times every 6 hours from hour 24 through hour 240 across all legal incident families/nodes, then locally refines the worst family/node at 1-hour and 10-minute resolution. This remains numerical evidence rather than an analytical proof over every possible real-valued start time. The current exported search contains **951 evaluated/refined rows**. It exports:
+
+- `output/evidence/S2_incident_search.csv`
+- `output/evidence/S2_worst_incident.json`
+- `output/evidence/S2_worst_trace/`
+
+Current highest-scoring candidates are tied across several late gateway-isolation starts; the selected reproducible representative is a **72-hour Mars gateway isolation beginning at hour 228**. The CSV preserves the tied alternatives and refinement stage. The trace contains the handshake retries, `R_e` deadlines, hop retries/receipts, incident-forced losses, queue information, quota originations, and eventual financial recovery.
+
+## S3 access tables
+
+S3 tables are generated directly from `Router` for every settlement and both supported transaction types at:
+
+- hour 0: `output/evidence/S3_access_hour_0.csv`
+- hour 300: `output/evidence/S3_access_hour_300.csv`
+
+Each row includes assigned exchange, authoritative core, route at the specified hour, conditional one-way delay, and the fraction of the following 24 hours in which **that selected route's required links** can launch. The default availability sampling step is 30 minutes.
+
+## E4 long-horizon scan
+
+The implemented E4 evidence scans **200 Julian years**.
+
+Tier-3 output includes:
+
+- all **38 directed launch directions** implied by the 19 candidate two-way backbone links (forward/reverse are scanned separately because receivers move);
+- a **20-day link sampling step**;
+- an explicit statement that a closure shorter than the 20-day sample interval could be missed;
+- one closed/open event boundary refined to **1-second tolerance**;
+- a **45-day service-route scan** for all nine settlements;
+- sampled availability and min/max route/service delay;
+- the poorest sampled service and a difficult epoch.
+
+Current generated difficult epoch: approximately **day 16,830** from the original epoch. The poorest sampled service in the current topology is Saturn assigned through Earth.
+
+Outputs:
+
+- `output/evidence/E4_link_scan_200y.csv`
+- `output/evidence/E4_route_service_200y.csv`
+- `output/evidence/E4_summary.json`
+
+## E5 shifted epochs
+
+E5 advances **all planets and both relays** from the original epoch while resetting only financial balances.
+
+Generated evidence includes:
+
+- offsets of **1, 10, and 100 Julian years**;
+- route delay and following-24h availability for all settlements;
+- a value-move scenario at each required offset;
+- the difficult epoch selected from E4;
+- value move plus **both rising and falling futures directions** at the difficult epoch.
+
+Outputs:
+
+- `output/evidence/E5_shifted_epochs.csv`
+- `output/evidence/E5_scenarios.json`
+
+## Run
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 main.py
 ```
-python3 examples/demo.py                    # walk a cross-settlement trade and print its trace
-python3 -m unittest discover -s tests -v    # run the tests
+
+`main.py` performs the placement search and regenerates the final workload and baseline scenarios. To use the already-selected baseline without rerunning placement:
+
+```bash
+python3 main.py --reuse-baseline
 ```
 
-### Architecture
+Generate/re-generate all S2/S3/E4/E5 evidence with:
 
-```
-            commands (validate)                 events                    state
- caller ──► Exchange.submit_order(...) ──► Journal (append-only) ──► ExchangeState
-            Exchange.open_position(...)        │                       ├─ principals
-            Exchange.initiate_transfer(...)    │ replay                ├─ Ledger (owner, asset, settlement)
-            Exchange.send_message(...)         ▼                       │    └─ Encumbrances
-            ...                          Exchange.state_at(t)          ├─ instruments, order books
-                                                                       ├─ orders, trades, positions
-                                                                       ├─ transfers, observations
-                                                                       ├─ sessions, messages, packets
-                                                                       ├─ QuotaTracker
-                                                                       └─ Metrics
+```bash
+python3 run_evidence.py
 ```
 
-* **Event-sourced.** Every change is an `Event` (time, type, actor, data, and an optional note for "what this actor knows"). Commands validate first and then record events. Handlers (`Exchange._on_<type>`) apply them. If a handler fails, the state rolls back and nothing is journaled.
-* **State at any point.** `ex.state_at(h)` replays the journal up to hour `h`. `ex.snapshot()` gives a JSON-safe view, used for the "financial state after" column in traces. `ex.trace(id)` returns every event that touched an order, trade, position, transfer or message. `Journal.save()` and `Journal.load()` persist the journal as JSON lines.
-* **Locality is in the data model.** Balances are keyed by `(owner, asset, settlement)`. Value at Earth cannot pay for anything on Mars until a `Transfer` completes. While it travels, it is held *in transit*, outside both ledgers.
-* **One use per asset.** Every reserved amount (order collateral, margin) is an `Encumbrance` against a specific located balance. A payment out of reserved value comes only from its encumbrance, so the payer never sees that value as available in between.
-* **Invariants.** `ex.check_invariants()` checks the following:
-  * Each asset's ledger supply plus its in-transit amount equals the opening supply.
-  * No balance is negative or over-encumbered.
-  * Every resting order's collateral is exact.
-  * No encumbrance backs a closed obligation.
-  * No position has an unbacked shortfall.
+Or run each component independently:
 
-### Modules
+```bash
+python3 run_s2.py
+python3 run_s3.py
+python3 run_e4.py
+python3 run_e5.py
+```
 
-| Module | Holds |
-|---|---|
-| `constants.py` | Fixed parameters from Section 2 of the brief: settlements, node IDs, quotas, timers, limits, maintenance windows |
-| `balance_sheet.py` | `OpeningBalanceSheet` and its limit checks: at most $500k and 5,000 shares, 4–10 accounts, at least 3 settlements |
-| `principals.py` | `Account`, `Institution` (roles: operator, clearing, settlement, agent, guarantor; at most 12), `PriceSource` |
-| `ledger.py` | Located balances and `Encumbrance`s |
-| `instruments.py` | `Equity`, `Future`, `Option` (with payoffs), and `Bond`, `Loan`, `Currency` (specification only) |
-| `trading.py` | `Order`, `Trade`, and a price-time `OrderBook` with no self-trades |
-| `positions.py` | `Position` (records the discharge, backed-claim and spendable moments) and `MarginPolicy` |
-| `transfers.py` | Cross-settlement `Transfer` (in transit → completed or returned) |
-| `observations.py` | Signed `PriceObservation`s released at one settlement |
-| `comms.py` | `Session`, `Message`, `Packet`, `Launch`, route rules, and `QuotaTracker` (rolling 24 h windows) |
-| `journal.py` | `Event`, `EventType`, `Journal` |
-| `state.py` | `ExchangeState` container and `Metrics` (peak encumbrance, asset-hours, value settled, packet counts) |
-| `exchange.py` | `Exchange`: commands, event handlers, queries, invariants |
+Run `run_e4.py` before `run_e5.py`, because E5 uses the difficult epoch selected by E4. The full evidence run is computationally heavier because it performs the 200-year orbital/network scan plus the S2 grid search.
 
-### Rules enforced today
+## Tests
 
-* No financial action before hour 0. Sessions may be set up from hour −168.
-* Event time never goes backwards.
-* An equity order must have its collateral free at the instrument's venue. Delivery-versus-payment settlement happens atomically on the venue ledger at execution.
-* Futures and options:
-  * Both sides must meet the margin rule at opening.
-  * Marks recompute margin requirements and issue margin calls.
-  * Money moves once, at settlement or default, paid from posted margin only.
-  * If the winner lives at another settlement, the position becomes spendable only when the transfer home completes.
-* Official coordination must use the backbone. Only operators and their clearing or settlement services may originate backbone traffic.
-* Local access requires both parties at the same settlement. Direct traffic connects different settlements.
-* Backbone routes are simple paths of at most 3 links over the 19 candidate links.
-* Quotas:
-  * Backbone: 600 originations per rolling 24 h, shared, including SYNs.
-  * Direct: 12 per principal per rolling 24 h, with launches 60 s apart.
-  * Transport ACKs and receipts are exempt but still counted in totals.
+```bash
+python3 -m pytest -q
+```
 
-### Not built yet
+Tests cover epoch positions, moving-receiver propagation, loss models, exact 960-byte application encoding, rolling direct quota/spacing, and Router service paths.
 
-* The orbital propagator, light time, visibility, loss, and transport simulation. These belong in a separate module that writes its results through `record_launch`, `set_message_status` and `set_session_state`.
-* Order-book trading for derivatives (positions are currently opened bilaterally).
-* Lifecycles for bonds, loans and currencies.
-* Per-actor knowledge (who has received which observation).
-* Rollback deep-copies the state on each command. That is fine at scenario scale; it would need replacing for very long runs.
+## Important interpretation limits
+
+- A conditional no-random-loss trace is not an unconditional delivery promise.
+- The E4 20-day directed-link and route 45-day scans are numerical evidence. The output explicitly states the closure duration that could be missed by the link sampling step; one event boundary is refined to 1 second.
+- The S2 incident timing search uses a 6-hour all-family grid followed by 1-hour and 10-minute local refinement around the worst family/node. It is still numerical evidence, not a proof of the continuously worst real-valued start time.
+- Random packet-loss Monte Carlo can be enabled for simulation, but probability accounting and deterministic incident/geometry logic remain separate from financial guarantees.
