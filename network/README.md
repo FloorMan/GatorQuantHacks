@@ -30,6 +30,25 @@ python3 network/python/network_graph.py --from Earth --to Mars --show      # plo
 
 Route timings and statuses match `src/physics.js` exactly (checked on 2,520 routes at 7 times, including blocked and maintenance hops).
 
+### Duplicate-packet Monte Carlo
+
+`python/monte_carlo.py` estimates packet delivery latency while sweeping the
+distance at which a hop sends two simultaneous copies instead of one. Copies
+have independent loss outcomes; a successful copy advances at its normal
+arrival time. When all copies are lost, the sender waits one round-trip light
+time before retrying. Departures are sampled uniformly over the requested
+horizon.
+
+```text
+python network/python/monte_carlo.py --from Earth --to Mars --samples 50000 \
+	--threshold-max 8 --threshold-step 0.25
+```
+
+The output reports mean and 95th-percentile delivery minutes, delivery rate,
+launches per logical packet, and copies per logical packet. The module's
+`run_simulation` and `send_packet` functions can also be imported from a
+notebook.
+
 ## Relay placement what-if (`python/relay_placement.py`)
 
 An extension, not part of the baseline: the brief fixes the relays at 45° and 135°. It keeps the √8 AU orbit and searches the two starting angles that minimize the mean squared distance from each settlement to its nearer relay, over time. Needs numpy.
