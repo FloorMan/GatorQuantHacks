@@ -30,6 +30,17 @@ python3 network/python/network_graph.py --from Earth --to Mars --show      # plo
 
 Route timings and statuses match `src/physics.js` exactly (checked on 2,520 routes at 7 times, including blocked and maintenance hops).
 
+## Relay placement what-if (`python/relay_placement.py`)
+
+An extension, not part of the baseline: the brief fixes the relays at 45° and 135°. It keeps the √8 AU orbit and searches the two starting angles that minimize the mean squared distance from each settlement to its nearer relay, over time. Needs numpy.
+
+```
+python3 network/python/relay_placement.py               # 200 Julian years, 10-day steps
+python3 network/python/relay_placement.py --hours 720   # first 720 h
+```
+
+Over 200 years only the spacing matters (rotating both relays changes the result by under 0.3%). The optimum is about 180° apart, 5.8% below the brief's 90°, but at 180° the A–B link passes through the Sun and is always blocked. The search ignores blockage.
+
 ## Layout
 
 | Path | Purpose |
@@ -39,5 +50,6 @@ Route timings and statuses match `src/physics.js` exactly (checked on 2,520 rout
 | `src/data.js` | Generated from `../Data/*.json` by `node network/scripts/build_data.js` |
 | `scripts/check_epoch.js` | Checks the epoch positions (Section 3), period return, and radius bounds |
 | `python/network_graph.py` | Python weighted-graph model, routes, probabilities, and plots |
+| `python/relay_placement.py` | What-if search for relay starting angles (extension) |
 
 Run `node network/scripts/check_epoch.js` to confirm the propagator still matches the brief's epoch table.
