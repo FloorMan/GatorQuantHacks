@@ -51,5 +51,6 @@ Over 200 years only the spacing matters (rotating both relays changes the result
 | `scripts/check_epoch.js` | Checks the epoch positions (Section 3), period return, and radius bounds |
 | `python/network_graph.py` | Python weighted-graph model, routes, probabilities, and plots |
 | `python/relay_placement.py` | What-if search for relay starting angles (extension) |
+| `python/hub_compare.py` | Compares clearing-hub settlements by delay and relay blockage (see `../notes/clearing-hub-location.md`) |
 
 Run `node network/scripts/check_epoch.js` to confirm the propagator still matches the brief's epoch table.
