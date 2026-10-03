@@ -421,7 +421,7 @@
         el('div', { class: 'hub' }, `GLOBAL BATCH @ ${b.market}`, el('div', { class: 'sub' }, '↓ match'), el('div', { class: 'p' }, b.price ? '@ ' + b.price : '—')),
         el('div', { class: 'bids' }, inBatch.map(result))));
       if (tm.duration_h) kids.push(el('div', { class: 'sub', style: 'white-space:normal;margin-bottom:6px' },
-        `Batch length = 1.1 × slowest one-way (${tm.slowest_from} ${dur(tm.slowest_one_way_h)}) + one hop retry (${dur(tm.retry_allowance_h)}) = ${dur(tm.duration_h)}.`));
+        `Batch length = 1.1 × slowest one-way (${tm.slowest_from} ${dur(tm.slowest_one_way_h)}) + grace for ${tm.hop_retries || 1} hop retr${(tm.hop_retries || 1) > 1 ? 'ies' : 'y'} (${dur(tm.retry_allowance_h)}) = ${dur(tm.duration_h)}.`));
       kids.push(table(['Order', 'Account', 'Side', 'Qty', 'Limit', 'Source time', 'Arrival', 'Allocated', 'Reason'],
         b.orders.map(o => [o.id, `${o.account} @ ${o.home}`, o.side, o.quantity, o.limit, hfmt(o.source_h), hfmt(o.arrived_h),
           o.in_batch ? o.allocated : '— (missed)', o.reason]), 'wrap'));

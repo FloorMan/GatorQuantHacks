@@ -304,6 +304,29 @@ def retry_duplicate():
     results = [d["result"] for d in r.extra["deliveries"] if d["transfer"] == xs]
     r.check("status query with the same transaction id hit the existing record", ["completed", "duplicate"], results)
     r.check("N-Eve shares credited once", D(600), held(r.ex, "N-Eve", SHARES))
+
+    # Grace window: an order sent when the batch opens, whose slowest hop loses
+    # its first 3 launches (4 launches = initial + 3 retries), still makes the batch.
+    g = Run("retry-grace", "grace")
+    g.w.drop = lambda i: ("forced loss (test): order launches 1-3 on Neptune -> Relay A"
+                          if i["meta"].get("kind") == "batch_order" and i["from"] == "Neptune"
+                          and i["attempt"] <= 3 else None)
+    g.open_batch(0.5)
+    g.submit(0.5, "N-Eve", "buy", 10, 100, "eve")
+    g.submit(1.0, "E-Alice", "sell", 10, 95, "alice")
+    g.w.run(until=80)
+    eve, b = g.ex.state.batch_orders[g.orders["eve"]], g.ex.state.batches[g.batch_ids[0]]
+    used = max(l["attempt"] for l in g.w.launch_log
+               if l["kind"] == "batch_order" and l["from"] == "Neptune" and not l["lost"])
+    r.check("worst-case order used all 4 launches on its slowest hop", 4, used)
+    r.check("it still arrived before the batch closed (grace covers 3 retries)", True,
+            eve.arrived_h <= b.closes_h)
+    r.check("and executed in that batch", D(10), eve.filled)
+    r.extra["grace"] = {"arrived_h": eve.arrived_h, "closes_h": b.closes_h, "launches": used,
+                        "duration_h": b.timing["duration_h"]}
+    r.notes.append(f"Grace check: an order sent at batch open needed all 4 launches, arrived "
+                   f"h {eve.arrived_h:.2f}, batch closed h {b.closes_h:.2f}. Orders sent later "
+                   "than the batch opening get less grace and may roll to the next batch.")
     _set_primary(r, transfer=xs, accounts=["E-Alice", "N-Eve"])
     return r
 

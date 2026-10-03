@@ -8,8 +8,10 @@ not copied from a previous run.
 Design rules used here (design paper, with the review fixes):
 * The global batch market and the clearing house sit at Earth.
 * Priority timestamp = the home operator's receipt stamp (client send + 1 s).
-* Batch length = 1.1 x the slowest eligible one-way delay + one hop retry (R_h of
-  the longest hop on any eligible route), from the geometry when the batch opens.
+* Batch length = 1.1 x the slowest eligible one-way delay + a grace window for every
+  hop retry the transport allows (4 launches per hop = initial + 3 retries, each
+  waiting R_h of the longest hop on any eligible route), from the geometry when the
+  batch opens.
 * The guarantee fund starts empty and is funded by account contributions after hour 0.
 * A cross-settlement trade completes only when both legs (shares and cash) are
   usable at their receivers' home settlements.
@@ -42,6 +44,7 @@ MARKET, MARKET_OP, CLEARING = "Earth", "Earth Exchange", "Earth Clearing"
 SYMBOL, LOCAL_BOOK = "ARES", {"Earth": "ARES.EARTH", "Mars": "ARES.MARS",
                               "Neptune": "ARES.NEPTUNE"}
 FUTURE, SOURCE = "MOI-F300", "MOI Publisher"
+BATCH_HOP_RETRIES = 3  # grace covers all retries of a hop: 4 launches = initial + 3
 SHARES, CASH = "SHR:AresHabitat", "NEO"
 
 
@@ -130,10 +133,10 @@ class Run:
             rows.append({"from": home, "route": route, "one_way_h": ev["light_min"] / 60,
                          "retry_allowance_h": 2 * longest + 1})
         slow = max(rows, key=lambda r: r["one_way_h"])
-        retry = max(r["retry_allowance_h"] for r in rows)
-        return {"rule": "close = open + 1.1 x slowest one-way + one hop retry R_h",
+        retry = BATCH_HOP_RETRIES * max(r["retry_allowance_h"] for r in rows)
+        return {"rule": f"close = open + 1.1 x slowest one-way + {BATCH_HOP_RETRIES} hop retries x R_h",
                 "slowest_from": slow["from"], "slowest_one_way_h": slow["one_way_h"],
-                "retry_allowance_h": retry,
+                "hop_retries": BATCH_HOP_RETRIES, "retry_allowance_h": retry,
                 "duration_h": 1.1 * slow["one_way_h"] + retry, "routes": rows}
 
     def open_batch(self, t):
