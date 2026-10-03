@@ -74,15 +74,15 @@ the planets. If the team moves the futures traders or the guarantee contributors
 | Market performance (17 scenarios) | tie | tie | this note |
 | Communication cost (17 scenarios) | 178 packets | 234 packets | this note |
 
-**Recommendation: Earth.** Market speed and capital use tie. Earth uses 31% less backbone quota for our
-balance sheet and has the steadier worst case. Ceres's real advantages (less time on one relay, fewer
-re-routes, slightly better delivery in its good decades) should go in the paper's risk section as the
-alternative we considered.
+**Decision: Ceres** (the team's call, 2026-10-03). Market speed and capital use tie, and Ceres is the more
+robust hub (0.8% of the time on one relay vs 8.6%; 4 re-routes vs 316). Accepted costs: about 31% more backbone
+quota with today's Earth-heavy balance sheet, Earth winners wait ~0.5 h to spend payouts, and a worst decade
+22 min slower. Moving the large accounts or guarantee contributors to Ceres would remove the quota cost.
 
 ## How to see it
 
 ```
 python3 -m evidence.compare_hubs                    # rerun both hubs, redraw this figure
-MPEX_HUB=Ceres python3 serve.py --port 8766         # browse every scenario with the hub at Ceres
-python3 serve.py                                    # the Earth-hub dashboard (port 8000)
+python3 serve.py                                    # dashboard, hub at Ceres (default)
+MPEX_HUB=Earth python3 serve.py --port 8001         # same dashboard with the hub at Earth
 ```

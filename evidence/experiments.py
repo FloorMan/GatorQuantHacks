@@ -17,7 +17,7 @@ from mpex.batch import BatchOrder, BatchOrderStatus, run_auction
 from mpex.trading import Side
 
 from . import cases, scenarios
-from .scenarios import OPERATORS, Run, risk_windows
+from .scenarios import HOME, HUB, OPERATORS, Run, risk_windows
 from .world import SEC_H
 
 D = Decimal
@@ -26,29 +26,35 @@ D = Decimal
 # ------------------------------------------------------------------ priority rule
 
 def priority_rule():
-    """Equal-price bids: a remote bid stamped 1 minute earlier than Earth's."""
+    """Equal-price bids: a remote bid stamped 1 minute earlier than a bid placed at the hub."""
     rows = []
+    near = next(a for a, h in HOME.items() if h == HUB)
+    remotes = {}
+    for a, h in HOME.items():
+        if h != HUB and h not in remotes:
+            remotes[h] = a
+    seller_pool = [a for a in HOME if a != near and a not in remotes.values()]
     original = batch_mod._priority_key
     rules = {
         "source time (chosen)": original,
         "arrival time": lambda o: (-o.limit_price if o.side is Side.BUY else o.limit_price, o.arrived_h),
     }
-    for remote, acct in (("Mars", "M-Carla"), ("Ceres", "C-Finn"), ("Neptune", "N-Eve")):
-        seller = "M-Diego" if remote != "Mars" else "C-Finn"
-        row = {"remote": remote}
+    for remote, acct in remotes.items():
+        seller = seller_pool[0]
+        row = {"remote": remote, "near": near}
         for name, key in rules.items():
             batch_mod._priority_key = key
             try:
                 r = Run("exp", "exp")
                 r.open_batch(9.5)
                 r.submit(10.0, acct, "buy", 10, 100, "remote")
-                r.submit(10.0 + 1 / 60, "E-Bob", "buy", 10, 100, "earth")
+                r.submit(10.0 + 1 / 60, near, "buy", 10, 100, "earth")
                 r.submit(10.0, seller, "sell", 10, 100, "sell")
                 r.w.run(until=90)
                 bo = r.ex.state.batch_orders
                 rem, ear = bo[r.orders["remote"]], bo[r.orders["earth"]]
                 row["arrival_gap_h"] = rem.arrived_h - ear.arrived_h
-                row[name] = acct if rem.filled > 0 else "E-Bob"
+                row[name] = acct if rem.filled > 0 else near
             finally:
                 batch_mod._priority_key = original
         rows.append(row)
@@ -185,8 +191,8 @@ def hop_loss():
     """Per-launch loss on each hop of every remote settlement's route to Earth at h 0.5."""
     r = Run("exp", "exp")
     out = []
-    for s in ("Mars", "Ceres", "Neptune"):
-        route = r.w.route_from(OPERATORS[s], OPERATORS["Earth"])
+    for s in sorted({h for h in HOME.values() if h != HUB}):
+        route = r.w.route_from(OPERATORS[s], OPERATORS[HUB])
         hops = r.w.net.evaluate_route(route, 0.5 / 24)["hops"]
         worst = max(hops, key=lambda h: h["loss"])
         p = worst["loss"]
@@ -199,14 +205,15 @@ def hop_loss():
 # ------------------------------------------------------------------ settlement path
 
 def settlement_path():
-    """Mars seller -> Neptune buyer: direct operator session vs relaying the leg through Earth."""
+    """Settlement legs between two non-hub settlements: direct operator session vs relaying via the hub."""
     r = Run("exp", "exp")
     w = r.w
     out = []
-    for src, dst in (("Mars", "Neptune"), ("Ceres", "Neptune"), ("Mars", "Ceres")):
+    others = sorted({h for h in HOME.values() if h != HUB})
+    for src, dst in [(a, b) for i, a in enumerate(others) for b in others[i + 1:]]:
         direct = w.route_timing_h(w.route_from(OPERATORS[src], OPERATORS[dst]), 0.0)
-        via = (w.route_timing_h(w.route_from(OPERATORS[src], OPERATORS["Earth"]), 0.0)
-               + w.route_timing_h(w.route_from(OPERATORS["Earth"], OPERATORS[dst]), 0.0) + SEC_H)
+        via = (w.route_timing_h(w.route_from(OPERATORS[src], OPERATORS[HUB]), 0.0)
+               + w.route_timing_h(w.route_from(OPERATORS[HUB], OPERATORS[dst]), 0.0) + SEC_H)
         out.append({"leg": f"{src} -> {dst}", "direct_h": direct, "via_earth_h": via,
                     "direct_quota_packets": 1, "via_earth_quota_packets": 2})
     return out
@@ -216,7 +223,7 @@ def run_all():
     return {"priority": priority_rule(), "price": price_rule(), "grace": batch_grace(),
             "margin_move": margin_move(), "maintenance": maintenance_fraction(),
             "flat_margin": flat_margin(), "settlement_path": settlement_path(),
-            "hop_loss": hop_loss(),
+            "hop_loss": hop_loss(), "hub": HUB,
             "windows": dict(risk_windows())}
 
 

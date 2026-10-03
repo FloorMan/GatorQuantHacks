@@ -41,8 +41,9 @@ ACCOUNTS = (
 HOME = {a[0]: a[1] for a in ACCOUNTS}
 OPERATORS = {"Earth": "Earth Exchange", "Mars": "Mars Exchange",
              "Neptune": "Neptune Exchange", "Ceres": "Ceres Exchange"}
-# Hub settlement for the global batch market and the clearing house (MPEX_HUB, default Earth).
-HUB = os.environ.get("MPEX_HUB", "Earth")
+# Hub settlement for the global batch market and the clearing house (MPEX_HUB, default Ceres;
+# see notes/hub-earth-vs-ceres.md for the comparison).
+HUB = os.environ.get("MPEX_HUB", "Ceres")
 if HUB not in OPERATORS:
     raise ValueError(f"MPEX_HUB must be one of {sorted(OPERATORS)}, got {HUB!r}")
 MARKET, MARKET_OP, CLEARING = HUB, OPERATORS[HUB], f"{HUB} Clearing"

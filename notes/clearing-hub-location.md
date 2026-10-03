@@ -5,10 +5,12 @@ Analysis from 2026-10-03. Reproduce with `python3 network/python/hub_compare.py`
 
 ## Decision
 
-**Earth.** Mars ties it on delay and delivery but has 88 blockages past the 30-day packet lifetime; Ceres delivers best only in some decades (first ~30 years) and has the longest blockages. Choose by where most accounts and the price source sit,
-because local access is free (1 s, no loss, no quota). Brief's story, "Earth investors fund
-Mars construction", fits an Earth hub and a Mars price source. If accounts end up mostly
-at Mars, pick Mars and add a re-pin rule (below).
+**Ceres** (decided 2026-10-03, after rerunning every scenario at both hubs; see `hub-earth-vs-ceres.md`).
+Market speed ties with Earth within 2%. Ceres is the more robust hub: it spends 0.8% of the time on a
+single relay (Earth 8.6%) and needs 4 planned relay re-routes in 200 years (Earth 316). Costs we accept:
+its rare blockages last up to 190 days (operators switch to the other relay ahead of each one), its worst
+decade is 22 min slower, and with today's balance sheet it uses ~31% more backbone quota because most
+collateral sits at Earth. The analysis below is kept as the record of the comparison.
 
 ## Delay: a tie
 
@@ -73,8 +75,9 @@ Regenerate with `python3 network/python/hub_tradeoff.py`.
 
 ## Line for the paper
 
-Hub location barely changes delay (under 2%). We chose Earth for its shorter blockages
-(max 21 days; none of 316 pass the 30-day packet lifetime, vs 88 of 128 for Mars) and local access to our accounts.
+Hub location barely changes market speed (within 2% across every scenario). We chose Ceres because it is
+the more robust hub: a tenth of Earth's time on a single relay and 4 relay re-routes in 200 years instead of
+316. Its rare long blockages are handled by switching sessions to the other relay before they begin.
 
 ## To firm up for E4
 

@@ -4,7 +4,9 @@
 """
 
 import datetime
+import json
 from decimal import Decimal
+from pathlib import Path
 
 from .runner import run_all as run_tests
 
@@ -41,6 +43,9 @@ def render(res):
     mm, mf, flat, path, loss = (res["margin_move"], res["maintenance"], res["flat_margin"],
                                 res["settlement_path"], res["hop_loss"])
     g = {r["retries_covered"]: r for r in grace}
+    hub = res["hub"]
+    near = pr[0]["near"]
+    near_home = hub
     nep = next(x for x in loss if x["from"] == "Neptune")
     m5 = next(r for r in mm if r["move"] == "0.05")
     f75 = next(r for r in mf if r["fraction"] == "0.75")
@@ -61,7 +66,7 @@ def render(res):
     w("## At a glance\n")
     w(table(["Choice", "We picked", "Compared against", "Deciding evidence"], [
         ["Priority at equal price", "Home operator's receipt stamp", "Arrival time at the market",
-         f"Arrival time gave Earth the win in {sum(1 for r in pr if r['arrival time'] == 'E-Bob')}/{len(pr)} ties it should have lost"],
+         f"Arrival time gave the hub-local bidder ({near}) the win in {sum(1 for r in pr if r['arrival time'] == near)}/{len(pr)} ties it should have lost"],
         ["Clearing price", "Midpoint of the tied range", "Seller's limit, buyer's limit",
          "Only rule that splits the surplus evenly (250 / 250)"],
         ["Batch grace window", "3 hop retries", "0, 1, 2 retries",
@@ -72,17 +77,18 @@ def render(res):
          f"{f75['falling']['calls']} calls vs 16 at 100%; fund draw {_m(f75['crash']['fund_used'])} vs {_m(next(r for r in mf if r['fraction']=='0.5')['crash']['fund_used'])} at 50%"],
         ["Margin window", "Per location (round trip + retry)", "Same for everyone",
          "Location-blind rule defaulted a Neptune trader who paid as fast as light allows"],
-        ["Settlement legs", "Direct operator-to-operator", "Relayed through Earth",
-         f"Mars → Neptune {_h(path[0]['direct_h'])} vs {_h(path[0]['via_earth_h'])}, 1 quota packet vs 2"],
-        ["Clearing location", "Earth", "Mars, Ceres", "Delay within 2%; Earth has the shortest blockages (21 d)"],
+        ["Settlement legs", "Direct operator-to-operator", f"Relayed through {hub}",
+         f"{path[0]['leg']} {_h(path[0]['direct_h'])} vs {_h(path[0]['via_earth_h'])}, 1 quota packet vs 2"],
+        ["Clearing location", hub, "Earth, Mars",
+         "Market speed ties within 2%; Ceres spends 0.8% of the time on one relay (Earth 8.6%) and needs 4 re-routes in 200 yr (Earth 316)"],
     ]))
     w("")
 
     # ------------------------------------------------------------------ 1
     w("## 1. Priority at the same price: source stamp, not arrival time\n")
-    w("Each remote trader bids $100 one minute **before** an Earth trader bids the same price. "
+    w(f"Each remote trader bids $100 one minute **before** {near}, who trades at the hub ({hub}), bids the same price. "
       "We ran the same batch twice, once with each priority rule.\n")
-    w(table(["Remote bidder", "Arrives at Earth later by", "Winner: source stamp (ours)", "Winner: arrival time"],
+    w(table(["Remote bidder", f"Arrives at {hub} later by", "Winner: source stamp (ours)", "Winner: arrival time"],
             [[r["remote"], _h(r["arrival_gap_h"]), r["source time (chosen)"], r["arrival time"]] for r in pr]))
     w("\n**Why:** under arrival-time priority the trader nearest the market wins every tie, and Neptune is "
       f"{_h(pr[-1]['arrival_gap_h'])} behind. That turns physics into a permanent advantage and fails the brief's "
@@ -123,7 +129,7 @@ def render(res):
              "No-loss order sent 30 min late", "Cross-planet trade complete"],
             [[k, _h(r["batch_length_h"])] + [_yn(r["survives"].get(i, r["survives"].get(str(i)))) for i in range(4)]
              + [_yn(r["no_loss_sent_30min_late_in_batch"]), _h(r["cross_trade_complete_h"])] for k, r in sorted(g.items())]))
-    w("\nHow likely each case is, from the brief's loss formula and today's geometry (slowest hop on each route to Earth):\n")
+    w(f"\nHow likely each case is, from the brief's loss formula and today's geometry (slowest hop on each route to {hub}):\n")
     w(table(["From", "Slowest hop", "Launch lost", "Needs > 0 retries", "> 1", "> 2", "> 3 (hop abandoned)"],
             [[x["from"], x["worst_hop"], _pct(x["p_launch_lost"])] +
              [_pct(x["p_needs_more_than"].get(k, x["p_needs_more_than"].get(str(k)))) for k in range(4)] for x in loss]))
@@ -150,7 +156,7 @@ def render(res):
       "MOI futures at 100 × multiplier 100 (notional $100,000), with N-Eve (Neptune) long and E-Alice (Earth) short. "
       "The *falling* path stays within the declared move and N-Eve pays every call. The *crash* path breaks the assumption "
       "and N-Eve stops paying.\n")
-    w(table(["Move", "IM Neptune", "IM Earth", "Falling: calls", "Falling: lowest cushion", "Falling: quota packets",
+    w(table(["Move", "IM N-Eve (Neptune)", "IM E-Alice (Earth)", "Falling: calls", "Falling: lowest cushion", "Falling: quota packets",
              "Peak cash locked", "Crash: fund used", "Crash: unbacked"],
             [[_pct(float(r["move"])), _m(r["falling"]["im_neptune"]), _m(r["falling"]["im_earth"]),
               r["falling"]["calls"], _m(r["falling"]["min_buffer"]), r["falling"]["backbone_packets"],
@@ -186,9 +192,9 @@ def render(res):
     fp = flat["falling_paying"]
     oc = by_id["margin-call"]["futures"]["calls"][0]
     w("## 6. Margin window by location, not one window for everyone\n")
-    w("Our rule gives each participant a risk window equal to its real round trip to Earth Clearing plus one hop retry. "
+    w(f"Our rule gives each participant a risk window equal to its real round trip to {hub} Clearing plus one hop retry. "
       "The window sets both its margin and its call deadline. The alternative gives everyone the same 0 h window, as if they "
-      "were all at Earth.\n")
+      f"were all at {hub}.\n")
     w(table(["Participant", "Our window"], [[a, _h(v)] for a, v in res["windows"].items()]))
     w("")
     w(table(["Rule", "N-Eve pays every call?", "First call", "Deadline", "Top-up landed", "Outcome"],
@@ -204,19 +210,42 @@ def render(res):
 
     # ------------------------------------------------------------------ 7
     w("## 7. Settlement legs go directly between operators\n")
-    w(table(["Leg", "Direct session", "Relayed through Earth", "Quota packets (direct vs relayed)"],
+    w(table(["Leg", "Direct session", f"Relayed through {hub}", "Quota packets (direct vs relayed)"],
             [[x["leg"], _h(x["direct_h"]), _h(x["via_earth_h"]), f"{x['direct_quota_packets']} vs {x['via_earth_quota_packets']}"] for x in path]))
     w("\n**Why:** a direct leg is faster and costs half the quota of the shared 600. The cost is 6 sessions set up before "
       "hour 0 (each SYN costs 1 packet), which the brief allows from hour −168.\n")
 
     # ------------------------------------------------------------------ 8
-    w("## 8. Clearing house at Earth\n")
-    w("From `notes/clearing-hub-location.md` (`network/python/hub_compare.py`):\n")
-    w(table(["Hub", "Mean one-way, 200 yr", "Longest single-relay blockage", "Both relays blocked"],
-            [["Earth", "96.5 min", "21 days", "never"], ["Mars", "96.6 min", "45 days", "never"],
-             ["Ceres", "98.0 min", "190 days", "never"]]))
-    w("\n**Why:** delay is a tie (Neptune dominates every hub). Earth's blockages stay under the 30-day packet lifetime, "
-      "and the story's investors are on Earth.\n")
+    w(f"## 8. Clearing house and batch market at {hub}\n")
+    cmp_path = Path(__file__).resolve().parents[1] / "notes" / "hub-earth-vs-ceres.json"
+    if cmp_path.exists():
+        c = json.loads(cmp_path.read_text())
+        e, k = c["Earth"], c["Ceres"]
+        w("Every scenario rerun with each hub (`python3 -m evidence.compare_hubs`, `notes/hub-earth-vs-ceres.md`):\n")
+        w(table(["Measure", "Earth hub", "Ceres hub"], [
+            ["Cross-planet trade complete", _h(e["cross"]["complete_h"]), _h(k["cross"]["complete_h"])],
+            ["Batch length at hour 0", _h(e["batch_h0"]["duration_h"]), _h(k["batch_h0"]["duration_h"])],
+            ["Margin-call response (mean)", _h(e["margin_call"]["mean_response_h"]), _h(k["margin_call"]["mean_response_h"])],
+            ["Clearing outage: service lost", _h(e["outage"]["lost_service_h"]), _h(k["outage"]["lost_service_h"])],
+            ["Backbone quota packets, all 17", e["quota_packets"], k["quota_packets"]],
+            ["Winner spendable after close", _h(e["margin_call"]["winner_spendable_delay_h"]),
+             _h(k["margin_call"]["winner_spendable_delay_h"])]]))
+    w("")
+    w(table(["Network factor (200 years)", "Earth", "Ceres"], [
+        ["Delivery, relays switched ahead of blockages", "94.23%", "94.28%"],
+        ["Time on a single relay", "8.6%", "0.8%"],
+        ["Relay re-routes needed", "316", "4"],
+        ["Longest single-relay blockage", "21 days", "190 days"],
+        ["Worst-decade expected delay incl. retries", "192.8 min", "215.5 min"]]))
+    w("\n**Why Ceres:** market speed ties within 2% (Neptune's ~4 h one-way dominates every hub). Ceres is the more "
+      "robust hub: it spends a tenth as much time on a single relay, so it is far less exposed to one relay outage, and "
+      "it needs 4 planned re-routes in 200 years instead of 316. Its rare blockages last up to 190 days, so the operators "
+      "switch sessions to the other relay before each one (blockages are predictable from the geometry, and the two relays "
+      "are never blocked together).\n")
+    w("**What it costs:** with the current balance sheet most collateral sits at Earth, so margin and guarantee cash must "
+      "travel to Ceres: about 31% more backbone quota packets across the 17 scenarios, and Earth winners wait about 0.5 h "
+      "to spend payouts. Ceres's worst decade is also 22 minutes slower than Earth's. Moving the large accounts or the "
+      "guarantee contributors to Ceres would remove the quota cost.\n")
 
     # ------------------------------------------------------------------ tests
     w("## Test evidence\n")
