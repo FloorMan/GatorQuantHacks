@@ -847,6 +847,7 @@ def run_tests(out):
 
 def write_index(out, test_ok, ran, last):
     s1 = json.loads((out / "s1" / "s1_scenarios.json").read_text())
+    tr = list(csv.DictReader(open(out / "traces" / "traces_summary.csv")))
     tl = json.loads((out / "s3" / "timelines.json").read_text())
     e4 = json.loads((out / "e4" / "e4_summary.json").read_text())
     e5 = json.loads((out / "e5" / "e5_epochs.json").read_text())
@@ -858,6 +859,7 @@ def write_index(out, test_ok, ran, last):
           "(`network/python/network_graph.py`); nothing is typed in by hand. Rules were not changed to produce it.\n",
           "| Item | Summary | Machine-readable | Reproduce |", "|---|---|---|---|",
           "| S1 capital & asset-hours | `s1/S1.md`, `s1/s1_capital.png` | `s1/s1_scenarios.csv`, `.json` | `python3 -m evidence.appendix s1` |",
+          "| S1 step traces + E3 balances & obligations (every scenario) | `traces/TRACES.md` | `traces/<scenario>_trace.csv`, `_ledger.csv`, `_steps.csv`, `traces/traces_summary.csv` | `python3 -m evidence.appendix traces` |",
           "| S3 access & timelines | `s3/S3.md` | `s3/routes_h0.csv`, `s3/routes_h300.csv`, `s3/routes.json`, `s3/timeline_*.csv`, `s3/timelines.json` | `python3 -m evidence.appendix s3` |",
           "| E4 200-year scan, boundaries | `e4/E4.md`, `e4/e4_closures.png` | `e4/closures.csv`, `e4/boundary_tests.csv`, `e4/important_transitions.csv`, `e4/maintenance_boundaries.csv`, `e4/route_delay_ranges.csv`, `e4/e4_summary.json` | `python3 -m evidence.appendix e4` |",
           "| E5 shifted epochs | `e5/E5.md` | `e5/e5_epochs.json`, `e5/e5_runs.csv`, `e5/e5_routes.csv` | `python3 -m evidence.appendix e5` |",
@@ -866,6 +868,11 @@ def write_index(out, test_ok, ran, last):
           f"- **S1:** {len(s1)} scenarios (the 17 tests plus a price-rising futures run). Scale requirement "
           + ("met: " + ", ".join(f"{r['title']} {money(r['peak_locked_cash'])} ({r['capital_utilization'] * 100:.1f}%)" for r in scale)
              if scale else "NOT met") + f" against the 25% threshold of {money(0.25 * opening)}.",
+          f"- **S1 traces / E3:** a step trace for all {len(tr)} scenarios with time, actor, local knowledge, action, "
+          "packet/transmission, arrival and financial state after; a ledger of every balance change with owner, "
+          "location, asset, source, encumbrance and liability; open obligations at every financial step. Cash and shares "
+          f"conserved at every step in {sum(x['cash_conserved_every_step'] == 'True' and x['shares_conserved_every_step'] == 'True' for x in tr)} "
+          f"of {len(tr)} scenarios; over-encumbered holdings: {max(int(x['max_over_encumbered']) for x in tr)}.",
           "- **S3:** routing tables at h 0 and h 300 for all nine settlements; value-move timelines for the best, median "
           "and worst client: " + "; ".join(f"{k} {v['settlement']} complete at h {h(v['complete_h'])}" for k, v in tl["runs"].items()) + ".",
           f"- **E4:** {e4['boundaries']} Sun-closure boundaries refined to 1 s; {e4['flip_ok']} flip exactly at the refined "
@@ -895,7 +902,7 @@ def write_index(out, test_ok, ran, last):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("what", choices=["all", "s1", "s3", "e4", "e5"])
+    ap.add_argument("what", choices=["all", "s1", "traces", "s3", "e4", "e5"])
     ap.add_argument("--out", default=str(ROOT / "evidence_appendix"))
     args = ap.parse_args()
     out = Path(args.out)
@@ -903,6 +910,8 @@ def main():
     t0 = time.time()
     if args.what in ("all", "s1"):
         run_s1(out)
+    if args.what in ("all", "traces"):
+        run_traces(out)
     if args.what in ("all", "s3"):
         run_s3(out)
     e4 = None
@@ -915,6 +924,293 @@ def main():
         write_index(out, ok, ran, last)
         print(f"  test suite: {ran} -> {last}")
     print(f"done in {time.time() - t0:.0f} s → {out}")
+
+
+
+# ====================================================================== S1 traces + E3 ledgers
+
+TRACE_FIELDS = ["time_h", "actor", "local_knowledge", "action", "packet_or_transmission", "arrival",
+                "financial_state_after", "category"]
+LEDGER_FIELDS = ["time_h", "event", "owner", "asset", "location", "change", "balance_after", "available_after",
+                 "encumbered_after", "encumbrances", "source", "liability"]
+
+
+def _holding_key_label(asset):
+    return "cash" if asset == "NEO" else "shares"
+
+
+def _amt(asset, v):
+    return f"${v:,}" if asset == "NEO" else f"{v:,} sh"
+
+
+def _source(e):
+    d, T = e.data, EventType
+    return {
+        T.EXCHANGE_OPENED: "opening balance sheet",
+        T.TRADE_EXECUTED: f"local trade {d.get('trade_id')} (DvP)",
+        T.ORDER_ACCEPTED: f"order lock {d.get('order_id')}",
+        T.ORDER_CANCELLED: f"order {d.get('order_id')} cancelled (lock released)",
+        T.BATCH_ORDER_RESERVED: f"batch order lock {d.get('order_id')}",
+        T.BATCH_LEG_SETTLED: f"batch result for {d.get('order_id')}: "
+                             + (", ".join(f"{l['leg']} {l['transfer_id'] or 'local'}" for l in d.get("legs", [])) or "release"),
+        T.TRANSFER_INITIATED: f"transfer {d.get('transfer_id')} sent ({d.get('from_settlement')} → {d.get('to_settlement')})",
+        T.TRANSFER_COMPLETED: f"transfer {d.get('transfer_id')} validated at destination",
+        T.TRANSFER_RETURNED: f"transfer {d.get('transfer_id')} returned",
+        T.GUARANTEE_CONTRIBUTED: f"guarantee contribution {d.get('account')} → {d.get('clearing')}",
+        T.POSITION_OPENED: f"position {d.get('position_id')} opened (margin locked)",
+        T.MARGIN_POSTED: f"margin top-up on {d.get('position_id')}",
+        T.POSITION_SETTLED: f"position {d.get('position_id')} settled at maturity",
+        T.POSITION_DEFAULTED: f"position {d.get('position_id')} funded default",
+    }.get(e.type, e.type.value)
+
+
+class _Replay:
+    """Replays a finished run's journal event by event, keeping derived state for traces."""
+
+    def __init__(self, r):
+        from mpex import Exchange
+        self.r, self.ex = r, r.ex
+        self.events = list(self.ex.journal)
+        self.state_ex = Exchange(self.ex.margin_policy)
+        self.known = {}       # principal -> list of received items
+        self.inst_at = {}     # settlement -> institutions there
+        self.opening = None
+
+    # -- ledger views -------------------------------------------------------
+    def holdings(self):
+        led = self.state_ex.state.ledger
+        return {k: (v, led.encumbered(*k)) for k, v in led.holdings().items()}
+
+    def encs(self, key):
+        led = self.state_ex.state.ledger
+        return "; ".join(f"{e.purpose.value} {e.reference} {_amt(e.asset, e.amount)}"
+                         for e in led.active_encumbrances() if e.key == key)
+
+    def liability(self, key):
+        st = self.state_ex.state
+        owner, asset, loc = key
+        out = []
+        for e in st.ledger.active_encumbrances():
+            if e.key != key:
+                continue
+            if e.purpose.value == "margin":
+                p = st.positions.get(e.reference)
+                if p:
+                    side = "long" if p.long == owner else "short"
+                    out.append(f"{side} margin on {p.id} (pays losses)")
+            elif e.purpose.value == "guarantee":
+                out.append("guarantee fund: covers default losses; repayable to contributors")
+            elif e.purpose.value == "order":
+                out.append(f"committed to order {e.reference}")
+        for t in st.transfers.values():
+            if t.status.value == "in_transit" and t.owner == owner and t.asset == asset and t.from_settlement == loc:
+                out.append(f"owes {_amt(t.asset, t.amount)} to {t.to_owner}@{t.to_settlement} via {t.id} (in transit)")
+        for p in st.positions.values():
+            if p.defaulter == owner and p.guarantee_used and asset == "NEO":
+                out.append(f"owes {_amt('NEO', p.guarantee_used)} to clearing for fund draw on {p.id}")
+        return "; ".join(out)
+
+    def obligations(self):
+        st = self.state_ex.state
+        out = [f"{t.id}: {t.owner}@{t.from_settlement} → {t.to_owner}@{t.to_settlement} {_amt(t.asset, t.amount)} in transit"
+               for t in st.transfers.values() if t.status.value == "in_transit"]
+        out += [f"{o.id}: {o.account} {o.side.value} {o.quantity}@{o.limit_price} {o.status.value}"
+                for o in st.batch_orders.values() if o.status.value != "settled"]
+        out += [f"{t.id}: executed, legs pending" for t in st.trades.values() if t.status.value == "executed"]
+        out += [f"{p.id}: {p.long} long / {p.short} short {p.quantity}×{p.symbol} @ {p.entry_price}"
+                + (f", calls {p.margin_calls}" if p.margin_calls else "") for p in st.positions.values()
+                if p.state.value == "open"]
+        out += [f"{p.defaulter} owes clearing {_amt('NEO', p.guarantee_used)} (fund draw, {p.id})"
+                for p in st.positions.values() if p.guarantee_used]
+        for c, ids in st.guarantee_funds.items():
+            amt = sum((st.ledger.encumbrances[i].amount for i in ids), D(0))
+            out.append(f"{c} guarantee fund {_amt('NEO', amt)}")
+        return " | ".join(out) or "none"
+
+    def conserved(self):
+        st = self.state_ex.state
+        ok = {}
+        for asset in ("NEO", "SHR:AresHabitat"):
+            ok[asset] = st.ledger.total_supply(asset) + st.in_transit(asset) == st.opening_supply.get(asset, D(0))
+        over = sum(1 for (o, a, s), v in st.ledger.holdings().items() if st.ledger.encumbered(o, a, s) > v)
+        return ok["NEO"], ok["SHR:AresHabitat"], over
+
+    # -- knowledge ----------------------------------------------------------
+    def knowledge(self, actor, t):
+        st = self.state_ex.state
+        if actor in RELAYS:
+            return "relay: stores and forwards packet bytes only; no financial state"
+        if actor is None:
+            return ""
+        p = st.principals.get(actor)
+        names = [actor] if p else [i for i in self.inst_at.get(actor, [])]
+        if not names:
+            return ""
+        parts = []
+        for n in names:
+            pr = st.principals.get(n)
+            if pr is not None and pr.kind.value == "account":
+                bal = st.ledger.available(n, "NEO", pr.settlement)
+                parts.append(f"{n} sees own ${bal:,} free at {pr.settlement}")
+            got = self.known.get(n, [])[-2:]
+            if got:
+                parts.append(f"{n} last received: " + ", ".join(got))
+            waiting = [m for m in self.r.w.messages.values()
+                       if m["sender"] == n and m["sent_h"] <= t and (m["acked_h"] is None or m["acked_h"] > t)]
+            if waiting:
+                parts.append(f"{n} awaiting ack: " + ", ".join(f"{m['kind']}→{m['recipient']}" for m in waiting[-2:]))
+            if pr is not None and pr.kind.value == "price_source":
+                parts.append("observes MOI locally at Mars")
+        return "; ".join(parts) or f"{', '.join(names)}: no remote information yet"
+
+    def note_delivery(self, e):
+        st = self.state_ex.state
+        if e.type is EventType.MESSAGE_SENT and e.data["service"] == "local":
+            self.known.setdefault(e.data["recipient"], []).append(f"{e.data['kind']} from {e.data['sender']} (local)")
+        if e.type is EventType.MESSAGE_STATUS_CHANGED and e.data["status"] == "delivered":
+            m = st.messages[e.data["message_id"]]
+            self.known.setdefault(m.recipient, []).append(f"{m.kind} from {m.sender} @h{e.time_h:.2f}")
+        if e.type is EventType.INSTITUTION_CHARTERED:
+            self.inst_at.setdefault(e.data["settlement"], []).append(e.data["name"])
+
+    # -- main loop ----------------------------------------------------------
+    def run(self):
+        trace, ledger, steps = [], [], []
+        for e in self.events:
+            before = self.holdings()
+            self.state_ex._apply(e)
+            self.state_ex.journal.append(e)
+            self.note_delivery(e)
+            after = self.holdings()
+            if e.time_h < 0:
+                continue
+            if self.opening is None:
+                self.opening = True
+                for k, (v, enc) in sorted(after.items()):
+                    if k[0] in {a for a, *_ in scenarios.ACCOUNTS}:
+                        ledger.append({"time_h": 0.0, "event": "OPENING", "owner": k[0], "asset": _holding_key_label(k[1]),
+                                       "location": k[2], "change": _amt(k[1], v), "balance_after": _amt(k[1], v),
+                                       "available_after": _amt(k[1], v - enc), "encumbered_after": _amt(k[1], enc),
+                                       "encumbrances": "", "source": "opening balance sheet", "liability": ""})
+            label, detail, cat = describe(self.ex, e)
+            changed = sorted(k for k in set(before) | set(after) if before.get(k) != after.get(k))
+            for k in changed:
+                v, enc = after.get(k, (D(0), D(0)))
+                b0 = before.get(k, (D(0), D(0)))[0]
+                ledger.append({"time_h": e.time_h, "event": label, "owner": k[0], "asset": _holding_key_label(k[1]),
+                               "location": k[2], "change": _amt(k[1], v - b0) if v != b0 else "lock change",
+                               "balance_after": _amt(k[1], v), "available_after": _amt(k[1], v - enc),
+                               "encumbered_after": _amt(k[1], enc), "encumbrances": self.encs(k),
+                               "source": _source(e), "liability": self.liability(k)})
+            # Transmission and arrival columns.
+            tx, arr = "—", "—"
+            if e.type is EventType.PACKET_LAUNCHED:
+                p = self.state_ex.state.packets[e.data["packet_id"]]
+                tx = f"backbone {e.data['from_node']}→{e.data['to_node']} launch h {e.time_h:.4f} ({p.kind.value}, attempt {e.data['attempt']})"
+                arr = (f"LOST (nominal h {e.data['arrival_h']:.4f})" if e.data["lost"] else f"h {e.data['arrival_h']:.4f}")
+            elif e.type is EventType.MESSAGE_SENT:
+                m = self.r.w.messages.get(e.data["message_id"])
+                if e.data["service"] == "local":
+                    tx, arr = f"local access {e.data['sender']}→{e.data['recipient']}", f"h {e.time_h + SEC_H:.4f}"
+                else:
+                    tx = f"backbone message {e.data['kind']} {e.data['sender']}→{e.data['recipient']}" + (
+                        f" on {' → '.join(m['route'])}" if m else "")
+                    arr = f"delivered h {m['delivered_h']:.4f}" if m and m["delivered_h"] else "not delivered"
+            elif e.type is EventType.TRANSPORT_PACKET_CREATED:
+                tx = f"{e.data['kind'].replace('_', ' ')} queued at {e.data['from_node']}"
+            state_after = "unchanged"
+            if changed:
+                state_after = "; ".join(f"{k[0]} {_amt(k[1], after.get(k, (D(0), D(0)))[0])}@{k[2]}"
+                                        + (f" (locked {_amt(k[1], after[k][1])})" if k in after and after[k][1] else "")
+                                        for k in changed)
+                st = self.state_ex.state
+                state_after += f" | in transit ${st.in_transit('NEO'):,} / {st.in_transit('SHR:AresHabitat'):,} sh"
+            trace.append({"time_h": e.time_h, "actor": e.actor or "", "local_knowledge": self.knowledge(e.actor, e.time_h),
+                          "action": f"{label}: {detail}" + (f" — {e.note}" if e.note and e.type is not EventType.NOTE else ""),
+                          "packet_or_transmission": tx, "arrival": arr, "financial_state_after": state_after,
+                          "category": cat})
+            if cat == "finance" or changed:
+                cash_ok, sh_ok, over = self.conserved()
+                steps.append({"time_h": e.time_h, "event": label, "cash_conserved": cash_ok, "shares_conserved": sh_ok,
+                              "over_encumbered_holdings": over, "obligations_open": self.obligations()})
+        return trace, ledger, steps
+
+
+KEY_TRACES = [("cross-planet", "value move between settlements"),
+              ("margin-call", "obligation open ≥ 240 h, price-falling run"),
+              ("futures-rising", "price-rising run"),
+              ("funded-default", "variation where a real constraint binds (default)")]
+
+
+def run_traces(out):
+    d = out / "traces"
+    runs = {sid: (title, fn) for sid, title, fn in list(cases.CASES) + S1_EXTRA}
+    summary, compact = [], {}
+    for sid, (title, fn) in runs.items():
+        r = fn()
+        trace, ledger, steps = _Replay(r).run()
+        write_csv(d / f"{sid}_trace.csv", trace, TRACE_FIELDS)
+        write_csv(d / f"{sid}_ledger.csv", ledger, LEDGER_FIELDS)
+        write_csv(d / f"{sid}_steps.csv", steps,
+                  ["time_h", "event", "cash_conserved", "shares_conserved", "over_encumbered_holdings", "obligations_open"])
+        summary.append({"scenario": sid, "title": title, "trace_rows": len(trace), "ledger_rows": len(ledger),
+                        "financial_steps": len(steps),
+                        "cash_conserved_every_step": all(s["cash_conserved"] for s in steps),
+                        "shares_conserved_every_step": all(s["shares_conserved"] for s in steps),
+                        "max_over_encumbered": max((s["over_encumbered_holdings"] for s in steps), default=0),
+                        "knowledge_filled": sum(1 for x in trace if x["local_knowledge"]) / max(len(trace), 1),
+                        "obligations_at_end": steps[-1]["obligations_open"] if steps else "none"})
+        compact[sid] = (trace, ledger)
+        print(f"  traces {sid}: {len(trace)} trace rows, {len(ledger)} ledger rows")
+    write_csv(d / "traces_summary.csv", summary)
+
+    def short(s, n=95):
+        return s if len(s) <= n else s[:n - 1] + "…"
+    md = ["# S1 traces and E3 balances & obligations (every scenario)\n",
+          "**Reproduce:** `python3 -m evidence.appendix traces` → `traces/<scenario>_trace.csv` (S1), "
+          "`traces/<scenario>_ledger.csv` and `traces/<scenario>_steps.csv` (E3), `traces/traces_summary.csv`.\n",
+          "Built by replaying each scenario's journal event by event: no step is re-simulated or edited. Conditional "
+          "(no-loss) traces at the epoch with maintenance and geometry applied.\n",
+          "## Field coverage\n",
+          md_table(["Brief field", "Column", "Where"],
+                   [["S1 time", "`time_h`", "every trace row"], ["S1 actor", "`actor`", "every row (account, institution, gateway or relay)"],
+                    ["S1 local knowledge", "`local_knowledge`", "what that actor has received / is awaiting / its own free balance"],
+                    ["S1 action", "`action`", "event + detail + rule note"],
+                    ["S1 packet or transmission", "`packet_or_transmission`", "service, link, launch time, packet kind, attempt"],
+                    ["S1 arrival", "`arrival`", "arrival time, or LOST with nominal time"],
+                    ["S1 financial state after", "`financial_state_after`", "holdings changed by the step + value in transit"],
+                    ["E3 owner / location / asset", "`owner`, `location`, `asset`", "ledger rows"],
+                    ["E3 source", "`source`", "opening sheet, trade, transfer, contribution, payout…"],
+                    ["E3 encumbrance", "`encumbered_after`, `encumbrances`", "purpose + reference + amount"],
+                    ["E3 liability", "`liability`, steps `obligations_open`", "margin duty, transfers owed, fund claims"],
+                    ["E3 conservation / one use", "steps `cash_conserved`, `shares_conserved`, `over_encumbered_holdings`", "every financial step"]]),
+          "\n## Every scenario\n",
+          md_table(["Scenario", "Trace rows", "Ledger rows", "Financial steps", "Cash conserved", "Shares conserved",
+                    "Over-encumbered", "Open at end"],
+                   [[x["title"], x["trace_rows"], x["ledger_rows"], x["financial_steps"],
+                     "✓ every step" if x["cash_conserved_every_step"] else "✗",
+                     "✓ every step" if x["shares_conserved_every_step"] else "✗", x["max_over_encumbered"],
+                     short(x["obligations_at_end"], 70)] for x in summary])]
+    for sid, why in KEY_TRACES:
+        trace, ledger = compact[sid]
+        title = runs[sid][0]
+        rows = [x for x in trace if x["financial_state_after"] != "unchanged" or "MARGIN CALL" in x["action"]
+                or "REJECTED" in x["action"] or "deadline" in x["action"]
+                or (sid == "cross-planet" and x["category"] == "network" and x["action"].startswith(("PACKET", "RECEIVED")))]
+        md += [f"\n## {title} — {why}\n",
+               f"Key steps ({len(rows)} of {len(trace)} rows; full trace `traces/{sid}_trace.csv`).\n",
+               md_table(["h", "Actor", "Local knowledge", "Action", "Transmission", "Arrival", "Financial state after"],
+                        [[f"{x['time_h']:.3f}", x["actor"], short(x["local_knowledge"], 70), short(x["action"], 80),
+                          short(x["packet_or_transmission"], 60), x["arrival"], short(x["financial_state_after"], 110)]
+                         for x in rows]),
+               f"\nBalances and obligations (E3), {len([y for y in ledger if y['event'] != 'OPENING'])} changes after the "
+               f"opening rows; full ledger `traces/{sid}_ledger.csv`.\n",
+               md_table(["h", "Owner", "Asset @ location", "Change", "Balance", "Encumbered", "Source", "Liability"],
+                        [[f"{y['time_h']:.3f}", y["owner"], f"{y['asset']} @ {y['location']}", y["change"],
+                          y["balance_after"], y["encumbered_after"], short(y["source"], 60), short(y["liability"], 70)]
+                         for y in ledger if y["event"] != "OPENING"][:40])]
+    (d / "TRACES.md").write_text("\n".join(md))
+    return summary
 
 
 if __name__ == "__main__":

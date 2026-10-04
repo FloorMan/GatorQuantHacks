@@ -1,0 +1,4 @@
+time_h,event,cash_conserved,shares_conserved,over_encumbered_holdings,obligations_open
+1.000278,ORDER ACCEPTED,True,True,0,none
+1.500278,ORDER ACCEPTED,True,True,0,none
+1.500278,TRADE · DvP,True,True,0,none

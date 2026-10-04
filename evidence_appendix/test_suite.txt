@@ -32,6 +32,6 @@ test_retry_duplicate (test_scenarios.ScenarioTests.test_retry_duplicate) ... ok
 test_uncertain_lock (test_scenarios.ScenarioTests.test_uncertain_lock) ... ok
 
 ----------------------------------------------------------------------
-Ran 32 tests in 11.275s
+Ran 32 tests in 11.336s
 
 OK

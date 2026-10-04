@@ -1,0 +1,6 @@
+time_h,actor,local_knowledge,action,packet_or_transmission,arrival,financial_state_after,category
+1.000000,E-Alice,"E-Alice sees own $70,000 free at Earth",MESSAGE SENT: order: E-Alice → Earth Exchange (local),local access E-Alice→Earth Exchange,h 1.0003,unchanged,local
+1.000278,E-Alice,"E-Alice sees own $70,000 free at Earth",ORDER ACCEPTED: E-Alice SELL 100 @ 40 on ARES.EARTH — Earth Exchange locks 100 shares; rests on the Earth book,—,—,E-Alice 600 sh@Earth (locked 100 sh) | in transit $0 / 0 sh,finance
+1.500000,E-Bob,"E-Bob sees own $45,000 free at Earth",MESSAGE SENT: order: E-Bob → Earth Exchange (local),local access E-Bob→Earth Exchange,h 1.5003,unchanged,local
+1.500278,E-Bob,"E-Bob sees own $40,800 free at Earth",ORDER ACCEPTED: E-Bob BUY 100 @ 42 on ARES.EARTH — crosses the resting sell; delivery versus payment on the Earth ledger,—,—,"E-Bob $45,000@Earth (locked $4,200) | in transit $0 / 0 sh",finance
+1.500278,Earth,"Earth Exchange last received: order from E-Alice (local), order from E-Bob (local)",TRADE · DvP: 100 @ 40 on ARES.EARTH,—,—,"E-Alice $74,000@Earth; E-Alice 500 sh@Earth; E-Bob $41,000@Earth; E-Bob 500 sh@Earth | in transit $0 / 0 sh",finance

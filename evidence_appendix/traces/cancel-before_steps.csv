@@ -1,0 +1,10 @@
+time_h,event,cash_conserved,shares_conserved,over_encumbered_holdings,obligations_open
+0.500000,BATCH OPENED,True,True,0,none
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: N-Eve buy 10@100 reserved
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: N-Eve buy 10@100 reserved | BOR-000002: E-Alice sell 10@95 reserved
+1.556458,IN BATCH,True,True,0,BOR-000001: N-Eve buy 10@100 reserved | BOR-000002: E-Alice sell 10@95 accepted
+5.105345,IN BATCH,True,True,0,BOR-000001: N-Eve buy 10@100 accepted | BOR-000002: E-Alice sell 10@95 accepted
+6.105390,CANCELLED AT MARKET,True,True,0,BOR-000001: N-Eve buy 10@100 cancelled | BOR-000002: E-Alice sell 10@95 accepted
+10.210485,RESULT APPLIED AT HOME,True,True,0,BOR-000002: E-Alice sell 10@95 accepted
+31.184360,BATCH EXECUTED,True,True,0,BOR-000002: E-Alice sell 10@95 executed
+31.738458,RESULT APPLIED AT HOME,True,True,0,none

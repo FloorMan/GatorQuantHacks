@@ -1,0 +1,16 @@
+time_h,event,cash_conserved,shares_conserved,over_encumbered_holdings,obligations_open
+2.000000,ORDER ACCEPTED,True,True,0,none
+2.000278,ORDER ACCEPTED,True,True,0,none
+2.000278,TRADE · DvP,True,True,0,none
+3.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: M-Carla sell 20@45 reserved
+75.000000,BATCH OPENED,True,True,0,BOR-000001: M-Carla sell 20@45 reserved
+76.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: M-Carla sell 20@45 reserved | BOR-000002: E-Bob buy 20@46 reserved
+76.551521,IN BATCH,True,True,0,BOR-000001: M-Carla sell 20@45 reserved | BOR-000002: E-Bob buy 20@46 accepted
+78.477297,IN BATCH,True,True,0,BOR-000001: M-Carla sell 20@45 accepted | BOR-000002: E-Bob buy 20@46 accepted
+105.706637,BATCH EXECUTED,True,True,0,"BOR-000001: M-Carla sell 20@45 executed | BOR-000002: E-Bob buy 20@46 executed | TRD-000002: executed, legs pending"
+106.206412,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: M-Carla@Mars → E-Bob@Earth 20 sh in transit | BOR-000002: E-Bob buy 20@46 executed | TRD-000002: executed, legs pending"
+106.255890,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: M-Carla@Mars → E-Bob@Earth 20 sh in transit | XFR-000002: E-Bob@Earth → M-Carla@Mars $910.00 in transit | TRD-000002: executed, legs pending"
+106.768437,VALIDATED · FINAL,True,True,0,"XFR-000002: E-Bob@Earth → M-Carla@Mars $910.00 in transit | TRD-000002: executed, legs pending"
+106.818000,VALIDATED · FINAL,True,True,0,none
+107.330532,SOURCE RECONCILED,True,True,0,none
+107.380007,SOURCE RECONCILED,True,True,0,none

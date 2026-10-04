@@ -1,0 +1,20 @@
+time_h,event,cash_conserved,shares_conserved,over_encumbered_holdings,obligations_open
+9.500000,BATCH OPENED,True,True,0,none
+10.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: E-Bob buy 10@100 reserved
+10.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: E-Bob buy 10@100 reserved | BOR-000002: M-Diego buy 10@100 reserved
+10.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: E-Bob buy 10@100 reserved | BOR-000002: M-Diego buy 10@100 reserved | BOR-000003: N-Eve sell 15@100 reserved
+10.495914,IN BATCH,True,True,0,BOR-000001: E-Bob buy 10@100 reserved | BOR-000002: M-Diego buy 10@100 accepted | BOR-000003: N-Eve sell 15@100 reserved
+10.555858,IN BATCH,True,True,0,BOR-000001: E-Bob buy 10@100 accepted | BOR-000002: M-Diego buy 10@100 accepted | BOR-000003: N-Eve sell 15@100 reserved
+14.105747,IN BATCH,True,True,0,BOR-000001: E-Bob buy 10@100 accepted | BOR-000002: M-Diego buy 10@100 accepted | BOR-000003: N-Eve sell 15@100 accepted
+40.187038,BATCH EXECUTED,True,True,0,"BOR-000001: E-Bob buy 10@100 executed | BOR-000002: M-Diego buy 10@100 executed | BOR-000003: N-Eve sell 15@100 executed | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending"
+40.683977,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: M-Diego@Mars → N-Eve@Neptune $800.00 in transit | BOR-000001: E-Bob buy 10@100 executed | BOR-000003: N-Eve sell 15@100 executed | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending"
+40.740543,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: M-Diego@Mars → N-Eve@Neptune $800.00 in transit | XFR-000002: E-Bob@Earth → N-Eve@Neptune $700.00 in transit | BOR-000003: N-Eve sell 15@100 executed | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending"
+44.293660,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: M-Diego@Mars → N-Eve@Neptune $800.00 in transit | XFR-000002: E-Bob@Earth → N-Eve@Neptune $700.00 in transit | XFR-000003: N-Eve@Neptune → M-Diego@Mars 8 sh in transit | XFR-000004: N-Eve@Neptune → E-Bob@Earth 7 sh in transit | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending"
+44.801041,VALIDATED · FINAL,True,True,0,"XFR-000002: E-Bob@Earth → N-Eve@Neptune $700.00 in transit | XFR-000003: N-Eve@Neptune → M-Diego@Mars 8 sh in transit | XFR-000004: N-Eve@Neptune → E-Bob@Earth 7 sh in transit | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending"
+44.914204,VALIDATED · FINAL,True,True,0,"XFR-000003: N-Eve@Neptune → M-Diego@Mars 8 sh in transit | XFR-000004: N-Eve@Neptune → E-Bob@Earth 7 sh in transit | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending"
+48.411357,VALIDATED · FINAL,True,True,0,"XFR-000004: N-Eve@Neptune → E-Bob@Earth 7 sh in transit | TRD-000002: executed, legs pending"
+48.467082,VALIDATED · FINAL,True,True,0,none
+48.918778,SOURCE RECONCILED,True,True,0,none
+49.087609,SOURCE RECONCILED,True,True,0,none
+52.529049,SOURCE RECONCILED,True,True,0,none
+52.640531,SOURCE RECONCILED,True,True,0,none
