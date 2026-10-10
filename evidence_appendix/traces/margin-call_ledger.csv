@@ -1,0 +1,46 @@
+time_h,event,owner,asset,location,change,balance_after,available_after,encumbered_after,encumbrances,source,liability
+0.000000,OPENING,C-Finn,cash,Ceres,"$35,000","$35,000","$35,000",$0,,opening balance sheet,
+0.000000,OPENING,C-Finn,shares,Ceres,500 sh,500 sh,500 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,E-Alice,cash,Earth,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,E-Alice,shares,Earth,600 sh,600 sh,600 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,E-Bob,cash,Earth,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,E-Bob,shares,Earth,400 sh,400 sh,400 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,M-Carla,cash,Mars,"$60,000","$60,000","$60,000",$0,,opening balance sheet,
+0.000000,OPENING,M-Carla,shares,Mars,550 sh,550 sh,550 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,M-Diego,cash,Mars,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,M-Diego,shares,Mars,450 sh,450 sh,450 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,N-Eve,cash,Neptune,"$55,000","$55,000","$55,000",$0,,opening balance sheet,
+0.000000,OPENING,N-Eve,shares,Neptune,500 sh,500 sh,500 sh,0 sh,,opening balance sheet,
+0.100000,TRANSFER INITIATED,E-Alice,cash,Earth,"$-25,000","$45,000","$45,000",$0,,transfer XFR-000001 sent (Earth → Ceres),"owes $25,000 to E-Alice@Ceres via XFR-000001 (in transit)"
+0.100000,TRANSFER INITIATED,E-Bob,cash,Earth,"$-25,000","$20,000","$20,000",$0,,transfer XFR-000002 sent (Earth → Ceres),"owes $25,000 to E-Bob@Ceres via XFR-000002 (in transit)"
+0.500000,TRANSFER INITIATED,N-Eve,cash,Neptune,"$-15,000.00","$40,000.00","$40,000.00",$0,,transfer XFR-000003 sent (Neptune → Ceres),"owes $15,000.00 to N-Eve@Ceres via XFR-000003 (in transit)"
+0.500000,TRANSFER INITIATED,E-Alice,cash,Earth,"$-10,000.00","$35,000.00","$35,000.00",$0,,transfer XFR-000004 sent (Earth → Ceres),"owes $25,000 to E-Alice@Ceres via XFR-000001 (in transit); owes $10,000.00 to E-Alice@Ceres via XFR-000004 (in transit)"
+0.656240,VALIDATED · FINAL,E-Alice,cash,Ceres,"$25,000","$25,000","$25,000",$0,,transfer XFR-000001 validated at destination,
+0.656240,GUARANTEE CONTRIBUTION,Ceres Clearing,cash,Ceres,"$25,000","$25,000",$0,"$25,000","guarantee FUND:Ceres Clearing $25,000",guarantee contribution E-Alice → Ceres Clearing,guarantee fund: covers default losses; repayable to contributors
+0.656240,GUARANTEE CONTRIBUTION,E-Alice,cash,Ceres,"$-25,000",$0,$0,$0,,guarantee contribution E-Alice → Ceres Clearing,
+0.656240,VALIDATED · FINAL,E-Bob,cash,Ceres,"$25,000","$25,000","$25,000",$0,,transfer XFR-000002 validated at destination,
+0.656240,GUARANTEE CONTRIBUTION,Ceres Clearing,cash,Ceres,"$25,000","$50,000",$0,"$50,000","guarantee FUND:Ceres Clearing $25,000; guarantee FUND:Ceres Clearing $25,000",guarantee contribution E-Bob → Ceres Clearing,guarantee fund: covers default losses; repayable to contributors; guarantee fund: covers default losses; repayable to contributors
+0.656240,GUARANTEE CONTRIBUTION,E-Bob,cash,Ceres,"$-25,000",$0,$0,$0,,guarantee contribution E-Bob → Ceres Clearing,
+1.056213,VALIDATED · FINAL,E-Alice,cash,Ceres,"$10,000.00","$10,000.00","$10,000.00",$0,,transfer XFR-000004 validated at destination,
+4.605045,VALIDATED · FINAL,N-Eve,cash,Ceres,"$15,000.00","$15,000.00","$15,000.00",$0,,transfer XFR-000003 validated at destination,
+4.605045,FUTURE OPENED,E-Alice,cash,Ceres,lock change,"$10,000.00",$0.00,"$10,000.00","margin POS-000001 $10,000.00",position POS-000001 opened (margin locked),short margin on POS-000001 (pays losses)
+4.605045,FUTURE OPENED,N-Eve,cash,Ceres,lock change,"$15,000.00",$0.00,"$15,000.00","margin POS-000001 $15,000.00",position POS-000001 opened (margin locked),long margin on POS-000001 (pays losses)
+40.603764,TRANSFER INITIATED,N-Eve,cash,Neptune,"$-5,100.00","$34,900.00","$34,900.00",$0,,transfer XFR-000005 sent (Neptune → Ceres),"owes $5,100.00 to N-Eve@Ceres via XFR-000005 (in transit)"
+44.710607,VALIDATED · FINAL,N-Eve,cash,Ceres,"$5,100.00","$20,100.00","$5,100.00","$15,000.00","margin POS-000001 $15,000.00",transfer XFR-000005 validated at destination,long margin on POS-000001 (pays losses)
+44.710607,MARGIN POSTED,N-Eve,cash,Ceres,lock change,"$20,100.00",$0.00,"$20,100.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00",margin top-up on POS-000001,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+64.605879,TRANSFER INITIATED,N-Eve,cash,Neptune,"$-3,400.00","$31,500.00","$31,500.00",$0,,transfer XFR-000006 sent (Neptune → Ceres),"owes $3,400.00 to N-Eve@Ceres via XFR-000006 (in transit)"
+68.713804,VALIDATED · FINAL,N-Eve,cash,Ceres,"$3,400.00","$23,500.00","$3,400.00","$20,100.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00",transfer XFR-000006 validated at destination,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+68.713804,MARGIN POSTED,N-Eve,cash,Ceres,lock change,"$23,500.00",$0.00,"$23,500.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00; margin POS-000001 $3,400.00",margin top-up on POS-000001,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+100.609067,TRANSFER INITIATED,N-Eve,cash,Neptune,"$-3,400.00","$28,100.00","$28,100.00",$0,,transfer XFR-000007 sent (Neptune → Ceres),"owes $3,400.00 to N-Eve@Ceres via XFR-000007 (in transit)"
+104.718624,VALIDATED · FINAL,N-Eve,cash,Ceres,"$3,400.00","$26,900.00","$3,400.00","$23,500.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00; margin POS-000001 $3,400.00",transfer XFR-000007 validated at destination,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+104.718624,MARGIN POSTED,N-Eve,cash,Ceres,lock change,"$26,900.00",$0.00,"$26,900.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00",margin top-up on POS-000001,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+148.613348,TRANSFER INITIATED,N-Eve,cash,Neptune,"$-3,400.00","$24,700.00","$24,700.00",$0,,transfer XFR-000008 sent (Neptune → Ceres),"owes $3,400.00 to N-Eve@Ceres via XFR-000008 (in transit)"
+152.725096,VALIDATED · FINAL,N-Eve,cash,Ceres,"$3,400.00","$30,300.00","$3,400.00","$26,900.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00",transfer XFR-000008 validated at destination,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+152.725096,MARGIN POSTED,N-Eve,cash,Ceres,lock change,"$30,300.00",$0.00,"$30,300.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00",margin top-up on POS-000001,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+220.619829,TRANSFER INITIATED,N-Eve,cash,Neptune,"$-3,400.00","$21,300.00","$21,300.00",$0,,transfer XFR-000009 sent (Neptune → Ceres),"owes $3,400.00 to N-Eve@Ceres via XFR-000009 (in transit)"
+224.734899,VALIDATED · FINAL,N-Eve,cash,Ceres,"$3,400.00","$33,700.00","$3,400.00","$30,300.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00",transfer XFR-000009 validated at destination,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+224.734899,MARGIN POSTED,N-Eve,cash,Ceres,lock change,"$33,700.00",$0.00,"$33,700.00","margin POS-000001 $15,000.00; margin POS-000001 $5,100.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00; margin POS-000001 $3,400.00",margin top-up on POS-000001,long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses); long margin on POS-000001 (pays losses)
+300.508606,SETTLED AT MATURITY,E-Alice,cash,Ceres,"$20,000.00","$30,000.00","$30,000.00",$0.00,,position POS-000001 settled at maturity,
+300.508606,SETTLED AT MATURITY,N-Eve,cash,Ceres,"$-20,000.00","$13,700.00","$13,700.00",$0.00,,position POS-000001 settled at maturity,
+300.508606,TRANSFER INITIATED,E-Alice,cash,Ceres,"$-20,000.00","$10,000.00","$10,000.00",$0.00,,transfer XFR-000010 sent (Ceres → Earth),"owes $20,000.00 to E-Alice@Earth via XFR-000010 (in transit)"
+301.045971,VALIDATED · FINAL,E-Alice,cash,Earth,"$20,000.00","$55,000.00","$55,000.00",$0,,transfer XFR-000010 validated at destination,

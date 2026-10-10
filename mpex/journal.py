@@ -35,6 +35,17 @@ class EventType(str, Enum):
     TRANSPORT_PACKET_CREATED = "transport_packet_created"
     PACKET_LAUNCHED = "packet_launched"
     MESSAGE_STATUS_CHANGED = "message_status_changed"
+    BATCH_OPENED = "batch_opened"
+    BATCH_ORDER_RESERVED = "batch_order_reserved"
+    BATCH_ORDER_ACCEPTED = "batch_order_accepted"
+    BATCH_ORDER_ROLLED = "batch_order_rolled"
+    BATCH_ORDER_CANCELLED = "batch_order_cancelled"
+    BATCH_CANCEL_REJECTED = "batch_cancel_rejected"
+    BATCH_EXECUTED = "batch_executed"
+    BATCH_LEG_SETTLED = "batch_leg_settled"
+    TRANSFER_DUPLICATE_IGNORED = "transfer_duplicate_ignored"
+    TRANSFER_CONFIRMED = "transfer_confirmed"
+    GUARANTEE_CONTRIBUTED = "guarantee_contributed"
     NOTE = "note"  # free-text trace annotation; no state change
 
 

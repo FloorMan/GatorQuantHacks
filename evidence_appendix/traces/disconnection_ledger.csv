@@ -1,0 +1,25 @@
+time_h,event,owner,asset,location,change,balance_after,available_after,encumbered_after,encumbrances,source,liability
+0.000000,OPENING,C-Finn,cash,Ceres,"$35,000","$35,000","$35,000",$0,,opening balance sheet,
+0.000000,OPENING,C-Finn,shares,Ceres,500 sh,500 sh,500 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,E-Alice,cash,Earth,"$70,000","$70,000","$70,000",$0,,opening balance sheet,
+0.000000,OPENING,E-Alice,shares,Earth,600 sh,600 sh,600 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,E-Bob,cash,Earth,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,E-Bob,shares,Earth,400 sh,400 sh,400 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,M-Carla,cash,Mars,"$60,000","$60,000","$60,000",$0,,opening balance sheet,
+0.000000,OPENING,M-Carla,shares,Mars,550 sh,550 sh,500 sh,50 sh,,opening balance sheet,
+0.000000,OPENING,M-Diego,cash,Mars,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,M-Diego,shares,Mars,450 sh,450 sh,450 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,N-Eve,cash,Neptune,"$55,000","$55,000","$55,000",$0,,opening balance sheet,
+0.000000,OPENING,N-Eve,shares,Neptune,500 sh,500 sh,500 sh,0 sh,,opening balance sheet,
+2.000000,ORDER ACCEPTED,M-Carla,shares,Mars,lock change,550 sh,500 sh,50 sh,order ORD-000001 50 sh,order lock ORD-000001,committed to order ORD-000001
+2.000278,ORDER ACCEPTED,M-Diego,cash,Mars,lock change,"$45,000","$42,950","$2,050","order ORD-000002 $2,050",order lock ORD-000002,committed to order ORD-000002
+2.000278,TRADE · DvP,M-Carla,cash,Mars,"$2,000","$62,000","$62,000",$0,,local trade TRD-000001 (DvP),
+2.000278,TRADE · DvP,M-Carla,shares,Mars,-50 sh,500 sh,500 sh,0 sh,,local trade TRD-000001 (DvP),
+2.000278,TRADE · DvP,M-Diego,cash,Mars,"$-2,000","$43,000","$43,000",$0,,local trade TRD-000001 (DvP),
+2.000278,TRADE · DvP,M-Diego,shares,Mars,50 sh,500 sh,500 sh,0 sh,,local trade TRD-000001 (DvP),
+3.000278,ORDER STAMPED · RESERVED,M-Carla,shares,Mars,lock change,500 sh,480 sh,20 sh,order BOR-000001 20 sh,batch order lock BOR-000001,committed to order BOR-000001
+76.000278,ORDER STAMPED · RESERVED,E-Bob,cash,Earth,lock change,"$45,000","$44,080",$920,order BOR-000002 $920,batch order lock BOR-000002,committed to order BOR-000002
+106.206412,RESULT APPLIED AT HOME,M-Carla,shares,Mars,-20 sh,480 sh,480 sh,0 sh,,batch result for BOR-000001: shares XFR-000001,owes 20 sh to E-Bob@Earth via XFR-000001 (in transit)
+106.255890,RESULT APPLIED AT HOME,E-Bob,cash,Earth,$-910.00,"$44,090.00","$44,090.00",$0.00,,batch result for BOR-000002: cash XFR-000002,owes $910.00 to M-Carla@Mars via XFR-000002 (in transit)
+106.768437,VALIDATED · FINAL,E-Bob,shares,Earth,20 sh,420 sh,420 sh,0 sh,,transfer XFR-000001 validated at destination,
+106.818000,VALIDATED · FINAL,M-Carla,cash,Mars,$910.00,"$62,910.00","$62,910.00",$0,,transfer XFR-000002 validated at destination,

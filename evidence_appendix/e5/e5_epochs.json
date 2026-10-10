@@ -1,0 +1,4543 @@
+[
+ {
+  "offset_h": 8766.0,
+  "offset_years": 1.0,
+  "routes": [
+   {
+    "settlement": "Mercury",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mercury",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.635330686467114,
+    "first_try_success": 0.9125183801743726,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0525,
+     0.0369
+    ],
+    "p_hop_abandoned_max": 7.623361919128394e-06
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Mercury"
+    ],
+    "one_way_h": 0.635448646455643,
+    "first_try_success": 0.9125028496114895,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0369,
+     0.0526
+    ],
+    "p_hop_abandoned_max": 7.630092377446016e-06
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Mercury"
+    ],
+    "one_way_h": 0.6449589416693016,
+    "first_try_success": 0.911251597443614,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0382,
+     0.0526
+    ],
+    "p_hop_abandoned_max": 7.630184921287533e-06
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Venus",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.5539036597333507,
+    "first_try_success": 0.923302343411171,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0413,
+     0.0369
+    ],
+    "p_hop_abandoned_max": 2.9231190608901356e-06
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Venus"
+    ],
+    "one_way_h": 0.5539275272340092,
+    "first_try_success": 0.9232991638682555,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0369,
+     0.0413
+    ],
+    "p_hop_abandoned_max": 2.922791788443883e-06
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Venus"
+    ],
+    "one_way_h": 0.5634365314790557,
+    "first_try_success": 0.9220332792020185,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0382,
+     0.0413
+    ],
+    "p_hop_abandoned_max": 2.9227868927916252e-06
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Earth",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.7768120241817087,
+    "first_try_success": 0.894079685765449,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0717,
+     0.0369
+    ],
+    "p_hop_abandoned_max": 2.6414702135563017e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.7768784844774927,
+    "first_try_success": 0.8940711124074808,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0369,
+     0.0717
+    ],
+    "p_hop_abandoned_max": 2.6420965896840976e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.7863878962994022,
+    "first_try_success": 0.89284524820889,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0382,
+     0.0717
+    ],
+    "p_hop_abandoned_max": 2.642102165285191e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.5311671563008531,
+    "first_try_success": 0.9263361975884444,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0382,
+     0.0369
+    ],
+    "p_hop_abandoned_max": 2.129077255331378e-06
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Mars"
+    ],
+    "one_way_h": 0.531241492263689,
+    "first_try_success": 0.9263262623150775,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0369,
+     0.0382
+    ],
+    "p_hop_abandoned_max": 2.1303879795576557e-06
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.5311671563008531,
+    "first_try_success": 0.9263361975884444,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0382,
+     0.0369
+    ],
+    "p_hop_abandoned_max": 2.129077255331378e-06
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Jupiter",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.8309718300715758,
+    "first_try_success": 0.8871202806767154,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0701,
+     0.046
+    ],
+    "p_hop_abandoned_max": 2.4206059558535778e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Jupiter"
+    ],
+    "one_way_h": 0.8309576370361356,
+    "first_try_success": 0.8871220973329714,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.046,
+     0.0701
+    ],
+    "p_hop_abandoned_max": 2.4211121538745935e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Jupiter"
+    ],
+    "one_way_h": 0.8629076058787177,
+    "first_try_success": 0.8830420260262135,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0382,
+     0.0819
+    ],
+    "p_hop_abandoned_max": 4.4964179578075004e-05
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Saturn",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 1.7267115187464697,
+    "first_try_success": 0.779568648373859,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.1829,
+     0.046
+    ],
+    "p_hop_abandoned_max": 0.0011184323027101117
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Saturn"
+    ],
+    "one_way_h": 1.7265830417791221,
+    "first_try_success": 0.7795830993841628,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.046,
+     0.1829
+    ],
+    "p_hop_abandoned_max": 0.0011182116571726766
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Saturn"
+    ],
+    "one_way_h": 1.9504442212341928,
+    "first_try_success": 0.7548054035032403,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0763,
+     0.1829
+    ],
+    "p_hop_abandoned_max": 0.0011182396308608382
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Uranus",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 2.802550237795458,
+    "first_try_success": 0.667484210447074,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.3004,
+     0.046
+    ],
+    "p_hop_abandoned_max": 0.008138650916730364
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Uranus"
+    ],
+    "one_way_h": 2.802363343473189,
+    "first_try_success": 0.66750220982537,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.046,
+     0.3003
+    ],
+    "p_hop_abandoned_max": 0.008137312006058913
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Uranus"
+    ],
+    "one_way_h": 3.0262255421889677,
+    "first_try_success": 0.6462867154633783,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0763,
+     0.3003
+    ],
+    "p_hop_abandoned_max": 0.008137429279012103
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Neptune",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 4.653083848829283,
+    "first_try_success": 0.511074603640654,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.4643,
+     0.046
+    ],
+    "p_hop_abandoned_max": 0.046472679963348376
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Neptune"
+    ],
+    "one_way_h": 4.652786842530986,
+    "first_try_success": 0.5110965051382641,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.046,
+     0.4643
+    ],
+    "p_hop_abandoned_max": 0.046466153412799555
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Neptune"
+    ],
+    "one_way_h": 4.767125523857885,
+    "first_try_success": 0.5027340604335337,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0382,
+     0.4773
+    ],
+    "p_hop_abandoned_max": 0.05189958591977731
+   }
+  ],
+  "batch_timing": {
+   "rule": "close = open + 1.1 x slowest one-way + 3 hop retries x R_h",
+   "slowest_from": "Neptune",
+   "slowest_one_way_h": 4.653114290420035,
+   "hop_retries": 3,
+   "retry_allowance_h": 28.95677545493163,
+   "duration_h": 34.07520117439367,
+   "routes": [
+    {
+     "from": "Earth",
+     "route": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 0.7768212839146145,
+     "retry_allowance_h": 2.031199892505356
+    },
+    {
+     "from": "Mars",
+     "route": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 0.5311864596396845,
+     "retry_allowance_h": 1.539924741197865
+    },
+    {
+     "from": "Neptune",
+     "route": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "one_way_h": 4.653114290420035,
+     "retry_allowance_h": 9.65225848497721
+    }
+   ]
+  },
+  "runs": {
+   "value_move": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 11,
+    "checks_total": 11,
+    "failed_checks": [],
+    "trade_complete_h": 44.036621156717956,
+    "price": "47.50",
+    "position_state": null,
+    "opened_h": null,
+    "calls": 0,
+    "calls_met": 0,
+    "paid": null,
+    "fund_used": null,
+    "settled_h": null,
+    "ran_past_h320": false,
+    "marks_sent": 0,
+    "marks_delivered_by_h320": 0,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_falling": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 5.153114290422309,
+    "calls": 5,
+    "calls_met": 5,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 300.543311517029,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_rising": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 5.153114290422309,
+    "calls": 6,
+    "calls_met": 6,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 300.543311517029,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   }
+  },
+  "name": "1 year",
+  "why": "brief offset"
+ },
+ {
+  "offset_h": 87660.0,
+  "offset_years": 10.0,
+  "routes": [
+   {
+    "settlement": "Mercury",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mercury",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.5584982932996354,
+    "first_try_success": 0.9226904645940844,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0579,
+     0.0206
+    ],
+    "p_hop_abandoned_max": 1.1235878796189036e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Mercury"
+    ],
+    "one_way_h": 0.558420419547474,
+    "first_try_success": 0.9227008318565232,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0206,
+     0.0579
+    ],
+    "p_hop_abandoned_max": 1.1225700643554454e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Mercury"
+    ],
+    "one_way_h": 0.5826522570569068,
+    "first_try_success": 0.9194804836912471,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.024,
+     0.0579
+    ],
+    "p_hop_abandoned_max": 1.1225279498185216e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Venus",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.5680833882652223,
+    "first_try_success": 0.9214152985927508,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0592,
+     0.0206
+    ],
+    "p_hop_abandoned_max": 1.2281201964530687e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Venus"
+    ],
+    "one_way_h": 0.5680377036078426,
+    "first_try_success": 0.9214213721316712,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0206,
+     0.0592
+    ],
+    "p_hop_abandoned_max": 1.2273950406012692e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Venus"
+    ],
+    "one_way_h": 0.5922712807987409,
+    "first_try_success": 0.9182052589740118,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.024,
+     0.0592
+    ],
+    "p_hop_abandoned_max": 1.2273696596143975e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Earth",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.6748640923033236,
+    "first_try_success": 0.9073282006596124,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0736,
+     0.0206
+    ],
+    "p_hop_abandoned_max": 2.931484401869016e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.6748735815235705,
+    "first_try_success": 0.9073269584085426,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0206,
+     0.0736
+    ],
+    "p_hop_abandoned_max": 2.931266952797721e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.6991091427807987,
+    "first_try_success": 0.9041597813178487,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.024,
+     0.0736
+    ],
+    "p_hop_abandoned_max": 2.93126119839806e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.31370934168080566,
+    "first_try_success": 0.9558611426582404,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.024,
+     0.0206
+    ],
+    "p_hop_abandoned_max": 3.333008205717924e-07
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Mars"
+    ],
+    "one_way_h": 0.31373433296903386,
+    "first_try_success": 0.9558576960063813,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0206,
+     0.024
+    ],
+    "p_hop_abandoned_max": 3.3336840083276726e-07
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.31370934168080566,
+    "first_try_success": 0.9558611426582404,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.024,
+     0.0206
+    ],
+    "p_hop_abandoned_max": 3.333008205717924e-07
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Jupiter",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.7551106347818859,
+    "first_try_success": 0.8968835592071872,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.045,
+     0.0608
+    ],
+    "p_hop_abandoned_max": 1.3677317249919885e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Jupiter"
+    ],
+    "one_way_h": 0.7550613801868167,
+    "first_try_success": 0.8968899330154697,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0608,
+     0.045
+    ],
+    "p_hop_abandoned_max": 1.3671613121021234e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Jupiter"
+    ],
+    "one_way_h": 0.8010304209929018,
+    "first_try_success": 0.8909609569956808,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.067,
+     0.045
+    ],
+    "p_hop_abandoned_max": 2.017005920983751e-05
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Saturn",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.0921499656324158,
+    "first_try_success": 0.8543125118927908,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.1277,
+     0.0206
+    ],
+    "p_hop_abandoned_max": 0.0002660414559106909
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 1.0921379151732253,
+    "first_try_success": 0.8543139972638111,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0206,
+     0.1277
+    ],
+    "p_hop_abandoned_max": 0.00026600409801973065
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 1.1163745297781134,
+    "first_try_success": 0.8513317414303996,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.024,
+     0.1277
+    ],
+    "p_hop_abandoned_max": 0.0002660049192463464
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Uranus",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 2.6156485935207456,
+    "first_try_success": 0.6857289456766298,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.2998,
+     0.0206
+    ],
+    "p_hop_abandoned_max": 0.008083323672394128
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Uranus"
+    ],
+    "one_way_h": 2.6155428060446866,
+    "first_try_success": 0.6857394122521744,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0206,
+     0.2998
+    ],
+    "p_hop_abandoned_max": 0.008081760384123192
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Uranus"
+    ],
+    "one_way_h": 2.639779912049562,
+    "first_try_success": 0.6833455713922728,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.024,
+     0.2998
+    ],
+    "p_hop_abandoned_max": 0.008081774266847551
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Neptune",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 4.368092104406969,
+    "first_try_success": 0.5325277346951128,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.433,
+     0.0608
+    ],
+    "p_hop_abandoned_max": 0.03514799137091975
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Neptune"
+    ],
+    "one_way_h": 4.367817822265351,
+    "first_try_success": 0.5325488094682006,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0608,
+     0.433
+    ],
+    "p_hop_abandoned_max": 0.035142968115784934
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Neptune"
+    ],
+    "one_way_h": 4.413788604259025,
+    "first_try_success": 0.5290282121193488,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.067,
+     0.433
+    ],
+    "p_hop_abandoned_max": 0.035143029701734996
+   }
+  ],
+  "batch_timing": {
+   "rule": "close = open + 1.1 x slowest one-way + 3 hop retries x R_h",
+   "slowest_from": "Neptune",
+   "slowest_one_way_h": 4.368122644875257,
+   "hop_retries": 3,
+   "retry_allowance_h": 26.594379344882327,
+   "duration_h": 31.39931425424511,
+   "routes": [
+    {
+     "from": "Earth",
+     "route": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 0.674853884967888,
+     "retry_allowance_h": 2.059433270165755
+    },
+    {
+     "from": "Mars",
+     "route": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 0.31371247703646077,
+     "retry_allowance_h": 1.3371437437381246
+    },
+    {
+     "from": "Neptune",
+     "route": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "one_way_h": 4.368122644875257,
+     "retry_allowance_h": 8.864793114960776
+    }
+   ]
+  },
+  "runs": {
+   "value_move": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 11,
+    "checks_total": 11,
+    "failed_checks": [],
+    "trade_complete_h": 40.59487897253712,
+    "price": "47.50",
+    "position_state": null,
+    "opened_h": null,
+    "calls": 0,
+    "calls_met": 0,
+    "paid": null,
+    "fund_used": null,
+    "settled_h": null,
+    "ran_past_h320": false,
+    "marks_sent": 0,
+    "marks_delivered_by_h320": 0,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_falling": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 4.868122644882533,
+    "calls": 5,
+    "calls_met": 5,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 300.31657406612067,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_rising": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 4.868122644882533,
+    "calls": 6,
+    "calls_met": 6,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 300.31657406612067,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   }
+  },
+  "name": "10 years",
+  "why": "brief offset"
+ },
+ {
+  "offset_h": 876600.0,
+  "offset_years": 100.0,
+  "routes": [
+   {
+    "settlement": "Mercury",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mercury",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.8317414619377814,
+    "first_try_success": 0.8870217762190447,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0596,
+     0.0568
+    ],
+    "p_hop_abandoned_max": 1.2616932390977639e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Mercury"
+    ],
+    "one_way_h": 0.8316791957477108,
+    "first_try_success": 0.8870297452000707,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0568,
+     0.0596
+    ],
+    "p_hop_abandoned_max": 1.2605387952845063e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Mercury"
+    ],
+    "one_way_h": 0.6149085583747365,
+    "first_try_success": 0.9152111371414371,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0239,
+     0.0624
+    ],
+    "p_hop_abandoned_max": 1.5138083841927963e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Venus",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.8617323092767037,
+    "first_try_success": 0.8831917806518623,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0637,
+     0.0568
+    ],
+    "p_hop_abandoned_max": 1.6422901206998245e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Venus"
+    ],
+    "one_way_h": 0.8618430612841621,
+    "first_try_success": 0.8831776677163841,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0568,
+     0.0637
+    ],
+    "p_hop_abandoned_max": 1.64330274536894e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Venus"
+    ],
+    "one_way_h": 0.48357482330175117,
+    "first_try_success": 0.9327190106566371,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0239,
+     0.0444
+    ],
+    "p_hop_abandoned_max": 3.90007355350663e-06
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Earth",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.6839609824237414,
+    "first_try_success": 0.90613809117999,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0393,
+     0.0568
+    ],
+    "p_hop_abandoned_max": 1.0380937907234796e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Earth"
+    ],
+    "one_way_h": 0.6839570324518718,
+    "first_try_success": 0.9061386075953606,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0568,
+     0.0393
+    ],
+    "p_hop_abandoned_max": 1.0384801547619567e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.6416783251916058,
+    "first_try_success": 0.9116830282211902,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0239,
+     0.066
+    ],
+    "p_hop_abandoned_max": 1.8963858514202648e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.8332404023967683,
+    "first_try_success": 0.8868299596095205,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0598,
+     0.0568
+    ],
+    "p_hop_abandoned_max": 1.2790017974180547e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Mars"
+    ],
+    "one_way_h": 0.8333361438126303,
+    "first_try_success": 0.8868177091546536,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0568,
+     0.0598
+    ],
+    "p_hop_abandoned_max": 1.2796692369293624e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.8332404023967683,
+    "first_try_success": 0.8868299596095205,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0598,
+     0.0568
+    ],
+    "p_hop_abandoned_max": 1.2790017974180547e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Jupiter",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 1.457008610945195,
+    "first_try_success": 0.8105023502937165,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.1407,
+     0.0568
+    ],
+    "p_hop_abandoned_max": 0.00039215572248074704
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Jupiter"
+    ],
+    "one_way_h": 1.4570084646111354,
+    "first_try_success": 0.8105023674292241,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0568,
+     0.1407
+    ],
+    "p_hop_abandoned_max": 0.00039210592776546
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Jupiter"
+    ],
+    "one_way_h": 1.1970656173070893,
+    "first_try_success": 0.8414777248204255,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0239,
+     0.1379
+    ],
+    "p_hop_abandoned_max": 0.00036178245178625804
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Saturn",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.7171947195893154,
+    "first_try_success": 0.7806398174511829,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.1272,
+     0.1056
+    ],
+    "p_hop_abandoned_max": 0.0002619014087080229
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 1.717235364310909,
+    "first_try_success": 0.7806352395348775,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.1056,
+     0.1272
+    ],
+    "p_hop_abandoned_max": 0.00026191851803483246
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 1.1115917417337187,
+    "first_try_success": 0.8519194261082257,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0239,
+     0.1272
+    ],
+    "p_hop_abandoned_max": 0.00026193302219384117
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Uranus",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 2.916690056968946,
+    "first_try_success": 0.6565818243424575,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.3039,
+     0.0568
+    ],
+    "p_hop_abandoned_max": 0.008530105761509582
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Uranus"
+    ],
+    "one_way_h": 2.916853200236801,
+    "first_try_success": 0.6565663694047118,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0568,
+     0.3039
+    ],
+    "p_hop_abandoned_max": 0.008531602882862857
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Uranus"
+    ],
+    "one_way_h": 2.3527282745344564,
+    "first_try_success": 0.7122416892838168,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0239,
+     0.2703
+    ],
+    "p_hop_abandoned_max": 0.00533933671167053
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Neptune",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 4.925429393013474,
+    "first_try_success": 0.4913814936174398,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.4506,
+     0.1056
+    ],
+    "p_hop_abandoned_max": 0.041231284937102534
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Neptune"
+    ],
+    "one_way_h": 4.925660672946833,
+    "first_try_success": 0.491365096626681,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.1056,
+     0.4506
+    ],
+    "p_hop_abandoned_max": 0.04123728692148215
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Neptune"
+    ],
+    "one_way_h": 4.320037632307503,
+    "first_try_success": 0.5362328099478136,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0239,
+     0.4506
+    ],
+    "p_hop_abandoned_max": 0.04123828986020304
+   }
+  ],
+  "batch_timing": {
+   "rule": "close = open + 1.1 x slowest one-way + 3 hop retries x R_h",
+   "slowest_from": "Neptune",
+   "slowest_one_way_h": 4.925400818232447,
+   "hop_retries": 3,
+   "retry_allowance_h": 27.90749035414774,
+   "duration_h": 33.32543125420343,
+   "routes": [
+    {
+     "from": "Earth",
+     "route": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "one_way_h": 0.683937230904121,
+     "retry_allowance_h": 1.81003582989797
+    },
+    {
+     "from": "Mars",
+     "route": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "one_way_h": 0.8332606829353608,
+     "retry_allowance_h": 1.854817742248997
+    },
+    {
+     "from": "Neptune",
+     "route": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 4.925400818232447,
+     "retry_allowance_h": 9.302496784715913
+    }
+   ]
+  },
+  "runs": {
+   "value_move": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 10,
+    "checks_total": 11,
+    "failed_checks": [
+     "shares travelled the pinned route"
+    ],
+    "trade_complete_h": 43.369683389086276,
+    "price": "47.50",
+    "position_state": null,
+    "opened_h": null,
+    "calls": 0,
+    "calls_met": 0,
+    "paid": null,
+    "fund_used": null,
+    "settled_h": null,
+    "ran_past_h320": false,
+    "marks_sent": 0,
+    "marks_delivered_by_h320": 0,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_falling": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 5.425400817999616,
+    "calls": 5,
+    "calls_met": 5,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 300.8454694751417,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_rising": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 5.425400817999616,
+    "calls": 6,
+    "calls_met": 6,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 300.8454694751417,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   }
+  },
+  "name": "100 years",
+  "why": "brief offset"
+ },
+ {
+  "offset_h": 481465.0830001831,
+  "offset_years": 54.92414818619474,
+  "routes": [
+   {
+    "settlement": "Mercury",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mercury",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.9240805951994844,
+    "first_try_success": 0.8752824061907113,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0538,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 3.1519088407596796e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Mercury"
+    ],
+    "one_way_h": 0.9239204488985706,
+    "first_try_success": 0.8753026310164577,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0749,
+     0.0538
+    ],
+    "p_hop_abandoned_max": 3.15094660211056e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Mercury"
+    ],
+    "one_way_h": 0.8058451618126128,
+    "first_try_success": 0.8903422353587296,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0663,
+     0.0464
+    ],
+    "p_hop_abandoned_max": 1.9357005234011224e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Venus",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.973195672093425,
+    "first_try_success": 0.8691016775673207,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0605,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 3.151906105560292e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Venus"
+    ],
+    "one_way_h": 0.9732497396471445,
+    "first_try_success": 0.8690948977251193,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0749,
+     0.0605
+    ],
+    "p_hop_abandoned_max": 3.15094660211056e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Venus"
+    ],
+    "one_way_h": 0.9647422566195019,
+    "first_try_success": 0.8701623523099543,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0663,
+     0.068
+    ],
+    "p_hop_abandoned_max": 2.140583937703963e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Earth",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.7996223284571897,
+    "first_try_success": 0.8911419861508367,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0367,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 3.151915772017193e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.7996074209804647,
+    "first_try_success": 0.8911439029030921,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0749,
+     0.0367
+    ],
+    "p_hop_abandoned_max": 3.15094660211056e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.8815303493756801,
+    "first_try_success": 0.8806725285567929,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0858,
+     0.0367
+    ],
+    "p_hop_abandoned_max": 5.417338857710185e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.1623064366576727,
+    "first_try_success": 0.8457084632666039,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0858,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 5.417338857710185e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Mars"
+    ],
+    "one_way_h": 1.1622717642167117,
+    "first_try_success": 0.8457126940518065,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0749,
+     0.0858
+    ],
+    "p_hop_abandoned_max": 5.41759162865565e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.1623064366576727,
+    "first_try_success": 0.8457084632666039,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0858,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 5.417338857710185e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Jupiter",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.8810945903824177,
+    "first_try_success": 0.8807279004064096,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0479,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 3.151911234674869e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Jupiter"
+    ],
+    "one_way_h": 0.8810579496785067,
+    "first_try_success": 0.8807325564918725,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0749,
+     0.0479
+    ],
+    "p_hop_abandoned_max": 3.15094660211056e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Jupiter"
+    ],
+    "one_way_h": 0.9629766008583829,
+    "first_try_success": 0.8703840576699632,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0858,
+     0.0479
+    ],
+    "p_hop_abandoned_max": 5.417338857710185e-05
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Saturn",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.5216769715189002,
+    "first_try_success": 0.8029751035678444,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.132,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 0.0003034732038162255
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 1.521625041787047,
+    "first_try_success": 0.8029811199473615,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0749,
+     0.132
+    ],
+    "p_hop_abandoned_max": 0.0003034610388185041
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 1.6035462581785396,
+    "first_try_success": 0.793545897194889,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0858,
+     0.132
+    ],
+    "p_hop_abandoned_max": 0.0003034619256596756
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Uranus",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 2.958330138993915,
+    "first_try_success": 0.6526489413699258,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.2945,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 0.007521022847429455
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Uranus"
+    ],
+    "one_way_h": 2.958233794255648,
+    "first_try_success": 0.6526580138349538,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0749,
+     0.2945
+    ],
+    "p_hop_abandoned_max": 0.007520414142689617
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Uranus"
+    ],
+    "one_way_h": 3.0401566130749416,
+    "first_try_success": 0.644988974891464,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0858,
+     0.2945
+    ],
+    "p_hop_abandoned_max": 0.007520438810827494
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Neptune",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 5.046502987097483,
+    "first_try_success": 0.48287217101215746,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.478,
+     0.0749
+    ],
+    "p_hop_abandoned_max": 0.05221258444969335
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Neptune"
+    ],
+    "one_way_h": 5.046573398489272,
+    "first_try_success": 0.48286726546401154,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0749,
+     0.478
+    ],
+    "p_hop_abandoned_max": 0.052215975258179205
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Neptune"
+    ],
+    "one_way_h": 4.82290371300769,
+    "first_try_success": 0.49870437752848884,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0663,
+     0.4659
+    ],
+    "p_hop_abandoned_max": 0.04710275021748731
+   }
+  ],
+  "batch_timing": {
+   "rule": "close = open + 1.1 x slowest one-way + 3 hop retries x R_h",
+   "slowest_from": "Neptune",
+   "slowest_one_way_h": 5.046489758446114,
+   "hop_retries": 3,
+   "retry_allowance_h": 30.03521897387691,
+   "duration_h": 35.58635770816763,
+   "routes": [
+    {
+     "from": "Earth",
+     "route": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 0.7996362141275313,
+     "retry_allowance_h": 2.07959423516877
+    },
+    {
+     "from": "Mars",
+     "route": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 1.162307207181584,
+     "retry_allowance_h": 2.2433553109294735
+    },
+    {
+     "from": "Neptune",
+     "route": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 5.046489758446114,
+     "retry_allowance_h": 10.01173965795897
+    }
+   ]
+  },
+  "runs": {
+   "value_move": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 10,
+    "checks_total": 11,
+    "failed_checks": [
+     "shares travelled the pinned route"
+    ],
+    "trade_complete_h": 45.89814221789129,
+    "price": "47.50",
+    "position_state": null,
+    "opened_h": null,
+    "calls": 0,
+    "calls_met": 0,
+    "paid": null,
+    "fund_used": null,
+    "settled_h": null,
+    "ran_past_h320": false,
+    "marks_sent": 0,
+    "marks_delivered_by_h320": 0,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_falling": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "open",
+    "opened_h": 5.546489758533426,
+    "calls": 3,
+    "calls_met": 3,
+    "paid": "0",
+    "fund_used": "0",
+    "settled_h": null,
+    "ran_past_h320": true,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 8,
+    "marks_abandoned": 17,
+    "ran_until_h": 2880,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_rising": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "open",
+    "opened_h": 5.546489758533426,
+    "calls": 4,
+    "calls_met": 4,
+    "paid": "0",
+    "fund_used": "0",
+    "settled_h": null,
+    "ran_past_h320": true,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 8,
+    "marks_abandoned": 17,
+    "ran_until_h": 2880,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   }
+  },
+  "name": "hub loses a relay",
+  "why": "Ceres\u2013Relay A closure of 190.2 d begins 6 h into the scenario"
+ },
+ {
+  "offset_h": 612528.0,
+  "offset_years": 69.8754277891855,
+  "routes": [
+   {
+    "settlement": "Mercury",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mercury",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 1.0163767074700445,
+    "first_try_success": 0.8637037631118654,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0469,
+     0.0938
+    ],
+    "p_hop_abandoned_max": 7.741659102371924e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Mercury"
+    ],
+    "one_way_h": 1.0163688230677508,
+    "first_try_success": 0.8637047456497454,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0938,
+     0.0469
+    ],
+    "p_hop_abandoned_max": 7.743152590925921e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Mercury"
+    ],
+    "one_way_h": 0.9273747013066895,
+    "first_try_success": 0.8748664983368232,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.0586
+    ],
+    "p_hop_abandoned_max": 2.500995848333074e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Venus",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 1.1103944337519351,
+    "first_try_success": 0.85206660868836,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0597,
+     0.0938
+    ],
+    "p_hop_abandoned_max": 7.741639561408033e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Venus"
+    ],
+    "one_way_h": 1.1103171737340745,
+    "first_try_success": 0.8520761069726625,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0938,
+     0.0597
+    ],
+    "p_hop_abandoned_max": 7.743152590925921e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Venus"
+    ],
+    "one_way_h": 0.998760581627721,
+    "first_try_success": 0.8659018345399593,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.0682
+    ],
+    "p_hop_abandoned_max": 2.500995848333074e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Earth",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.9808150476019364,
+    "first_try_success": 0.8681467601709741,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.042,
+     0.0938
+    ],
+    "p_hop_abandoned_max": 7.741666493711694e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Earth"
+    ],
+    "one_way_h": 0.9809239345486276,
+    "first_try_success": 0.8681331212416846,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0938,
+     0.042
+    ],
+    "p_hop_abandoned_max": 7.743152590925921e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.8310826068918686,
+    "first_try_success": 0.8871061017722773,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.0454
+    ],
+    "p_hop_abandoned_max": 2.500995848333074e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.1987102930434048,
+    "first_try_success": 0.841278067145268,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.0947
+    ],
+    "p_hop_abandoned_max": 8.043095945434535e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Mars"
+    ],
+    "one_way_h": 1.198739337385632,
+    "first_try_success": 0.8412745416932598,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0947,
+     0.0707
+    ],
+    "p_hop_abandoned_max": 8.041566979154519e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.1987102930434048,
+    "first_try_success": 0.841278067145268,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.0947
+    ],
+    "p_hop_abandoned_max": 8.043095945434535e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Jupiter",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.362737597344676,
+    "first_try_success": 0.8216018630626732,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0925,
+     0.0947
+    ],
+    "p_hop_abandoned_max": 8.043133418762735e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Jupiter"
+    ],
+    "one_way_h": 1.3627361024846323,
+    "first_try_success": 0.8216020402779358,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0947,
+     0.0925
+    ],
+    "p_hop_abandoned_max": 8.041566979154519e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Jupiter"
+    ],
+    "one_way_h": 1.1815519769734237,
+    "first_try_success": 0.8433633571775186,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.0925
+    ],
+    "p_hop_abandoned_max": 7.307430493791576e-05
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Saturn",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 2.2703544909891207,
+    "first_try_success": 0.7207572710797615,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.2038,
+     0.0947
+    ],
+    "p_hop_abandoned_max": 0.0017266437376847507
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 2.2703630484757014,
+    "first_try_success": 0.7207563811588789,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0947,
+     0.2039
+    ],
+    "p_hop_abandoned_max": 0.0017268326373858498
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 2.0891780584061053,
+    "first_try_success": 0.7398467473886225,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.2039
+    ],
+    "p_hop_abandoned_max": 0.0017268521624501348
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Uranus",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 3.1150172184279654,
+    "first_try_success": 0.6380598745166896,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.2952,
+     0.0947
+    ],
+    "p_hop_abandoned_max": 0.0075932002598153815
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Uranus"
+    ],
+    "one_way_h": 3.114929108385695,
+    "first_try_success": 0.6380679860664674,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0947,
+     0.2952
+    ],
+    "p_hop_abandoned_max": 0.007592742143352707
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Uranus"
+    ],
+    "one_way_h": 2.9337352799484506,
+    "first_try_success": 0.6549690553452866,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.2952
+    ],
+    "p_hop_abandoned_max": 0.007592702154283284
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Neptune",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 5.1480694963247515,
+    "first_try_success": 0.47584761316755714,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.4744,
+     0.0947
+    ],
+    "p_hop_abandoned_max": 0.05063859517124515
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Neptune"
+    ],
+    "one_way_h": 5.148171413020464,
+    "first_try_success": 0.47584061596460975,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0947,
+     0.4744
+    ],
+    "p_hop_abandoned_max": 0.05064367010145567
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay B",
+     "Neptune"
+    ],
+    "one_way_h": 4.96698837733129,
+    "first_try_success": 0.48844386525962513,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0707,
+     0.4744
+    ],
+    "p_hop_abandoned_max": 0.05064389584390534
+   }
+  ],
+  "batch_timing": {
+   "rule": "close = open + 1.1 x slowest one-way + 3 hop retries x R_h",
+   "slowest_from": "Neptune",
+   "slowest_one_way_h": 5.150209730869392,
+   "hop_retries": 3,
+   "retry_allowance_h": 29.80041115632048,
+   "duration_h": 35.46564186027681,
+   "routes": [
+    {
+     "from": "Earth",
+     "route": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "one_way_h": 0.9808452454162762,
+     "retry_allowance_h": 2.365322546684183
+    },
+    {
+     "from": "Mars",
+     "route": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 1.1987285951909143,
+     "retry_allowance_h": 2.379106573178433
+    },
+    {
+     "from": "Neptune",
+     "route": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "one_way_h": 5.150209730869392,
+     "retry_allowance_h": 9.93347038544016
+    }
+   ]
+  },
+  "runs": {
+   "value_move": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 11,
+    "checks_total": 11,
+    "failed_checks": [],
+    "trade_complete_h": 45.886346185347065,
+    "price": "47.50",
+    "position_state": null,
+    "opened_h": null,
+    "calls": 0,
+    "calls_met": 0,
+    "paid": null,
+    "fund_used": null,
+    "settled_h": null,
+    "ran_past_h320": false,
+    "marks_sent": 0,
+    "marks_delivered_by_h320": 0,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_falling": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 5.650209730956703,
+    "calls": 5,
+    "calls_met": 5,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 301.2097470917506,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_rising": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 5.650209730956703,
+    "calls": 6,
+    "calls_met": 6,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 301.2097470917506,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay A",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   }
+  },
+  "name": "slowest client",
+  "why": "Neptune \u2192 Ceres delay at its 200-year maximum (5.15 h)"
+ },
+ {
+  "offset_h": 18144.0,
+  "offset_years": 2.0698151950718686,
+  "routes": [
+   {
+    "settlement": "Mercury",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mercury",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.7960465938740526,
+    "first_try_success": 0.8916018600518754,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0569,
+     0.0546
+    ],
+    "p_hop_abandoned_max": 1.0483223987345823e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Mercury"
+    ],
+    "one_way_h": 0.7958650836872039,
+    "first_try_success": 0.8916252103380228,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0546,
+     0.0569
+    ],
+    "p_hop_abandoned_max": 1.0469107629158137e-05
+   },
+   {
+    "settlement": "Mercury",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Mercury"
+    ],
+    "one_way_h": 0.8506127363343694,
+    "first_try_success": 0.8846098781747521,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.0569
+    ],
+    "p_hop_abandoned_max": 1.481244134437401e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Venus",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.7965450638794209,
+    "first_try_success": 0.8915377377767666,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.057,
+     0.0546
+    ],
+    "p_hop_abandoned_max": 1.0533296814930999e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Venus"
+    ],
+    "one_way_h": 0.7964139449904906,
+    "first_try_success": 0.8915546042251459,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0546,
+     0.057
+    ],
+    "p_hop_abandoned_max": 1.0524197696036993e-05
+   },
+   {
+    "settlement": "Venus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Venus"
+    ],
+    "one_way_h": 0.8511655484226139,
+    "first_try_success": 0.8845393233783648,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.057
+    ],
+    "p_hop_abandoned_max": 1.481244134437401e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Earth",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 0.6274064489234661,
+    "first_try_success": 0.9135622875022097,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.059,
+     0.0291
+    ],
+    "p_hop_abandoned_max": 1.2135573547337582e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 0.6274900349289965,
+    "first_try_success": 0.9135512699868661,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0291,
+     0.059
+    ],
+    "p_hop_abandoned_max": 1.2142482352765956e-05
+   },
+   {
+    "settlement": "Earth",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Relay B",
+     "Earth"
+    ],
+    "one_way_h": 1.421530118879673,
+    "first_try_success": 0.8147272006264965,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.0769,
+     0.059
+    ],
+    "p_hop_abandoned_max": 3.494666662955865e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.8338967658510228,
+    "first_try_success": 0.8867459790185528,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.0546
+    ],
+    "p_hop_abandoned_max": 1.481244134437401e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Mars"
+    ],
+    "one_way_h": 0.8338010799598123,
+    "first_try_success": 0.8867582213655372,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0546,
+     0.062
+    ],
+    "p_hop_abandoned_max": 1.480533670866175e-05
+   },
+   {
+    "settlement": "Mars",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": "local access",
+    "one_way_h": 0.0002777777777777778,
+    "first_try_success": 1.0,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open"
+   },
+   {
+    "settlement": "Ceres",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.8338967658510228,
+    "first_try_success": 0.8867459790185528,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.0546
+    ],
+    "p_hop_abandoned_max": 1.481244134437401e-05
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Jupiter",
+     "Relay A",
+     "Ceres"
+    ],
+    "one_way_h": 0.7739213343729716,
+    "first_try_success": 0.8944526634368258,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0539,
+     0.0546
+    ],
+    "p_hop_abandoned_max": 8.889702926528502e-06
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay A",
+     "Jupiter"
+    ],
+    "one_way_h": 0.7738736634883026,
+    "first_try_success": 0.8944588155825868,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0546,
+     0.0539
+    ],
+    "p_hop_abandoned_max": 8.886093149549102e-06
+   },
+   {
+    "settlement": "Jupiter",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Jupiter"
+    ],
+    "one_way_h": 0.8286315923105576,
+    "first_try_success": 0.8874198727773946,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.0539
+    ],
+    "p_hop_abandoned_max": 1.481244134437401e-05
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Saturn",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 1.6382821863098798,
+    "first_try_success": 0.7895787559952966,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.1867,
+     0.0291
+    ],
+    "p_hop_abandoned_max": 0.0012156815866108505
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Saturn"
+    ],
+    "one_way_h": 1.638375735145928,
+    "first_try_success": 0.7895680987377133,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0291,
+     0.1867
+    ],
+    "p_hop_abandoned_max": 0.001215908946750648
+   },
+   {
+    "settlement": "Saturn",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Saturn"
+    ],
+    "one_way_h": 2.104247383845177,
+    "first_try_success": 0.7382398872467588,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.2129
+    ],
+    "p_hop_abandoned_max": 0.0020557236533492174
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Uranus",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 3.1909880290277215,
+    "first_try_success": 0.6311041127164855,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.35,
+     0.0291
+    ],
+    "p_hop_abandoned_max": 0.014998731162725489
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Uranus"
+    ],
+    "one_way_h": 3.1911013451826875,
+    "first_try_success": 0.6310937945191444,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0291,
+     0.35
+    ],
+    "p_hop_abandoned_max": 0.015000308932427719
+   },
+   {
+    "settlement": "Uranus",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Uranus"
+    ],
+    "one_way_h": 3.3898237235753186,
+    "first_try_success": 0.6132558826668185,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.3462
+    ],
+    "p_hop_abandoned_max": 0.014362216527226704
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "to hub: orders, margin, transfers to clearing",
+    "authority": "Ceres",
+    "route": [
+     "Neptune",
+     "Relay B",
+     "Ceres"
+    ],
+    "one_way_h": 4.264608908658374,
+    "first_try_success": 0.5405384783354774,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.4432,
+     0.0291
+    ],
+    "p_hop_abandoned_max": 0.03859701840282493
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "from hub: batch results, margin calls",
+    "authority": "Ceres",
+    "route": [
+     "Ceres",
+     "Relay B",
+     "Neptune"
+    ],
+    "one_way_h": 4.264852779187095,
+    "first_try_success": 0.5405194591093928,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.0291,
+     0.4433
+    ],
+    "p_hop_abandoned_max": 0.03860349390463015
+   },
+   {
+    "settlement": "Neptune",
+    "transaction": "price source: MOI observation from Mars",
+    "authority": "Mars",
+    "route": [
+     "Mars",
+     "Relay A",
+     "Neptune"
+    ],
+    "one_way_h": 4.964504554395717,
+    "first_try_success": 0.4886189416849728,
+    "availability_24h": 1.0,
+    "any_route_availability_24h": 1.0,
+    "status_now": "open",
+    "hop_loss": [
+     0.062,
+     0.4791
+    ],
+    "p_hop_abandoned_max": 0.052670991753407025
+   }
+  ],
+  "batch_timing": {
+   "rule": "close = open + 1.1 x slowest one-way + 3 hop retries x R_h",
+   "slowest_from": "Neptune",
+   "slowest_one_way_h": 4.264581822139917,
+   "hop_retries": 3,
+   "retry_allowance_h": 27.352840945355638,
+   "duration_h": 32.043880949709546,
+   "routes": [
+    {
+     "from": "Earth",
+     "route": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 0.6274440428778689,
+     "retry_allowance_h": 1.8433566400944983
+    },
+    {
+     "from": "Mars",
+     "route": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "one_way_h": 0.8338802474418117,
+     "retry_allowance_h": 1.887745629201163
+    },
+    {
+     "from": "Neptune",
+     "route": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "one_way_h": 4.264581822139917,
+     "retry_allowance_h": 9.11761364845188
+    }
+   ]
+  },
+  "runs": {
+   "value_move": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 10,
+    "checks_total": 11,
+    "failed_checks": [
+     "shares travelled the pinned route"
+    ],
+    "trade_complete_h": 41.28919904637223,
+    "price": "47.50",
+    "position_state": null,
+    "opened_h": null,
+    "calls": 0,
+    "calls_met": 0,
+    "paid": null,
+    "fund_used": null,
+    "settled_h": null,
+    "ran_past_h320": false,
+    "marks_sent": 0,
+    "marks_delivered_by_h320": 0,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Relay A",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_falling": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 4.764581822142645,
+    "calls": 5,
+    "calls_met": 5,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 300.8241339489905,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Relay A",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   },
+   "price_rising": {
+    "ok": true,
+    "invariant_violations": 0,
+    "checks_passed": 0,
+    "checks_total": 0,
+    "failed_checks": [],
+    "trade_complete_h": null,
+    "price": null,
+    "position_state": "settled",
+    "opened_h": 4.764581822142645,
+    "calls": 6,
+    "calls_met": 6,
+    "paid": "20000.00",
+    "fund_used": "0",
+    "settled_h": 300.8241339489905,
+    "ran_past_h320": false,
+    "marks_sent": 25,
+    "marks_delivered_by_h320": 25,
+    "marks_abandoned": 0,
+    "ran_until_h": 320,
+    "pinned_routes": {
+     "Earth Exchange-Mars Exchange": [
+      "Earth",
+      "Relay B",
+      "Relay A",
+      "Mars"
+     ],
+     "Earth Exchange-Neptune Exchange": [
+      "Earth",
+      "Relay B",
+      "Neptune"
+     ],
+     "Ceres Exchange-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Mars Exchange-Neptune Exchange": [
+      "Mars",
+      "Relay A",
+      "Neptune"
+     ],
+     "Ceres Exchange-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Exchange-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Earth Exchange": [
+      "Earth",
+      "Relay B",
+      "Ceres"
+     ],
+     "Ceres Clearing-Mars Exchange": [
+      "Mars",
+      "Relay A",
+      "Ceres"
+     ],
+     "Ceres Clearing-Neptune Exchange": [
+      "Neptune",
+      "Relay B",
+      "Ceres"
+     ]
+    },
+    "lost_launches": 0
+   }
+  },
+  "name": "most links closed",
+  "why": "4 settlement\u2013relay links closed at once (most in 200 years)"
+ }
+]

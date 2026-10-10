@@ -1,0 +1,5 @@
+link,window_h,first_blocked_launch_h,first_open_launch_h,status_t-1s,status_t,last_open_launch_arrives_h,status_end-1s,status_end
+Neptune -> Relay B,"[2, 26)",-2.415405,26.000183,open,maintenance,1.999860,maintenance,open
+Relay B -> Neptune,"[2, 26)",-2.415222,26.000183,open,maintenance,1.999857,maintenance,open
+Ceres -> Relay B,"[240, 264)",239.659973,264.000183,open,maintenance,239.999870,maintenance,open
+Relay B -> Ceres,"[240, 264)",239.659973,264.000183,open,maintenance,239.999833,maintenance,open

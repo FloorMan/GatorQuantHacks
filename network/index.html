@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solar Network Map</title>
+<style>
+  :root {
+    --bg: #070a12;
+    --panel: #0c1220;
+    --panel-2: #111a2c;
+    --line: #1e2a42;
+    --text: #d7deea;
+    --muted: #7d8aa3;
+    --accent: #6fd3ff;
+    --route: #ff7a45;
+    --open: #3b5a86;
+    --blocked: #ff4d6a;
+    --maint: #f4b740;
+    --good: #6ee7a0;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  button, select, input { font: inherit; color: inherit; }
+  .app { display: grid; grid-template-columns: 1fr 400px; grid-template-rows: auto 1fr auto;
+    height: 100vh; gap: 0; }
+  header { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap;
+    padding: 10px 16px; border-bottom: 1px solid var(--line); }
+  header h1 { margin: 0; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  header .clock { font-family: var(--mono); font-size: 18px; color: #fff; }
+  header .sub { font-family: var(--mono); color: var(--muted); }
+  .stage { position: relative; min-height: 0; overflow: hidden; }
+  canvas#map { width: 100%; height: 100%; display: block; cursor: crosshair; }
+  .overlay { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--panel); }
+  .seg button { background: none; border: 0; padding: 5px 10px; cursor: pointer; color: var(--muted); font-size: 12px; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button.on { background: var(--accent); color: #04121b; font-weight: 600; }
+  .legend { position: absolute; left: 10px; bottom: 10px; background: rgba(12,18,32,.85); border: 1px solid var(--line);
+    border-radius: 6px; padding: 6px 10px; display: flex; gap: 14px; flex-wrap: wrap; font-size: 11px; color: var(--muted); }
+  .legend i { display: inline-block; width: 22px; height: 0; vertical-align: middle; margin-right: 5px; border-top: 2px solid; }
+  .hint { position: absolute; right: 10px; bottom: 10px; font-size: 11px; color: var(--muted); text-align: right; }
+  #tooltip { position: absolute; pointer-events: none; background: rgba(8,12,22,.95); border: 1px solid var(--line);
+    border-radius: 6px; padding: 7px 9px; font-family: var(--mono); font-size: 11px; white-space: pre; display: none; z-index: 5; }
+  aside { grid-row: 2 / 4; grid-column: 2; border-left: 1px solid var(--line); overflow-y: auto; background: var(--panel); }
+  section { padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  section h2 { margin: 0 0 8px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--route); }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .row label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+  select { background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 5px 6px; flex: 1; }
+  .btn { background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 5px 9px; cursor: pointer; }
+  .btn:hover { border-color: var(--accent); }
+  .btn.primary { background: var(--route); border-color: var(--route); color: #1a0800; font-weight: 600; }
+  pre.summary { font-family: var(--mono); font-size: 12px; background: #060912; border: 1px solid var(--line);
+    border-radius: 6px; padding: 10px; margin: 10px 0 0; white-space: pre-wrap; }
+  .st-open { color: var(--good); } .st-sun-blocked { color: var(--blocked); } .st-maintenance { color: var(--maint); }
+  table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11px; }
+  th { text-align: left; color: var(--muted); font-weight: normal; padding: 3px 4px; border-bottom: 1px solid var(--line); }
+  td { padding: 3px 4px; border-bottom: 1px solid #141d30; white-space: nowrap; }
+  td.num, th.num { text-align: right; }
+  tr.click { cursor: pointer; } tr.click:hover td { background: #131d33; }
+  tr.sel td { background: #2a1a12; }
+  tr.onroute td:first-child { color: var(--route); }
+  .note { color: var(--muted); font-size: 11px; margin-top: 6px; }
+  #log { font-family: var(--mono); font-size: 11px; max-height: 180px; overflow-y: auto; margin-top: 8px; }
+  #log div { padding: 2px 0; border-bottom: 1px dashed #18223a; }
+  .timebar { grid-column: 1; border-top: 1px solid var(--line); padding: 8px 14px; display: flex; flex-direction: column; gap: 6px; background: var(--panel); }
+  .timebar .row { flex-wrap: wrap; }
+  input[type=range] { flex: 1; min-width: 160px; accent-color: var(--accent); }
+  input[type=number] { width: 110px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 4px 6px; font-family: var(--mono); }
+  .ticks { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; grid-template-rows: auto 60vh auto auto; height: auto; }
+    aside { grid-row: auto; grid-column: 1; border-left: 0; }
+    .timebar { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Solar Network Map</h1>
+    <nav style="display:flex;gap:6px"><a href="index.html" style="color:#04121b;background:var(--accent);padding:4px 10px;border-radius:6px;text-decoration:none;font-weight:600">Network map</a><a href="evidence.html" style="color:var(--muted);border:1px solid var(--line);padding:3px 10px;border-radius:6px;text-decoration:none">Tests &amp; Evidence</a></nav>
+    <span class="clock" id="clock">2126-09-22 00:00</span>
+    <span class="sub" id="elapsed">T+ 0.000 d · h 0.00</span>
+    <span class="sub">Kepler propagation from 2026-09-22 00:00 TDB (story label 2126) · J2000 ecliptic · 2D view projects onto the ecliptic plane</span>
+  </header>
+
+  <div class="stage" id="stage">
+    <canvas id="map"></canvas>
+    <div class="overlay">
+      <div class="seg" id="viewSeg">
+        <button data-view="compressed" class="on">Compressed</button>
+        <button data-view="inner">True · inner</button>
+        <button data-view="full">True · full</button>
+      </div>
+      <div class="seg" id="linkSeg">
+        <button data-links="all" class="on">All links</button>
+        <button data-links="route">Route only</button>
+        <button data-labels="1">Link labels</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="border-color:var(--route);border-top-width:3px"></i>Selected route</span>
+      <span><i style="border-color:var(--open)"></i>Open link</span>
+      <span><i style="border-color:var(--blocked);border-top-style:dotted"></i>Sun-blocked</span>
+      <span><i style="border-color:var(--maint);border-top-style:dashed"></i>Maintenance</span>
+      <span><i style="border-color:#c9a64a;border-top-style:dashed;border-top-width:1px"></i>Direct path</span>
+    </div>
+    <div class="hint">Click a settlement → TO · Shift-click → FROM<br>Scroll to zoom · drag to pan · double-click resets</div>
+    <div id="tooltip"></div>
+  </div>
+
+  <aside>
+    <section>
+      <h2>Route planner · backbone</h2>
+      <div class="row">
+        <label>From</label><select id="from"></select>
+        <button class="btn" id="swap" title="Swap">⇄</button>
+        <label>To</label><select id="to"></select>
+      </div>
+      <pre class="summary" id="summary"></pre>
+      <div class="row" style="margin-top:8px; flex-wrap:wrap">
+        <button class="btn primary" id="send">▶ Send packet</button>
+        <button class="btn" id="nextOpen">Find next open departure</button>
+      </div>
+      <div class="note" id="nextOpenOut"></div>
+    </section>
+    <section>
+      <h2>Candidate routes (≤ 3 links)</h2>
+      <table id="cands"></table>
+      <div class="note">Click a row to pin that route instead of the fastest open one. Times include 1 s serialization per launch and 1 s relay processing.</div>
+    </section>
+    <section>
+      <h2>Direct service · client only</h2>
+      <pre class="summary" id="direct" style="margin-top:0"></pre>
+    </section>
+    <section>
+      <h2>Packet trace</h2>
+      <div class="note">Each hop is emitted from where the sender is at t<sub>e</sub> and lands where the receiver is at t<sub>a</sub>. The next hop starts from that later time, so the geometry has moved on.</div>
+      <div id="log"><div class="note">No packet sent yet.</div></div>
+    </section>
+    <section>
+      <h2>All 19 backbone links</h2>
+      <table id="links"></table>
+      <div class="note">Values are for the gateway → relay launch emitted now (light time solved with a moving receiver). Status is the worse of the two directions. Loss = 1 − e<sup>−0.02·d</sup>.</div>
+    </section>
+  </aside>
+
+  <div class="timebar">
+    <div class="row">
+      <button class="btn" id="play">▶ Play</button>
+      <button class="btn" id="dir" title="Direction">→ Forward</button>
+      <div class="seg" id="speedSeg">
+        <button data-speed="0.0416666667">1 hr/s</button>
+        <button data-speed="1">1 day/s</button>
+        <button data-speed="7" class="on">1 wk/s</button>
+        <button data-speed="30.4375">1 mo/s</button>
+        <button data-speed="365.25">1 yr/s</button>
+      </div>
+      <button class="btn" data-step="-1">−1 d</button>
+      <button class="btn" data-step="-0.0416666667">−1 h</button>
+      <button class="btn" data-step="0.0416666667">+1 h</button>
+      <button class="btn" data-step="1">+1 d</button>
+      <label>Hour</label><input type="number" id="hourIn" step="1">
+    </div>
+    <div class="row">
+      <input type="range" id="slider" min="0" max="73050" step="0.01" value="0">
+    </div>
+    <div class="ticks"><span>T=0</span><span>+50 yr</span><span>+100 yr</span><span>+150 yr</span><span>+200 yr</span></div>
+    <div class="row">
+      <label>Jump</label>
+      <button class="btn" data-jump="0">T=0</button>
+      <button class="btn" data-jumph="2">h 2 · B–Neptune maint.</button>
+      <button class="btn" data-jumph="240">h 240 · B–Ceres maint.</button>
+      <button class="btn" data-jumph="300">h 300</button>
+      <button class="btn" data-jump="365.25">+1 yr</button>
+      <button class="btn" data-jump="3652.5">+10 yr</button>
+      <button class="btn" data-jump="36525">+100 yr</button>
+    </div>
+  </div>
+</div>
+
+<script src="src/data.js"></script>
+<script src="src/physics.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>

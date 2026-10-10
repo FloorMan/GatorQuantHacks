@@ -1,0 +1,19 @@
+scenario,title,trace_rows,ledger_rows,financial_steps,cash_conserved_every_step,shares_conserved_every_step,max_over_encumbered,knowledge_filled,obligations_at_end
+local-trade,Local trade,5,18,3,True,True,0,1.000000,none
+cross-planet,Cross-planet trade,134,18,12,True,True,0,1.000000,none
+equal-price,Equal-price auction,168,20,15,True,True,0,1.000000,none
+exact-tie,Exact tie / pro-rata,232,22,19,True,True,0,1.000000,none
+partial-fill,Partial fill,134,18,12,True,True,0,1.000000,none
+late-order,Late order,374,32,37,True,True,0,1.000000,none
+limit-protection,Limit-price protection,270,28,25,True,True,0,1.000000,none
+cancel-before,Cancellation before execution,87,16,9,True,True,0,1.000000,none
+cancel-after,Cancellation after execution,151,18,13,True,True,0,1.000000,none
+retry-duplicate,Packet retry / duplicate protection,168,18,14,True,True,0,1.000000,none
+uncertain-lock,Uncertain settlement locking,220,18,16,True,True,0,0.990909,none
+finality,Settlement finality,135,19,13,True,True,0,1.000000,none
+futures-opening,Futures opening,136,26,15,True,True,0,0.992647,"POS-000001: N-Eve long / E-Alice short 10×MOI-F300 @ 100 | Ceres Clearing guarantee fund $50,000"
+margin-call,Margin call,844,45,88,True,True,0,0.998815,"Ceres Clearing guarantee fund $50,000"
+funded-default,Funded default,593,31,49,True,True,0,0.998314,"N-Eve owes clearing $7,000.00 (fund draw, POS-000001) | Ceres Clearing guarantee fund $43,000.00"
+disconnection,Disconnection,155,24,15,True,True,0,1.000000,none
+clearing-outage,Clearing-house outage/recovery,279,32,18,True,True,0,0.996416,"POS-000001: N-Eve long / E-Alice short 10×MOI-F300 @ 100 | Ceres Clearing guarantee fund $50,000"
+futures-rising,"MOI future, rising path (price-rising run)",894,48,92,True,True,0,0.998881,"Ceres Clearing guarantee fund $50,000"

@@ -1,0 +1,37 @@
+test_limits (test_exchange.BalanceSheetTests.test_limits) ... ok
+test_route_rules (test_exchange.CommsTests.test_route_rules) ... ok
+test_session_message_and_quotas (test_exchange.CommsTests.test_session_message_and_quotas) ... ok
+test_falling_price_margin_call_and_funded_default (test_exchange.PositionTests.test_falling_price_margin_call_and_funded_default) ... ok
+test_margin_rule_enforced (test_exchange.PositionTests.test_margin_rule_enforced) ... ok
+test_option_premium_and_payoff (test_exchange.PositionTests.test_option_premium_and_payoff) ... ok
+test_rising_price_settles_from_margin (test_exchange.PositionTests.test_rising_price_settles_from_margin) ... ok
+test_failed_command_leaves_no_trace (test_exchange.ReplayTests.test_failed_command_leaves_no_trace) ... ok
+test_journal_round_trip_and_trace (test_exchange.ReplayTests.test_journal_round_trip_and_trace) ... ok
+test_metrics (test_exchange.ReplayTests.test_metrics) ... ok
+test_state_at_reconstructs_history (test_exchange.ReplayTests.test_state_at_reconstructs_history) ... ok
+test_asset_cannot_back_two_orders (test_exchange.TradingTests.test_asset_cannot_back_two_orders) ... ok
+test_no_financial_action_before_hour_zero (test_exchange.TradingTests.test_no_financial_action_before_hour_zero) ... ok
+test_order_match_settles_dvp_and_conserves (test_exchange.TradingTests.test_order_match_settles_dvp_and_conserves) ... ok
+test_in_transit_value_is_conserved_and_returnable (test_exchange.TransferTests.test_in_transit_value_is_conserved_and_returnable) ... ok
+test_cancel_after (test_scenarios.ScenarioTests.test_cancel_after) ... ok
+test_cancel_before (test_scenarios.ScenarioTests.test_cancel_before) ... ok
+test_clearing_outage (test_scenarios.ScenarioTests.test_clearing_outage) ... ok
+test_cross_planet (test_scenarios.ScenarioTests.test_cross_planet) ... ok
+test_disconnection (test_scenarios.ScenarioTests.test_disconnection) ... ok
+test_equal_price (test_scenarios.ScenarioTests.test_equal_price) ... ok
+test_exact_tie (test_scenarios.ScenarioTests.test_exact_tie) ... ok
+test_finality (test_scenarios.ScenarioTests.test_finality) ... ok
+test_funded_default (test_scenarios.ScenarioTests.test_funded_default) ... ok
+test_futures_opening (test_scenarios.ScenarioTests.test_futures_opening) ... ok
+test_late_order (test_scenarios.ScenarioTests.test_late_order) ... ok
+test_limit_protection (test_scenarios.ScenarioTests.test_limit_protection) ... ok
+test_local_trade (test_scenarios.ScenarioTests.test_local_trade) ... ok
+test_margin_call (test_scenarios.ScenarioTests.test_margin_call) ... ok
+test_partial_fill (test_scenarios.ScenarioTests.test_partial_fill) ... ok
+test_retry_duplicate (test_scenarios.ScenarioTests.test_retry_duplicate) ... ok
+test_uncertain_lock (test_scenarios.ScenarioTests.test_uncertain_lock) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 11.336s
+
+OK

@@ -1,0 +1,26 @@
+time_h,event,cash_conserved,shares_conserved,over_encumbered_holdings,obligations_open
+0.500000,BATCH OPENED,True,True,0,none
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: E-Bob buy 50@50 reserved
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: E-Bob buy 50@50 reserved | BOR-000002: N-Eve buy 30@48 reserved
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: E-Bob buy 50@50 reserved | BOR-000002: N-Eve buy 30@48 reserved | BOR-000003: M-Diego buy 20@40 reserved
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: E-Bob buy 50@50 reserved | BOR-000002: N-Eve buy 30@48 reserved | BOR-000003: M-Diego buy 20@40 reserved | BOR-000004: E-Alice sell 40@45 reserved
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: E-Bob buy 50@50 reserved | BOR-000002: N-Eve buy 30@48 reserved | BOR-000003: M-Diego buy 20@40 reserved | BOR-000004: E-Alice sell 40@45 reserved | BOR-000005: C-Finn sell 30@47 reserved
+1.000278,IN BATCH,True,True,0,BOR-000001: E-Bob buy 50@50 reserved | BOR-000002: N-Eve buy 30@48 reserved | BOR-000003: M-Diego buy 20@40 reserved | BOR-000004: E-Alice sell 40@45 reserved | BOR-000005: C-Finn sell 30@47 accepted
+1.495528,IN BATCH,True,True,0,BOR-000001: E-Bob buy 50@50 reserved | BOR-000002: N-Eve buy 30@48 reserved | BOR-000003: M-Diego buy 20@40 accepted | BOR-000004: E-Alice sell 40@45 reserved | BOR-000005: C-Finn sell 30@47 accepted
+1.556458,IN BATCH,True,True,0,BOR-000001: E-Bob buy 50@50 accepted | BOR-000002: N-Eve buy 30@48 reserved | BOR-000003: M-Diego buy 20@40 accepted | BOR-000004: E-Alice sell 40@45 reserved | BOR-000005: C-Finn sell 30@47 accepted
+1.556458,IN BATCH,True,True,0,BOR-000001: E-Bob buy 50@50 accepted | BOR-000002: N-Eve buy 30@48 reserved | BOR-000003: M-Diego buy 20@40 accepted | BOR-000004: E-Alice sell 40@45 accepted | BOR-000005: C-Finn sell 30@47 accepted
+5.105345,IN BATCH,True,True,0,BOR-000001: E-Bob buy 50@50 accepted | BOR-000002: N-Eve buy 30@48 accepted | BOR-000003: M-Diego buy 20@40 accepted | BOR-000004: E-Alice sell 40@45 accepted | BOR-000005: C-Finn sell 30@47 accepted
+31.184360,BATCH EXECUTED,True,True,0,"BOR-000001: E-Bob buy 50@50 executed | BOR-000002: N-Eve buy 30@48 executed | BOR-000003: M-Diego buy 20@40 executed | BOR-000004: E-Alice sell 40@45 executed | BOR-000005: C-Finn sell 30@47 executed | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending | TRD-000003: executed, legs pending"
+31.184360,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: C-Finn@Ceres → E-Bob@Earth 10 sh in transit | XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | BOR-000001: E-Bob buy 50@50 executed | BOR-000002: N-Eve buy 30@48 executed | BOR-000003: M-Diego buy 20@40 executed | BOR-000004: E-Alice sell 40@45 executed | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending | TRD-000003: executed, legs pending"
+31.680912,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: C-Finn@Ceres → E-Bob@Earth 10 sh in transit | XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | BOR-000001: E-Bob buy 50@50 executed | BOR-000002: N-Eve buy 30@48 executed | BOR-000004: E-Alice sell 40@45 executed | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending | TRD-000003: executed, legs pending"
+31.738458,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: C-Finn@Ceres → E-Bob@Earth 10 sh in transit | XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | XFR-000003: E-Bob@Earth → C-Finn@Ceres $475.00 in transit | BOR-000002: N-Eve buy 30@48 executed | BOR-000004: E-Alice sell 40@45 executed | TRD-000001: executed, legs pending | TRD-000002: executed, legs pending | TRD-000003: executed, legs pending"
+31.738458,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: C-Finn@Ceres → E-Bob@Earth 10 sh in transit | XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | XFR-000003: E-Bob@Earth → C-Finn@Ceres $475.00 in transit | BOR-000002: N-Eve buy 30@48 executed | TRD-000002: executed, legs pending | TRD-000003: executed, legs pending"
+31.738458,VALIDATED · FINAL,True,True,0,"XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | XFR-000003: E-Bob@Earth → C-Finn@Ceres $475.00 in transit | BOR-000002: N-Eve buy 30@48 executed | TRD-000002: executed, legs pending | TRD-000003: executed, legs pending"
+32.292598,VALIDATED · FINAL,True,True,0,"XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | BOR-000002: N-Eve buy 30@48 executed | TRD-000003: executed, legs pending"
+32.292598,SOURCE RECONCILED,True,True,0,"XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | BOR-000002: N-Eve buy 30@48 executed | TRD-000003: executed, legs pending"
+32.846623,SOURCE RECONCILED,True,True,0,"XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | BOR-000002: N-Eve buy 30@48 executed | TRD-000003: executed, legs pending"
+35.290578,RESULT APPLIED AT HOME,True,True,0,"XFR-000002: C-Finn@Ceres → N-Eve@Neptune 20 sh in transit | XFR-000004: N-Eve@Neptune → C-Finn@Ceres $950.00 in transit | TRD-000003: executed, legs pending"
+35.290578,VALIDATED · FINAL,True,True,0,"XFR-000004: N-Eve@Neptune → C-Finn@Ceres $950.00 in transit | TRD-000003: executed, legs pending"
+39.397182,VALIDATED · FINAL,True,True,0,none
+39.397182,SOURCE RECONCILED,True,True,0,none
+43.503769,SOURCE RECONCILED,True,True,0,none

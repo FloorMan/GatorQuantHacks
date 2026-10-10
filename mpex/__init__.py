@@ -16,7 +16,8 @@ from .instruments import (Bond, Currency, Equity, Future, Loan, ObservationRule,
                           OptionType)
 from .journal import Event, EventType, Journal
 from .ledger import EncumbrancePurpose
-from .positions import MarginPolicy, Party, PositionState
+from .batch import BatchOrderStatus, BatchStatus
+from .positions import CommunicationRiskMarginPolicy, MarginPolicy, Party, PositionState
 from .principals import InstitutionRole
 from .trading import OrderStatus, Side, TradeStatus
 from .transfers import TransferStatus

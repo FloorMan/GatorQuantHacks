@@ -34,6 +34,9 @@ class Transfer:
     reference: str | None = None         # position/trade this pays out, if any
     message_id: str | None = None        # settlement instruction carrying it
     reason: str | None = None
+    leg_of: str | None = None            # batch trade this transfer is one leg of
+    source_confirmed_h: float | None = None  # when the source learned of destination finality
+    duplicates_ignored: int = 0          # repeat deliveries of the same transaction id
 
     def to_dict(self) -> dict:
         return {"id": self.id, "owner": self.owner, "to_owner": self.to_owner,
@@ -43,4 +46,6 @@ class Transfer:
                 "completed_h": self.completed_h,
                 "stated_value": None if self.stated_value is None else str(self.stated_value),
                 "reference": self.reference, "message_id": self.message_id,
-                "reason": self.reason}
+                "reason": self.reason, "leg_of": self.leg_of,
+                "source_confirmed_h": self.source_confirmed_h,
+                "duplicates_ignored": self.duplicates_ignored}

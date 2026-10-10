@@ -1,0 +1,19 @@
+time_h,event,owner,asset,location,change,balance_after,available_after,encumbered_after,encumbrances,source,liability
+0.000000,OPENING,C-Finn,cash,Ceres,"$35,000","$35,000","$35,000",$0,,opening balance sheet,
+0.000000,OPENING,C-Finn,shares,Ceres,500 sh,500 sh,500 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,E-Alice,cash,Earth,"$70,000","$70,000","$70,000",$0,,opening balance sheet,
+0.000000,OPENING,E-Alice,shares,Earth,600 sh,600 sh,600 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,E-Bob,cash,Earth,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,E-Bob,shares,Earth,400 sh,400 sh,400 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,M-Carla,cash,Mars,"$60,000","$60,000","$60,000",$0,,opening balance sheet,
+0.000000,OPENING,M-Carla,shares,Mars,550 sh,550 sh,550 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,M-Diego,cash,Mars,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,M-Diego,shares,Mars,450 sh,450 sh,450 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,N-Eve,cash,Neptune,"$55,000","$55,000","$55,000",$0,,opening balance sheet,
+0.000000,OPENING,N-Eve,shares,Neptune,500 sh,500 sh,500 sh,0 sh,,opening balance sheet,
+1.000278,ORDER ACCEPTED,E-Alice,shares,Earth,lock change,600 sh,500 sh,100 sh,order ORD-000001 100 sh,order lock ORD-000001,committed to order ORD-000001
+1.500278,ORDER ACCEPTED,E-Bob,cash,Earth,lock change,"$45,000","$40,800","$4,200","order ORD-000002 $4,200",order lock ORD-000002,committed to order ORD-000002
+1.500278,TRADE · DvP,E-Alice,cash,Earth,"$4,000","$74,000","$74,000",$0,,local trade TRD-000001 (DvP),
+1.500278,TRADE · DvP,E-Alice,shares,Earth,-100 sh,500 sh,500 sh,0 sh,,local trade TRD-000001 (DvP),
+1.500278,TRADE · DvP,E-Bob,cash,Earth,"$-4,000","$41,000","$41,000",$0,,local trade TRD-000001 (DvP),
+1.500278,TRADE · DvP,E-Bob,shares,Earth,100 sh,500 sh,500 sh,0 sh,,local trade TRD-000001 (DvP),

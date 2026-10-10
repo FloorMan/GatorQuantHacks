@@ -1,0 +1,14 @@
+time_h,event,cash_conserved,shares_conserved,over_encumbered_holdings,obligations_open
+0.500000,BATCH OPENED,True,True,0,none
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: N-Eve buy 10@100 reserved
+1.000278,ORDER STAMPED · RESERVED,True,True,0,BOR-000001: N-Eve buy 10@100 reserved | BOR-000002: E-Alice sell 10@95 reserved
+1.556458,IN BATCH,True,True,0,BOR-000001: N-Eve buy 10@100 reserved | BOR-000002: E-Alice sell 10@95 accepted
+5.105345,IN BATCH,True,True,0,BOR-000001: N-Eve buy 10@100 accepted | BOR-000002: E-Alice sell 10@95 accepted
+31.184360,BATCH EXECUTED,True,True,0,"BOR-000001: N-Eve buy 10@100 executed | BOR-000002: E-Alice sell 10@95 executed | TRD-000001: executed, legs pending"
+31.738458,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: E-Alice@Earth → N-Eve@Neptune 10 sh in transit | BOR-000001: N-Eve buy 10@100 executed | TRD-000001: executed, legs pending"
+34.791035,CANCEL REJECTED,True,True,0,"XFR-000001: E-Alice@Earth → N-Eve@Neptune 10 sh in transit | BOR-000001: N-Eve buy 10@100 executed | TRD-000001: executed, legs pending"
+35.290578,RESULT APPLIED AT HOME,True,True,0,"XFR-000001: E-Alice@Earth → N-Eve@Neptune 10 sh in transit | XFR-000002: N-Eve@Neptune → E-Alice@Earth $975.00 in transit | TRD-000001: executed, legs pending"
+35.912368,VALIDATED · FINAL,True,True,0,"XFR-000002: N-Eve@Neptune → E-Alice@Earth $975.00 in transit | TRD-000001: executed, legs pending"
+39.464248,VALIDATED · FINAL,True,True,0,none
+40.086020,SOURCE RECONCILED,True,True,0,none
+43.637943,SOURCE RECONCILED,True,True,0,none

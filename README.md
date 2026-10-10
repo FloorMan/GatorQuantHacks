@@ -74,10 +74,45 @@ python3 -m unittest discover -s tests -v    # run the tests
   * Direct: 12 per principal per rolling 24 h, with launches 60 s apart.
   * Transport ACKs and receipts are exempt but still counted in totals.
 
+### Batch market, settlement legs, and delay-aware margin
+
+Added for the design paper's rules (see `mpex/batch.py`):
+
+* **Global batch auction** for cross-settlement equity orders, held at the hub (Ceres by default; set `MPEX_HUB=Earth` etc. to move it, see `notes/hub-earth-vs-ceres.md`). Collateral is locked at the trader's home ledger before the order leaves home. Priority goes to the home operator's receipt stamp, not arrival time. One uniform price (maximum volume, then minimum imbalance, then the midpoint of the tied range). Exact ties split pro rata in whole shares, with the remainder ordered by sha256(batch:order). The batch stays open for 1.1 × the slowest eligible one-way delay plus a grace window covering all 3 hop retries (4 launches per hop), so an order that needs every retry still arrives in time. Late orders roll to the next batch with their limit unchanged. Cancels take effect only before execution.
+* **Two-leg settlement.** Each home operator applies the batch result to its own ledger: filled quantity leaves the lock as an in-transit transfer to the counterparty's home, and the rest is released. A trade completes when both legs are usable.
+* **At-most-once delivery** (`deliver_transfer`) and **source reconciliation** (`confirm_transfer`). A repeated transaction id is recorded and ignored.
+* **Guarantee fund** (`contribute_guarantee`), funded from accounts after hour 0. It is the third step of the default waterfall, after the defaulter's margin.
+* **`CommunicationRiskMarginPolicy`.** Initial margin covers the worst move in the observations a margin call's round trip (plus one hop retry) can span; maintenance is 75% of that allowance plus the current loss. The base `MarginPolicy` behaves exactly as before.
+
+## Tests & Evidence dashboard
+
+```
+python3 serve.py                 # http://localhost:8000/evidence.html (map at /)
+python3 -m evidence.runner       # same 17 scenarios in the terminal
+MPEX_HUB=Earth python3 serve.py --port 8001   # same dashboard with the hub at Earth
+python3 -m evidence.compare_hubs  # rerun everything at Earth and Ceres and compare
+```
+
+`evidence/` runs 17 scenarios on `mpex` and the network model in time order (`evidence/world.py`). The run includes hop and endpoint retries, receipts, Sun and maintenance waits, and labelled incidents, and invariants are checked after every step. The dashboard shows each scenario's real output: checks with expected and actual values, the transaction flow and route, a replay of the packets on the solar-system map, the auction allocation and reasons, futures margin charts, balances before and after with conservation, and the full timeline. A scenario passes only if all of its checks pass, no invariant breaks, cash and shares are conserved, and nothing settles twice. The scenarios also run under `python3 -m unittest`.
+
+Traces are conditional (no random loss): a packet is lost only where a scenario forces a loss or an incident covers the launch, and each loss is labelled. Simplifications: sessions are not expired for idleness (scenarios keep traffic flowing or run under 7 days of idle time), and link capacity and queues are not simulated.
+
 ### Not built yet
 
-* The orbital propagator, light time, visibility, loss, and transport simulation. These belong in a separate module that writes its results through `record_launch`, `set_message_status` and `set_session_state`.
+* The transport simulation (hop and endpoint retries, queues, sessions over time), and wiring the network model into `mpex`. The orbital propagator, light time, visibility, maintenance, loss and route timing now live in `network/` (see below); the simulation should write its results through `record_launch`, `set_message_status` and `set_session_state`.
 * Order-book trading for derivatives (positions are currently opened bilaterally).
 * Lifecycles for bonds, loans and currencies.
 * Per-actor knowledge (who has received which observation).
 * Rollback deep-copies the state on each command. That is fine at scenario scale; it would need replacing for very long runs.
+
+## `network/`: orbits, light time, and routing
+
+The physical network model, separate from `mpex`. See `network/README.md`.
+
+```
+open network/index.html                                              # interactive 2D network map
+python3 network/python/network_graph.py --from Earth --to Neptune    # routes, hop timings, loss and abandonment probabilities
+node network/scripts/check_epoch.js                                  # epoch check against the brief's Section 3 table
+```
+
+It implements the brief's launch rules: moving-receiver light time to 1 ms, the 0.10 AU solar exclusion tested on the emission-to-arrival segment, maintenance on the flight interval, 1 s serialization per launch and 1 s relay processing, and the four simple backbone routes of at most 3 links.

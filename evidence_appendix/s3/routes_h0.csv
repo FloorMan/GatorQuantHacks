@@ -1,0 +1,28 @@
+settlement,transaction,authority,route,one_way_h,first_try_success,availability_24h,any_route_availability_24h,status_now,hop_loss,p_hop_abandoned_max
+Mercury,"to hub: orders, margin, transfers to clearing",Ceres,Mercury -> Relay A -> Ceres,0.697180,0.904411,1.000000,1.000000,open,0.0634 -> 0.0344,0.000016
+Mercury,"from hub: batch results, margin calls",Ceres,Ceres -> Relay A -> Mercury,0.697133,0.904418,1.000000,1.000000,open,0.0344 -> 0.0634,0.000016
+Mercury,price source: MOI observation from Mars,Mars,Mars -> Relay A -> Mercury,0.706076,0.903251,1.000000,1.000000,open,0.0357 -> 0.0634,0.000016
+Venus,"to hub: orders, margin, transfers to clearing",Ceres,Venus -> Relay A -> Ceres,0.606232,0.916358,1.000000,1.000000,open,0.051 -> 0.0344,0.000007
+Venus,"from hub: batch results, margin calls",Ceres,Ceres -> Relay A -> Venus,0.606132,0.916371,1.000000,1.000000,open,0.0344 -> 0.051,0.000007
+Venus,price source: MOI observation from Mars,Mars,Mars -> Relay A -> Venus,0.615074,0.915189,1.000000,1.000000,open,0.0357 -> 0.051,0.000007
+Earth,"to hub: orders, margin, transfers to clearing",Ceres,Earth -> Relay A -> Ceres,0.556247,0.922990,1.000000,1.000000,open,0.0441 -> 0.0344,0.000004
+Earth,"from hub: batch results, margin calls",Ceres,Ceres -> Relay A -> Earth,0.556168,0.923001,1.000000,1.000000,open,0.0344 -> 0.0441,0.000004
+Earth,price source: MOI observation from Mars,Mars,Mars -> Relay A -> Earth,0.565110,0.921811,1.000000,1.000000,open,0.0357 -> 0.0441,0.000004
+Mars,"to hub: orders, margin, transfers to clearing",Ceres,Mars -> Relay A -> Ceres,0.495208,0.931155,1.000000,1.000000,open,0.0357 -> 0.0344,0.000002
+Mars,"from hub: batch results, margin calls",Ceres,Ceres -> Relay A -> Mars,0.495214,0.931154,1.000000,1.000000,open,0.0344 -> 0.0357,0.000002
+Mars,price source: MOI observation from Mars,Mars,local access,0.000278,1.000000,1.000000,1.000000,open,,
+Ceres,"to hub: orders, margin, transfers to clearing",Ceres,local access,0.000278,1.000000,1.000000,1.000000,open,,
+Ceres,"from hub: batch results, margin calls",Ceres,local access,0.000278,1.000000,1.000000,1.000000,open,,
+Ceres,price source: MOI observation from Mars,Mars,Mars -> Relay A -> Ceres,0.495208,0.931155,1.000000,1.000000,open,0.0357 -> 0.0344,0.000002
+Jupiter,"to hub: orders, margin, transfers to clearing",Ceres,Jupiter -> Relay B -> Ceres,0.688287,0.905573,1.000000,1.000000,open,0.0487 -> 0.0481,0.000006
+Jupiter,"from hub: batch results, margin calls",Ceres,Ceres -> Relay B -> Jupiter,0.688325,0.905568,1.000000,1.000000,open,0.0481 -> 0.0487,0.000006
+Jupiter,price source: MOI observation from Mars,Mars,Mars -> Relay B -> Jupiter,0.665126,0.908604,1.000000,1.000000,open,0.0449 -> 0.0487,0.000006
+Saturn,"to hub: orders, margin, transfers to clearing",Ceres,Saturn -> Relay A -> Ceres,1.253797,0.834618,1.000000,1.000000,open,0.1356 -> 0.0344,0.000338
+Saturn,"from hub: batch results, margin calls",Ceres,Ceres -> Relay A -> Saturn,1.253722,0.834627,1.000000,1.000000,open,0.0344 -> 0.1356,0.000338
+Saturn,price source: MOI observation from Mars,Mars,Mars -> Relay A -> Saturn,1.262665,0.833551,1.000000,1.000000,open,0.0357 -> 0.1356,0.000338
+Uranus,"to hub: orders, margin, transfers to clearing",Ceres,Uranus -> Relay A -> Ceres,2.567825,0.690477,1.000000,1.000000,open,0.2849 -> 0.0344,0.006589
+Uranus,"from hub: batch results, margin calls",Ceres,Ceres -> Relay A -> Uranus,2.567834,0.690476,1.000000,1.000000,open,0.0344 -> 0.2849,0.006590
+Uranus,price source: MOI observation from Mars,Mars,Mars -> Relay A -> Uranus,2.576776,0.689586,1.000000,1.000000,open,0.0357 -> 0.2849,0.006590
+Neptune,"to hub: orders, margin, transfers to clearing",Ceres,Neptune -> Relay A -> Ceres,4.105023,0.553129,1.000000,1.000000,open,0.4272 -> 0.0344,0.033292
+Neptune,"from hub: batch results, margin calls",Ceres,Ceres -> Relay A -> Neptune,4.104823,0.553145,1.000000,1.000000,open,0.0344 -> 0.4271,0.033288
+Neptune,price source: MOI observation from Mars,Mars,Mars -> Relay A -> Neptune,4.113766,0.552432,1.000000,1.000000,open,0.0357 -> 0.4271,0.033288

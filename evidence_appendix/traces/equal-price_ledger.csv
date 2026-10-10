@@ -1,0 +1,21 @@
+time_h,event,owner,asset,location,change,balance_after,available_after,encumbered_after,encumbrances,source,liability
+0.000000,OPENING,C-Finn,cash,Ceres,"$35,000","$35,000","$35,000",$0,,opening balance sheet,
+0.000000,OPENING,C-Finn,shares,Ceres,500 sh,500 sh,500 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,E-Alice,cash,Earth,"$70,000","$70,000","$70,000",$0,,opening balance sheet,
+0.000000,OPENING,E-Alice,shares,Earth,600 sh,600 sh,600 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,E-Bob,cash,Earth,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,E-Bob,shares,Earth,400 sh,400 sh,400 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,M-Carla,cash,Mars,"$60,000","$60,000","$60,000",$0,,opening balance sheet,
+0.000000,OPENING,M-Carla,shares,Mars,550 sh,550 sh,550 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,M-Diego,cash,Mars,"$45,000","$45,000","$45,000",$0,,opening balance sheet,
+0.000000,OPENING,M-Diego,shares,Mars,450 sh,450 sh,450 sh,0 sh,,opening balance sheet,
+0.000000,OPENING,N-Eve,cash,Neptune,"$55,000","$55,000","$55,000",$0,,opening balance sheet,
+0.000000,OPENING,N-Eve,shares,Neptune,500 sh,500 sh,500 sh,0 sh,,opening balance sheet,
+10.000278,ORDER STAMPED · RESERVED,N-Eve,cash,Neptune,lock change,"$55,000","$54,000","$1,000","order BOR-000001 $1,000",batch order lock BOR-000001,committed to order BOR-000001
+10.000278,ORDER STAMPED · RESERVED,M-Carla,shares,Mars,lock change,550 sh,540 sh,10 sh,order BOR-000002 10 sh,batch order lock BOR-000002,committed to order BOR-000002
+10.016944,ORDER STAMPED · RESERVED,E-Bob,cash,Earth,lock change,"$45,000","$44,000","$1,000","order BOR-000003 $1,000",batch order lock BOR-000003,committed to order BOR-000003
+40.683977,RESULT APPLIED AT HOME,M-Carla,shares,Mars,-10 sh,540 sh,540 sh,0 sh,,batch result for BOR-000002: shares XFR-000001,owes 10 sh to N-Eve@Neptune via XFR-000001 (in transit)
+40.740543,RESULT APPLIED AT HOME,E-Bob,cash,Earth,lock change,"$45,000","$45,000",$0,,batch result for BOR-000003: release,
+44.293660,RESULT APPLIED AT HOME,N-Eve,cash,Neptune,"$-1,000.00","$54,000.00","$54,000.00",$0.00,,batch result for BOR-000001: cash XFR-000002,"owes $1,000.00 to M-Carla@Mars via XFR-000002 (in transit)"
+44.801041,VALIDATED · FINAL,N-Eve,shares,Neptune,10 sh,510 sh,510 sh,0 sh,,transfer XFR-000001 validated at destination,
+48.411357,VALIDATED · FINAL,M-Carla,cash,Mars,"$1,000.00","$61,000.00","$61,000.00",$0,,transfer XFR-000002 validated at destination,
